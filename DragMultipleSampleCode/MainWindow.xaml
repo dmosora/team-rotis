@@ -31,6 +31,13 @@
             <Grid
                 Margin="0,2,2,2"
                 >
+                <Grid.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Name="rectCut" Header="Cut" Click="rectCut_Click" />
+                        <MenuItem Name="rectCopy" Header="Copy" Click="rectCopy_Click" />
+                        <MenuItem Name="rectPaste" Header="Paste" Click="rectPaste_Click" />
+                    </ContextMenu>
+                </Grid.ContextMenu>
                 <Rectangle
                     Width="{Binding Width}"
                     Height="{Binding Height}" Cursor="Hand"
@@ -67,6 +74,11 @@
             ItemsSource="{Binding Rectangles}"
             SelectionMode="Extended"
             >
+            <ListBox.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Name="gridCut" Header="Cut" Click="gridCut_Click" />
+                </ContextMenu>
+            </ListBox.ContextMenu>
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
                     <Canvas />

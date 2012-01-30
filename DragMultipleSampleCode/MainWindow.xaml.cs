@@ -455,5 +455,25 @@ namespace SampleCode
             }
         }
 
+        private void rectCut_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void rectCopy_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void rectPaste_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void gridCut_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
     }
 }
