@@ -475,5 +475,16 @@ namespace SampleCode
 
         }
 
+        private void gridNewRect_Click(object sender, RoutedEventArgs e)
+        {
+            Rectangle rect1 = new Rectangle();
+            BitmapImage bi1 = new BitmapImage();
+            bi1.BeginInit();
+            bi1.UriSource = new Uri("Koala.jpg", UriKind.Relative);
+            bi1.EndInit();
+            RectangleViewModel rectView1 = new RectangleViewModel(0.0, 0.0, 100.0, 100.0, bi1);
+            ViewModel.Rectangles.Add(rectView1);
+        }
+
     }
 }
