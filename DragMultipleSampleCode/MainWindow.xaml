@@ -77,6 +77,7 @@
             <ListBox.ContextMenu>
                 <ContextMenu>
                     <MenuItem Name="gridCut" Header="Cut" Click="gridCut_Click" />
+                    <MenuItem Name="gridNewRect" Header="New Layer" Click="gridNewRect_Click" />
                 </ContextMenu>
             </ListBox.ContextMenu>
             <ListBox.ItemsPanel>
