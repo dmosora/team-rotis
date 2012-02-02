@@ -40,6 +40,8 @@ namespace SampleCode
         /// </summary>
         private ImageSource iSource;
 
+        private double opacity;
+
         /// <summary>
         /// The hotspot of the rectangle's connector.
         /// This value is pushed through from the UI because it is data-bound to 'Hotspot'
@@ -53,13 +55,14 @@ namespace SampleCode
         {
         }
 
-        public RectangleViewModel(double x, double y, double width, double height, ImageSource iSource)
+        public RectangleViewModel(double x, double y, double width, double height, ImageSource iSource, double Opacity)
         {
             this.x = x;
             this.y = y;
             this.width = width;
             this.height = height;
             this.iSource = iSource;
+            this.opacity = Opacity;
         }
 
         /// <summary>
@@ -169,6 +172,25 @@ namespace SampleCode
                 iSource = ISource;
 
                 OnPropertyChanged("ImageSource");
+            }
+        }
+
+        public double Opacity
+        {
+            get
+            {
+                return opacity;
+            }
+            set
+            {
+                if (Opacity == value)
+                {
+                    return;
+                }
+
+                opacity = Opacity;
+
+                OnPropertyChanged("Opacity");
             }
         }
 

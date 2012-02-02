@@ -26,24 +26,45 @@ namespace SampleCode
 
         public ViewModel()
         {
-            //
-            // Populate the view model with some example data.
-            //
-           BitmapImage bi3 = new BitmapImage();
-            bi3.BeginInit();
-            bi3.UriSource = new Uri("Koala.jpg", UriKind.Relative);
-            bi3.EndInit();
-            BitmapImage bi4 = new BitmapImage();
-            bi4.BeginInit();
-            bi4.UriSource = new Uri("Koala.jpg", UriKind.Relative);
-            bi4.EndInit();
 
-            var r1 = new RectangleViewModel(10, 10, 50, 40, bi3);
-            rectangles.Add(r1);
-            var r2 = new RectangleViewModel(70, 60, 50, 60, bi4);
-            rectangles.Add(r2);
-            //var r3 = new RectangleViewModel(150, 130, 55, 48, new Uri("smiley_stackpanel.PNG", UriKind.Relative));
-            //rectangles.Add(r3);
+        }
+
+        public void addRectangle(string imageuri)
+        {
+            //Message Box for Opacity
+            string messageBoxText = "Do you want to make this image opaque?";
+            string caption = "Image Opacity";
+            MessageBoxButton button = MessageBoxButton.YesNo;
+            // Display message box
+            // Display message box
+            MessageBoxResult result = MessageBox.Show(messageBoxText, caption, button);
+
+            double opac = 0;
+            // Process message box results
+            switch (result)
+            {
+                case MessageBoxResult.Yes:
+                        opac = .5;
+                    break;
+                case MessageBoxResult.No:
+                        opac=1;
+                    break;
+            }
+
+            
+            BitmapImage bitemp = new BitmapImage();
+            bitemp.BeginInit();
+            bitemp.UriSource = new Uri(imageuri, UriKind.Relative);
+            bitemp.EndInit();
+            var rtemp = new RectangleViewModel(150, 130,bitemp.PixelWidth, bitemp.PixelHeight, bitemp, opac);
+            rectangles.Add(rtemp);
+
+           
+        }
+
+        public void deleteRectangle(RectangleViewModel sender)
+        {
+            rectangles.RemoveAt(rectangles.IndexOf(sender));
         }
 
         /// <summary>
