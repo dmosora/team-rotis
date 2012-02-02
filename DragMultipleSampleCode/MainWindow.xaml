@@ -3,12 +3,12 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="clr-namespace:SampleCode"
     Title="Simple Drag Selection + Multiple Item Dragging" 
-    Width="450"
+    Width="579"
     Height="300"
     Loaded="Window_Loaded"
     MouseDown="Window_MouseDown"
     MouseUp="Window_MouseUp"
-    MouseMove="Window_MouseMove" Opacity="0.5">
+    MouseMove="Window_MouseMove">
     <Window.Resources>
 
         <!-- 
@@ -33,7 +33,7 @@
                 >
                 <Grid.ContextMenu>
                     <ContextMenu>
-                        <MenuItem Name="rectCut" Header="Cut" Click="rectCut_Click" />
+                        <MenuItem Name="rectDelete" Header="Delete" Click="rectDelete_Click" />
                         <MenuItem Name="rectCopy" Header="Copy" Click="rectCopy_Click" />
                         <MenuItem Name="rectPaste" Header="Paste" Click="rectPaste_Click" />
                     </ContextMenu>
@@ -41,9 +41,10 @@
                 <Rectangle
                     Width="{Binding Width}"
                     Height="{Binding Height}" Cursor="Hand"
+                    Opacity="{Binding Opacity}"
                     MouseDown="Rectangle_MouseDown"
                     MouseUp="Rectangle_MouseUp"
-                    MouseMove="Rectangle_MouseMove" Opacity="0.5" >
+                    MouseMove="Rectangle_MouseMove">
                     <Rectangle.Fill>
                         <ImageBrush ImageSource="{Binding ISource}" />
                     </Rectangle.Fill>
@@ -52,6 +53,7 @@
         </DataTemplate>
 
     </Window.Resources>
+
     
     <Window.DataContext>
         
@@ -133,16 +135,16 @@
         -->
         <Canvas
             x:Name="dragSelectionCanvas"
-            Visibility="Collapsed"
-            >
+            Visibility="Collapsed" Margin="0,21,0,0">
             <Border 
                 x:Name="dragSelectionBorder"
                 BorderBrush="Blue"
                 BorderThickness="1"
-                Background="White"
                 CornerRadius="1"
-                Opacity="1"
+                Opacity=".5"
                 />
+            
         </Canvas>
+        <Button Content="Button" Height="23" HorizontalAlignment="Left" Name="button1" VerticalAlignment="Top" Width="75" Click="button1_Click_1" />
     </Grid>
 </Window>

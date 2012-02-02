@@ -13,6 +13,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Diagnostics;
 using System.Windows.Controls.Primitives;
+using System.Collections;
 
 namespace SampleCode
 {
@@ -455,9 +456,21 @@ namespace SampleCode
             }
         }
 
-        private void rectCut_Click(object sender, RoutedEventArgs e)
+        private void rectDelete_Click(object sender, RoutedEventArgs e)
         {
-
+            RectangleViewModel[] selected = new RectangleViewModel[20];
+            int j = 0;
+            int todelete = -1;
+            foreach (RectangleViewModel rectangle in this.listBox.SelectedItems)
+            {
+                selected[j] = rectangle;
+                j++;
+                todelete++;
+            }
+            for (int i = todelete; i>-1; --i)
+            {
+                this.ViewModel.deleteRectangle(selected[i]);
+            }
         }
 
         private void rectCopy_Click(object sender, RoutedEventArgs e)
@@ -475,16 +488,12 @@ namespace SampleCode
 
         }
 
-        private void gridNewRect_Click(object sender, RoutedEventArgs e)
+        private void button1_Click_1(object sender, RoutedEventArgs e)
         {
-            Rectangle rect1 = new Rectangle();
-            BitmapImage bi1 = new BitmapImage();
-            bi1.BeginInit();
-            bi1.UriSource = new Uri("Koala.jpg", UriKind.Relative);
-            bi1.EndInit();
-            RectangleViewModel rectView1 = new RectangleViewModel(0.0, 0.0, 100.0, 100.0, bi1);
-            ViewModel.Rectangles.Add(rectView1);
+            Microsoft.Win32.OpenFileDialog dlg =
+            new Microsoft.Win32.OpenFileDialog();
+            dlg.ShowDialog();
+            this.ViewModel.addRectangle(dlg.FileName);
         }
-
     }
 }
