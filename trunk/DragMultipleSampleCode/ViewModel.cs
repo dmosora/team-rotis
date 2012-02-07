@@ -67,6 +67,20 @@ namespace SampleCode
             rectangles.RemoveAt(rectangles.IndexOf(sender));
         }
 
+        public void makeTopLayer(RectangleViewModel sender)
+        {
+            int start = rectangles.IndexOf(sender);
+            int i = 0;
+            if (start >= 0)
+            {
+                for (i = start; i < rectangles.Count - 1; i++)
+                {
+                    rectangles[i] = rectangles[i + 1];
+                }
+            }
+            rectangles[i] = sender;
+        }
+
         /// <summary>
         /// The list of rectangles that is displayed in the ListBox.
         /// </summary>

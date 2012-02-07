@@ -14,6 +14,7 @@ using System.Windows.Shapes;
 using System.Diagnostics;
 using System.Windows.Controls.Primitives;
 using System.Collections;
+using Microsoft.Win32;
 
 namespace SampleCode
 {
@@ -281,7 +282,7 @@ namespace SampleCode
                 listBox.SelectedItems.Clear();
 
                 isLeftMouseButtonDownOnWindow = true;
-                origMouseDownPoint = e.GetPosition(this);
+                origMouseDownPoint = e.GetPosition(dragSelectionCanvas);
 
                 this.CaptureMouse();
 
@@ -339,7 +340,7 @@ namespace SampleCode
                 //
                 // Drag selection is in progress.
                 //
-                Point curMouseDownPoint = e.GetPosition(this);
+                Point curMouseDownPoint = e.GetPosition(dragSelectionCanvas);
                 UpdateDragSelectionRect(origMouseDownPoint, curMouseDownPoint);
 
                 e.Handled = true;
@@ -351,7 +352,7 @@ namespace SampleCode
                 // but don't initiate drag selection until
                 // they have dragged past the threshold value.
                 //
-                Point curMouseDownPoint = e.GetPosition(this);
+                Point curMouseDownPoint = e.GetPosition(dragSelectionCanvas);
                 var dragDelta = curMouseDownPoint - origMouseDownPoint;
                 double dragDistance = Math.Abs(dragDelta.Length);
                 if (dragDistance > DragThreshold)
@@ -492,8 +493,87 @@ namespace SampleCode
         {
             Microsoft.Win32.OpenFileDialog dlg =
             new Microsoft.Win32.OpenFileDialog();
-            dlg.ShowDialog();
-            this.ViewModel.addRectangle(dlg.FileName);
+            if (dlg.ShowDialog() == true)
+            {
+                this.ViewModel.addRectangle(dlg.FileName);
+            }
+        }
+
+        private void gridNewRect_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void topNew_Click(object sender, RoutedEventArgs e)
+        {
+            MainWindow mw = new MainWindow();
+            mw.Show();
+        }
+
+        private void topOpen_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog dlg = new OpenFileDialog();
+            if (dlg.ShowDialog() == true)
+            {
+                this.ViewModel.addRectangle(dlg.FileName);
+            }
+        }
+
+        private void topSave_Click(object sender, RoutedEventArgs e)
+        {
+            /* FIX THIS LATER!!!!!
+             * 
+            SaveFileDialog sfd = new SaveFileDialog();
+            sfd.ShowDialog();
+            if (sfd.FileName != "")
+            {
+                System.IO.FileStream fs = (System.IO.FileStream)sfd.OpenFile();
+                Size size = new Size(listBox.Width, listBox.Height);
+                RenderTargetBitmap result = new RenderTargetBitmap((int)size.Width, (int)size.Height, 96, 96, PixelFormats.Pbgra32);
+
+                DrawingVisual dwv = new DrawingVisual();
+                using (DrawingContext context = dwv.RenderOpen())
+                {
+                    context.DrawRectangle(new VisualBrush(listBox), null, new Rect(new Point(), size));
+                    context.Close();
+                }
+
+                result.Render(dwv);
+                
+            }
+             */
+        }
+
+        private void topClose_Click(object sender, RoutedEventArgs e)
+        {
+            
+        }
+
+        private void topExit_Click(object sender, RoutedEventArgs e)
+        {
+        }
+
+        private void rectMove_Click(object sender, RoutedEventArgs e)
+        {
+            RectangleViewModel selected = new RectangleViewModel();
+            int count = 0;
+            foreach (RectangleViewModel rectangle in this.listBox.SelectedItems)
+            {
+                count++;
+                if (count > 1)
+                {
+                    //Message Box for too many selected
+                    string messageBoxText = "To many layers selected, only moving one to front?";
+                    string caption = "Move Error";
+                    MessageBoxButton button = MessageBoxButton.OK;
+                    MessageBoxResult result = MessageBox.Show(messageBoxText, caption, button);
+                    break;
+                }
+                selected = rectangle;
+            }
+            this.listBox.SelectedItems.Clear();
+            this.ViewModel.makeTopLayer(selected);
+            listBox.Focus();
         }
     }
 }
