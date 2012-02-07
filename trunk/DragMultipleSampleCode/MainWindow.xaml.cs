@@ -506,7 +506,10 @@ namespace SampleCode
 
         private void topNew_Click(object sender, RoutedEventArgs e)
         {
+            // TODO: Make new form to ask for size of new canvas in pixels/resolution/inches, etc.
             MainWindow mw = new MainWindow();
+            mw.listBox.Height = 500;
+            mw.listBox.Width = 750;
             mw.Show();
         }
 
