@@ -7,3 +7,12 @@ c:\users\thomas\documents\visual studio 2010\Projects\SampleEditorv1\SampleEdito
 c:\users\thomas\documents\visual studio 2010\Projects\SampleEditorv1\SampleEditorv1\bin\Debug\SampleEditorv1.pdb
 c:\users\thomas\documents\visual studio 2010\Projects\SampleEditorv1\SampleEditorv1\obj\x86\Debug\SampleEditorv1.exe
 c:\users\thomas\documents\visual studio 2010\Projects\SampleEditorv1\SampleEditorv1\obj\x86\Debug\SampleEditorv1.pdb
+E:\team-rotis\SampleEditorv1\obj\x86\Debug\SampleEditorv1.exe
+E:\team-rotis\SampleEditorv1\obj\x86\Debug\SampleEditorv1.pdb
+E:\team-rotis\SampleEditorv1\bin\Debug\SampleEditorv1.exe
+E:\team-rotis\SampleEditorv1\bin\Debug\SampleEditorv1.pdb
+E:\team-rotis\SampleEditorv1\obj\x86\Debug\ResolveAssemblyReference.cache
+E:\team-rotis\SampleEditorv1\obj\x86\Debug\SampleEditorv1.Form1.resources
+E:\team-rotis\SampleEditorv1\obj\x86\Debug\SampleEditorv1.Properties.Resources.resources
+E:\team-rotis\SampleEditorv1\obj\x86\Debug\GenerateResource.read.1.tlog
+E:\team-rotis\SampleEditorv1\obj\x86\Debug\GenerateResource.write.1.tlog

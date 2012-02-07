@@ -90,3 +90,21 @@ C:\Users\student\Documents\Team Rotis\DragMultipleSampleCode\obj\Debug\SampleCod
 C:\Users\student\Documents\Team Rotis\DragMultipleSampleCode\obj\Debug\SampleCode.Properties.Resources.resources
 C:\Users\student\Documents\Team Rotis\DragMultipleSampleCode\obj\Debug\GenerateResource-ResGen.read.1.tlog
 C:\Users\student\Documents\Team Rotis\DragMultipleSampleCode\obj\Debug\GenerateResource-ResGen.write.1.tlog
+E:\team-rotis\DragMultipleSampleCode\obj\Debug\SampleCode.exe
+E:\team-rotis\DragMultipleSampleCode\obj\Debug\SampleCode.pdb
+E:\team-rotis\DragMultipleSampleCode\bin\Debug\SampleCode.exe
+E:\team-rotis\DragMultipleSampleCode\bin\Debug\SampleCode.pdb
+E:\team-rotis\DragMultipleSampleCode\obj\Debug\ResolveAssemblyReference.cache
+E:\team-rotis\DragMultipleSampleCode\obj\Debug\HelpText.baml
+E:\team-rotis\DragMultipleSampleCode\obj\Debug\HelpTextWindow.baml
+E:\team-rotis\DragMultipleSampleCode\obj\Debug\HelpTextWindow.g.cs
+E:\team-rotis\DragMultipleSampleCode\obj\Debug\MainWindow.g.cs
+E:\team-rotis\DragMultipleSampleCode\obj\Debug\App.g.cs
+E:\team-rotis\DragMultipleSampleCode\obj\Debug\GeneratedInternalTypeHelper.g.cs
+E:\team-rotis\DragMultipleSampleCode\obj\Debug\SampleCode_MarkupCompile.cache
+E:\team-rotis\DragMultipleSampleCode\obj\Debug\SampleCode_MarkupCompile.lref
+E:\team-rotis\DragMultipleSampleCode\obj\Debug\MainWindow.baml
+E:\team-rotis\DragMultipleSampleCode\obj\Debug\SampleCode.g.resources
+E:\team-rotis\DragMultipleSampleCode\obj\Debug\SampleCode.Properties.Resources.resources
+E:\team-rotis\DragMultipleSampleCode\obj\Debug\GenerateResource-ResGen.read.1.tlog
+E:\team-rotis\DragMultipleSampleCode\obj\Debug\GenerateResource-ResGen.write.1.tlog
