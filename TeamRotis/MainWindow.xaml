@@ -70,6 +70,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition />
         </Grid.RowDefinitions>
+        <!-- Top Menu -->
         <Menu DockPanel.Dock="Top" VerticalAlignment="Top" Grid.Row="0">
             <MenuItem Header="_File">
                 <MenuItem Header="_New" Click="topNew_Click" InputGestureText="Ctrl+N"/>
@@ -97,6 +98,12 @@
                 <MenuItem Header="Canvas Size" />
                 <MenuItem Header="Rotation" />
                 <MenuItem Header="Crop" />
+            </MenuItem>
+            <MenuItem Header="_Layer">
+                <MenuItem Header="Stuff" />
+                <MenuItem Header="Stuff" />
+                <MenuItem Header="Stuff" />
+                <MenuItem Header="Stuff" />
             </MenuItem>
        </Menu>
             <!--
