@@ -26,6 +26,7 @@ namespace SampleCode
         /// Set to 'true' when the left mouse-button is down.
         /// </summary>
         private bool isLeftMouseButtonDownOnWindow = false;
+        String result = null;
 
         /// <summary>
         /// Set to 'true' when dragging the 'selection rectangle'.
@@ -508,6 +509,10 @@ namespace SampleCode
         {
             // TODO: Make new form to ask for size of new canvas in pixels/resolution/inches, etc.
             MainWindow mw = new MainWindow();
+            //newform = this;
+            //newImageDialog nw = new newImageDialog(newform);
+            //nw.ShowDialog();
+            
             mw.listBox.Height = 500;
             mw.listBox.Width = 750;
             mw.Show();
