@@ -515,6 +515,7 @@ namespace SampleCode
 
         private void topOpen_Click(object sender, RoutedEventArgs e)
         {
+            // TODO: Make this open in a new window
             OpenFileDialog dlg = new OpenFileDialog();
             if (dlg.ShowDialog() == true)
             {
@@ -566,7 +567,7 @@ namespace SampleCode
                 if (count > 1)
                 {
                     //Message Box for too many selected
-                    string messageBoxText = "To many layers selected, only moving one to front?";
+                    string messageBoxText = "Too many layers selected, only move one to front?";
                     string caption = "Move Error";
                     MessageBoxButton button = MessageBoxButton.OK;
                     MessageBoxResult result = MessageBox.Show(messageBoxText, caption, button);
@@ -577,6 +578,11 @@ namespace SampleCode
             this.listBox.SelectedItems.Clear();
             this.ViewModel.makeTopLayer(selected);
             listBox.Focus();
+        }
+
+        private void topNewLayer_Click(object sender, RoutedEventArgs e)
+        {
+            //TODO: Make layer toolbox, implement selection of layers based on that toolbox, create new blank layer in this function
         }
     }
 }
