@@ -75,15 +75,15 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="newImageDialog.xaml">
+    <Page Include="sizeSetWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ColorToBrushConverter.cs" />
-    <Compile Include="newImageDialog.xaml.cs">
-      <DependentUpon>newImageDialog.xaml</DependentUpon>
+    <Compile Include="sizeSetWindow.xaml.cs">
+      <DependentUpon>sizeSetWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">

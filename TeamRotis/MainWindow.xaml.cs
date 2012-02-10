@@ -26,7 +26,7 @@ namespace SampleCode
         /// Set to 'true' when the left mouse-button is down.
         /// </summary>
         private bool isLeftMouseButtonDownOnWindow = false;
-        String result = null;
+        public String result = null;
 
         /// <summary>
         /// Set to 'true' when dragging the 'selection rectangle'.
@@ -507,15 +507,26 @@ namespace SampleCode
 
         private void topNew_Click(object sender, RoutedEventArgs e)
         {
-            // TODO: Make new form to ask for size of new canvas in pixels/resolution/inches, etc.
+            // TODO: Make new window size AT LEAST size of canvas or MAX monitor size
+            // TODO: Clean up memory leak -- causes program to hang after forms are closed
             MainWindow mw = new MainWindow();
-            //newform = this;
-            //newImageDialog nw = new newImageDialog(newform);
-            //nw.ShowDialog();
-            
-            mw.listBox.Height = 500;
-            mw.listBox.Width = 750;
-            mw.Show();
+            MainWindow newWin = new MainWindow();
+            newWin = this;
+            sizeSetWindow ss = new sizeSetWindow(ref newWin);
+            ss.ShowDialog();
+            if (result == "Cancel")
+            {
+
+            }
+            else
+            {
+                String width = result.Substring(0, result.IndexOf("x"));
+                String height = result.Substring(result.IndexOf("x") + 1);
+                
+                mw.listBox.Height = Convert.ToInt32(height);
+                mw.listBox.Width = Convert.ToInt32(width);
+                mw.Show();
+            }
         }
 
         private void topOpen_Click(object sender, RoutedEventArgs e)
