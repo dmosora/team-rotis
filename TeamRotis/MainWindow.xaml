@@ -76,7 +76,7 @@
                 <MenuItem Header="_New" Click="topNew_Click" InputGestureText="Ctrl+N"/>
                 <MenuItem Header="New Layer" Click="topNewLayer_Click" InputGestureText="Ctrl+Shift+N" />
                 <MenuItem Header="_Open" Click="topOpen_Click" />
-                <MenuItem Header="_Save" />
+                <MenuItem Header="_Save" Click="topSave_Click"/>
                 <MenuItem Header="_Close" />
                 <MenuItem Header="E_xit" />
             </MenuItem>
@@ -124,8 +124,8 @@
                 </ListBox.ContextMenu>
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
-                    <Canvas />
-                </ItemsPanelTemplate>
+                    <Canvas Name="FindMe"/>
+                    </ItemsPanelTemplate>
                 </ListBox.ItemsPanel>
                 <ListBox.ItemContainerStyle>
                     <Style
