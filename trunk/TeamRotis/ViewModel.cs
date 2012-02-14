@@ -62,6 +62,11 @@ namespace SampleCode
            
         }
 
+        public void saveRectangle(string imageuri)
+        {
+
+        }
+
         public void deleteRectangle(RectangleViewModel sender)
         {
             rectangles.RemoveAt(rectangles.IndexOf(sender));
@@ -81,6 +86,59 @@ namespace SampleCode
             rectangles[i] = sender;
         }
 
+        public double getWidth(double start)
+        {
+            double left = start;
+            double right = 0;
+            for (int i = 0; i < rectangles.Count; i++)
+            {
+                RectangleViewModel temp = rectangles[i];
+                left = Math.Min(temp.X, left);
+            }
+            for (int i = 0; i < rectangles.Count; i++)
+            {
+                RectangleViewModel temp = rectangles[i];
+                right = Math.Max((temp.X+temp.Width), right);
+            }
+            return right-left;
+        }
+        public double getHeight(double start)
+        {
+            double top = start;
+            double bottum = 0;
+            for (int i = 0; i < rectangles.Count; i++)
+            {
+                RectangleViewModel temp = rectangles[i];
+                top = Math.Min(temp.Y, top);
+            }
+            for (int i = 0; i < rectangles.Count; i++)
+            {
+                RectangleViewModel temp = rectangles[i];
+                bottum = Math.Max((temp.Y + temp.Height), bottum);
+            }
+            return bottum-top;
+        }
+        public double getLeft(double start)
+        {
+            double left = start;
+
+            for (int i = 0; i < rectangles.Count; i++)
+            {
+                RectangleViewModel temp = rectangles[i];
+                left = Math.Min(temp.X, left);
+            }
+            return left;
+        }
+        public double getTop(double start)
+        {
+            double top = start;
+            for (int i = 0; i < rectangles.Count; i++)
+            {
+                RectangleViewModel temp = rectangles[i];
+                top = Math.Min(temp.Y, top);
+            }
+            return top;
+        }
         /// <summary>
         /// The list of rectangles that is displayed in the ListBox.
         /// </summary>

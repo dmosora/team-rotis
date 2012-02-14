@@ -15,6 +15,7 @@ using System.Diagnostics;
 using System.Windows.Controls.Primitives;
 using System.Collections;
 using Microsoft.Win32;
+using System.IO;
 
 namespace SampleCode
 {
@@ -541,27 +542,76 @@ namespace SampleCode
 
         private void topSave_Click(object sender, RoutedEventArgs e)
         {
-            /* FIX THIS LATER!!!!!
-             * 
             SaveFileDialog sfd = new SaveFileDialog();
-            sfd.ShowDialog();
-            if (sfd.FileName != "")
+            string path=null;
+            if (sfd.ShowDialog() == true)
             {
-                System.IO.FileStream fs = (System.IO.FileStream)sfd.OpenFile();
-                Size size = new Size(listBox.Width, listBox.Height);
-                RenderTargetBitmap result = new RenderTargetBitmap((int)size.Width, (int)size.Height, 96, 96, PixelFormats.Pbgra32);
+                path = sfd.FileName;
+            }
+            Canvas surface = FindVisualChild(listBox);
 
-                DrawingVisual dwv = new DrawingVisual();
-                using (DrawingContext context = dwv.RenderOpen())
+            if (path == null) return;
+
+            // Save current canvas transform
+            //Transform transform = surface.LayoutTransform;
+            // reset current transform (in case it is scaled or rotated)
+            //surface.LayoutTransform = null;
+
+            // Get the size of canvas
+            Size size = new Size( this.ViewModel.getWidth(100000),  this.ViewModel.getHeight(100000));
+            // Measure and arrange the surface
+            // VERY IMPORTANT
+            surface.Measure(size);
+            Point move = new Point(-this.ViewModel.getLeft(100000), -this.ViewModel.getTop(100000));
+            surface.Arrange(new Rect(move,size));
+
+            // Create a render bitmap and push the surface to it
+            RenderTargetBitmap renderBitmap =
+              new RenderTargetBitmap(
+                (int)size.Width,
+                (int)size.Height,
+                96d,
+                96d,
+                PixelFormats.Pbgra32);
+            renderBitmap.Render(surface);
+
+            // Create a file stream for saving image
+            using (FileStream outStream = new FileStream(path, FileMode.Create))
+            {
+                // Use png encoder for our data
+                PngBitmapEncoder encoder = new PngBitmapEncoder();
+                // push the rendered bitmap to it
+                encoder.Frames.Add(BitmapFrame.Create(renderBitmap));
+                // save the data to the stream
+                encoder.Save(outStream);
+            }
+
+            // Restore previously saved layout
+            //surface.LayoutTransform = transform;
+            move = new Point(-move.X, -move.Y);
+            surface.Arrange(new Rect(move, size));
+        }
+
+        public Canvas FindVisualChild(DependencyObject obj)
+        {
+            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(obj); i++)
+            {
+                var child = VisualTreeHelper.GetChild(obj, i);
+
+                if (child != null && child is Canvas)
                 {
-                    context.DrawRectangle(new VisualBrush(listBox), null, new Rect(new Point(), size));
-                    context.Close();
+                    Canvas found = (Canvas)child;
+                    if (found.Name == "FindMe")
+                        return (Canvas)child;
                 }
 
-                result.Render(dwv);
-                
+                var childOfChild = FindVisualChild(child);
+
+                if (childOfChild != null)
+                    return childOfChild;
             }
-             */
+
+            return null;
         }
 
         private void topClose_Click(object sender, RoutedEventArgs e)
