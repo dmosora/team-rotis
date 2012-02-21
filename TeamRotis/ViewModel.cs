@@ -7,6 +7,7 @@ using System.Windows.Media;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Media.Imaging;
+using System.IO;
 
 namespace SampleCode
 {
@@ -21,6 +22,10 @@ namespace SampleCode
         /// The list of rectangles that is displayed in the ListBox.
         /// </summary>
         private ObservableCollection<RectangleViewModel> rectangles = new ObservableCollection<RectangleViewModel>();
+
+        // saved date for undo and redo
+        private List<ObservableCollection<RectangleViewModel>> savedstates = new List<ObservableCollection<RectangleViewModel>>();
+        int current=-1;
 
         #endregion Data Members
 
@@ -51,13 +56,26 @@ namespace SampleCode
                     break;
             }
 
-            
+
+            // Create a memorystream with the image URI then loads that to the rectangle veiw model using a Bitmap Image Source
             BitmapImage bitemp = new BitmapImage();
-            bitemp.BeginInit();
-            bitemp.UriSource = new Uri(imageuri, UriKind.Relative);
-            bitemp.EndInit();
+
+            if (File.Exists(imageuri))
+            {
+                MemoryStream memoryStream = new MemoryStream();
+
+                byte[] fileBytes = File.ReadAllBytes(imageuri);
+                memoryStream.Write(fileBytes, 0, fileBytes.Length);
+                memoryStream.Position = 0;
+
+                bitemp.BeginInit();
+                bitemp.StreamSource = memoryStream;
+                bitemp.EndInit();
+            }          
+            
             var rtemp = new RectangleViewModel(150, 130,bitemp.PixelWidth, bitemp.PixelHeight, bitemp, opac);
             rectangles.Add(rtemp);
+            bitemp.UriSource = new Uri("", UriKind.Relative);
 
            
         }
@@ -138,6 +156,51 @@ namespace SampleCode
                 top = Math.Min(temp.Y, top);
             }
             return top;
+        }
+
+        public void saveState()
+        {
+            current++;
+            ObservableCollection<RectangleViewModel> temp = new ObservableCollection<RectangleViewModel>();
+            foreach(RectangleViewModel tosave in rectangles)
+            {
+                RectangleViewModel tempRect = new RectangleViewModel(tosave);
+                temp.Insert(rectangles.IndexOf(tosave), tempRect);
+            }
+            if (current < savedstates.Count())
+            {
+                savedstates[current] = temp;
+            }
+            else
+            {
+                savedstates.Add(temp);
+            }
+        }
+
+        public void undo()
+        {
+            if (current > 0)
+            {
+                current--;
+                rectangles.Clear();
+                foreach (RectangleViewModel tosave in savedstates[current])
+                {
+                    rectangles.Insert(savedstates[current].IndexOf(tosave), tosave);
+                }
+            }
+        }
+
+        public void redo()
+        {
+            if (current < (savedstates.Count()-1))
+            {
+                current++;
+                rectangles.Clear();
+                foreach (RectangleViewModel tosave in savedstates[current])
+                {
+                    rectangles.Insert(savedstates[current].IndexOf(tosave), tosave);
+                }
+            }
         }
         /// <summary>
         /// The list of rectangles that is displayed in the ListBox.

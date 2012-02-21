@@ -217,6 +217,11 @@ namespace SampleCode
                         }
                     }
                 }
+                else
+                {
+                    //if was dragging rectangle, save state of new position
+                    ViewModel.saveState();
+                }
 
                 rectangle.ReleaseMouseCapture();
                 isLeftMouseDownOnRectangle = false;
@@ -474,6 +479,8 @@ namespace SampleCode
             {
                 this.ViewModel.deleteRectangle(selected[i]);
             }
+
+            ViewModel.saveState();
         }
 
         private void rectCopy_Click(object sender, RoutedEventArgs e)
@@ -538,20 +545,24 @@ namespace SampleCode
             {
                 this.ViewModel.addRectangle(dlg.FileName);
             }
+            ViewModel.saveState();
         }
 
         private void topSave_Click(object sender, RoutedEventArgs e)
         {
+            listBox.SelectedItems.Clear();
+            
             SaveFileDialog sfd = new SaveFileDialog();
             string path=null;
             if (sfd.ShowDialog() == true)
             {
                 path = sfd.FileName;
             }
-            Canvas surface = FindVisualChild(listBox);
+            Canvas surface = FindCanvas(listBox);
 
             if (path == null) return;
 
+            // Stuff to save transform, not sure if we need them, but left the code here for future reference
             // Save current canvas transform
             //Transform transform = surface.LayoutTransform;
             // reset current transform (in case it is scaled or rotated)
@@ -560,12 +571,11 @@ namespace SampleCode
             // Get the size of canvas
             Size size = new Size( this.ViewModel.getWidth(100000),  this.ViewModel.getHeight(100000));
             // Measure and arrange the surface
-            // VERY IMPORTANT
             surface.Measure(size);
             Point move = new Point(-this.ViewModel.getLeft(100000), -this.ViewModel.getTop(100000));
             surface.Arrange(new Rect(move,size));
 
-            // Create a render bitmap and push the surface to it
+            // Create a render bitmap
             RenderTargetBitmap renderBitmap =
               new RenderTargetBitmap(
                 (int)size.Width,
@@ -578,22 +588,25 @@ namespace SampleCode
             // Create a file stream for saving image
             using (FileStream outStream = new FileStream(path, FileMode.Create))
             {
-                // Use png encoder for our data
+                // png encoder
                 PngBitmapEncoder encoder = new PngBitmapEncoder();
-                // push the rendered bitmap to it
                 encoder.Frames.Add(BitmapFrame.Create(renderBitmap));
                 // save the data to the stream
                 encoder.Save(outStream);
+                outStream.Close();
             }
+           
 
             // Restore previously saved layout
             //surface.LayoutTransform = transform;
-            move = new Point(-move.X, -move.Y);
-            surface.Arrange(new Rect(move, size));
+            surface.Arrange(new Rect(size));
+            
+            ViewModel.saveState();
         }
 
-        public Canvas FindVisualChild(DependencyObject obj)
+        public Canvas FindCanvas(DependencyObject obj)
         {
+            //Iterate through visual tree helper to find the dislay canvas
             for (int i = 0; i < VisualTreeHelper.GetChildrenCount(obj); i++)
             {
                 var child = VisualTreeHelper.GetChild(obj, i);
@@ -601,11 +614,11 @@ namespace SampleCode
                 if (child != null && child is Canvas)
                 {
                     Canvas found = (Canvas)child;
-                    if (found.Name == "FindMe")
+                    if (found.Name == "DisplayCanvas")
                         return (Canvas)child;
                 }
 
-                var childOfChild = FindVisualChild(child);
+                var childOfChild = FindCanvas(child);
 
                 if (childOfChild != null)
                     return childOfChild;
@@ -623,17 +636,28 @@ namespace SampleCode
         {
         }
 
+        private void topUndo_Click(object sender, RoutedEventArgs e)
+        {
+            ViewModel.undo();
+        }
+
+        private void topRedo_Click(object sender, RoutedEventArgs e)
+        {
+            ViewModel.redo();
+        }
+
         private void rectMove_Click(object sender, RoutedEventArgs e)
         {
             RectangleViewModel selected = new RectangleViewModel();
             int count = 0;
+            // get every selected rectangle
             foreach (RectangleViewModel rectangle in this.listBox.SelectedItems)
             {
                 count++;
                 if (count > 1)
                 {
                     //Message Box for too many selected
-                    string messageBoxText = "Too many layers selected, only move one to front?";
+                    string messageBoxText = "Too many layers selected, only move one to front";
                     string caption = "Move Error";
                     MessageBoxButton button = MessageBoxButton.OK;
                     MessageBoxResult result = MessageBox.Show(messageBoxText, caption, button);
@@ -641,14 +665,18 @@ namespace SampleCode
                 }
                 selected = rectangle;
             }
+            // clear selections and make top layer
             this.listBox.SelectedItems.Clear();
             this.ViewModel.makeTopLayer(selected);
             listBox.Focus();
+            
+            ViewModel.saveState();
         }
 
         private void topNewLayer_Click(object sender, RoutedEventArgs e)
         {
             //TODO: Make layer toolbox, implement selection of layers based on that toolbox, create new blank layer in this function
         }
+
     }
 }

@@ -81,8 +81,8 @@
                 <MenuItem Header="E_xit" />
             </MenuItem>
             <MenuItem Header="_Edit">
-                <MenuItem Header="_Undo" InputGestureText="Ctrl+Z" />
-                <MenuItem Header="_Redo" InputGestureText="Ctrl+Y" />
+                <MenuItem Header="_Undo" Click="topUndo_Click" InputGestureText="Ctrl+Z" />
+                <MenuItem Header="_Redo" Click="topRedo_Click" InputGestureText="Ctrl+Y" />
                 <MenuItem Header="Cut" InputGestureText="Ctrl+X" />
                 <MenuItem Header="_Copy" InputGestureText="Ctrl+C" />
                 <MenuItem Header="Paste" InputGestureText="Ctrl+V" />
@@ -124,7 +124,7 @@
                 </ListBox.ContextMenu>
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
-                    <Canvas Name="FindMe"/>
+                    <Canvas Name="DisplayCanvas"/>
                     </ItemsPanelTemplate>
                 </ListBox.ItemsPanel>
                 <ListBox.ItemContainerStyle>

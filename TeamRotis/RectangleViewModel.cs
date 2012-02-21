@@ -55,14 +55,24 @@ namespace SampleCode
         {
         }
 
-        public RectangleViewModel(double x, double y, double width, double height, ImageSource iSource, double Opacity)
+        public RectangleViewModel(double x, double y, double width, double height, ImageSource iSource, double opacity)
         {
             this.x = x;
             this.y = y;
             this.width = width;
             this.height = height;
             this.iSource = iSource;
-            this.opacity = Opacity;
+            this.opacity = opacity;
+        }
+
+        public RectangleViewModel(RectangleViewModel old)
+        {
+            this.x = old.X;
+            this.y = old.Y;
+            this.width = old.Width;
+            this.height = old.Height;
+            this.iSource = old.ISource;
+            this.opacity = old.Opacity;
         }
 
         /// <summary>
