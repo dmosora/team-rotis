@@ -3,8 +3,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="clr-namespace:SampleCode"
     Title="Team Rotis Image Editor" 
-    Width="800"
-    Height="600"
+    Width="640"
+    Height="480"
     Loaded="Window_Loaded"
     MouseDown="Window_MouseDown"
     MouseUp="Window_MouseUp"
@@ -17,6 +17,7 @@
         <local:ColorToBrushConverter 
             x:Key="colorToBrushConverter"
             />
+
 
         <!--
         A data-template that defines the visuals for a rectangle.
@@ -31,7 +32,7 @@
             <Grid
                 Margin="0,2,2,2"
                 >
-                <Grid.ContextMenu>
+                    <Grid.ContextMenu>
                     <ContextMenu>
                         <MenuItem Name="rectDelete" Header="Delete Layer" Click="rectDelete_Click" />
                         <MenuItem Name="rectCopy" Header="Copy" Click="rectCopy_Click" />
@@ -39,7 +40,7 @@
                         <MenuItem Name="rectMove" Header="Make First" Click="rectMove_Click" />
                     </ContextMenu>
                 </Grid.ContextMenu>
-                <Rectangle
+                    <Rectangle
                     Width="{Binding Width}"
                     Height="{Binding Height}" Cursor="Hand"
                     Opacity="{Binding Opacity}"
@@ -49,7 +50,7 @@
                     <Rectangle.Fill>
                         <ImageBrush ImageSource="{Binding ISource}" />
                     </Rectangle.Fill>
-                </Rectangle>
+                    </Rectangle>
             </Grid>
         </DataTemplate>
 
@@ -95,12 +96,12 @@
                     <MenuItem Header="_Color Balance" />
                 </MenuItem>
                 <MenuItem Header="Image Size" />
-                <MenuItem Header="Canvas Size" />
+                <MenuItem Header="Canvas Size" Click="topResizeClick" />
                 <MenuItem Header="Rotation" />
                 <MenuItem Header="Crop" />
             </MenuItem>
             <MenuItem Header="_Layer">
-                <MenuItem Header="Stuff" />
+                <MenuItem Header="New Layer from File" Click="topLayerFromFile_Click" />
                 <MenuItem Header="Stuff" />
                 <MenuItem Header="Stuff" />
                 <MenuItem Header="Stuff" />

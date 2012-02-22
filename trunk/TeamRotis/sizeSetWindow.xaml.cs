@@ -18,10 +18,10 @@ namespace SampleCode
     /// </summary>
     public partial class sizeSetWindow : Window
     {
-        MainWindow parentForm;
-        public sizeSetWindow(ref MainWindow form1)
+        public String result;
+        public sizeSetWindow(ref String parentResult)
         {
-            parentForm = form1;
+            result = parentResult;
             InitializeComponent();
         }
 
@@ -37,14 +37,14 @@ namespace SampleCode
             }
             else
             {
-                parentForm.result = widthText.Text + "x" + heightText.Text;
+                result = widthText.Text + "x" + heightText.Text;
                 this.Close();
             }
         }
 
         private void cancelBut_Click(object sender, RoutedEventArgs e)
         {
-            parentForm.result = "Cancel";
+            result = "Cancel";
             this.Close();
         }
 
