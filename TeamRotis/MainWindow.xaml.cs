@@ -515,16 +515,14 @@ namespace SampleCode
 
         private void topNew_Click(object sender, RoutedEventArgs e)
         {
-            // TODO: Make new window size AT LEAST size of canvas or MAX monitor size
-            // TODO: Clean up memory leak -- causes program to hang after forms are closed
+            //Open new window with specified dimensions
             MainWindow mw = new MainWindow();
-            MainWindow newWin = new MainWindow();
-            newWin = this;
-            sizeSetWindow ss = new sizeSetWindow(ref newWin);
+            sizeSetWindow ss = new sizeSetWindow(ref result);
             ss.ShowDialog();
+            result = ss.result;
             if (result == "Cancel")
             {
-
+                mw.Close();
             }
             else
             {
@@ -533,19 +531,29 @@ namespace SampleCode
                 
                 mw.listBox.Height = Convert.ToInt32(height);
                 mw.listBox.Width = Convert.ToInt32(width);
+                mw.Height = Convert.ToInt32(height);
+                mw.Width = Convert.ToInt32(width);
                 mw.Show();
             }
         }
 
         private void topOpen_Click(object sender, RoutedEventArgs e)
         {
-            // TODO: Make this open in a new window
+            //Open a new window with the selected image
+            MainWindow newWin = new MainWindow();
             OpenFileDialog dlg = new OpenFileDialog();
             if (dlg.ShowDialog() == true)
             {
-                this.ViewModel.addRectangle(dlg.FileName);
+                newWin.ViewModel.addRectangle(dlg.FileName);
+                newWin.listBox.Height = newWin.ViewModel.Rectangles[0].Height;
+                newWin.listBox.Width = newWin.ViewModel.Rectangles[0].Width;
+                newWin.Height = newWin.ViewModel.Rectangles[0].Height;
+                newWin.Width = newWin.ViewModel.Rectangles[0].Width;
+                newWin.ViewModel.Rectangles[0].X = 0;
+                newWin.ViewModel.Rectangles[0].Y = 0;
+                newWin.Show();
             }
-            ViewModel.saveState();
+            newWin.ViewModel.saveState();
         }
 
         private void topSave_Click(object sender, RoutedEventArgs e)
@@ -676,6 +684,29 @@ namespace SampleCode
         private void topNewLayer_Click(object sender, RoutedEventArgs e)
         {
             //TODO: Make layer toolbox, implement selection of layers based on that toolbox, create new blank layer in this function
+        }
+
+        private void topLayerFromFile_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog dlg = new OpenFileDialog();
+            if (dlg.ShowDialog() == true)
+            {
+                this.ViewModel.addRectangle(dlg.FileName);
+                this.ViewModel.Rectangles[ViewModel.Rectangles.Count - 1].X = 0;
+                this.ViewModel.Rectangles[ViewModel.Rectangles.Count - 1].Y = 0;
+            }
+            this.ViewModel.saveState();
+        }
+
+        private void topResizeClick(object sender, RoutedEventArgs e)
+        {
+            sizeSetWindow ss = new sizeSetWindow(ref result);
+            ss.ShowDialog();
+            result = ss.result;
+            String width = result.Substring(0, result.IndexOf("x"));
+            String height = result.Substring(result.IndexOf("x") + 1);
+            this.listBox.Height = Convert.ToInt32(height);
+            this.listBox.Width = Convert.ToInt32(width);
         }
 
     }
