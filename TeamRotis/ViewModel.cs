@@ -37,24 +37,24 @@ namespace SampleCode
         public void addRectangle(string imageuri)
         {
             //Message Box for Opacity
-            string messageBoxText = "Do you want to make this image opaque?";
-            string caption = "Image Opacity";
-            MessageBoxButton button = MessageBoxButton.YesNo;
+           // string messageBoxText = "Do you want to make this image opaque?";
+           // string caption = "Image Opacity";
+          //  MessageBoxButton button = MessageBoxButton.YesNo;
             // Display message box
             // Display message box
-            MessageBoxResult result = MessageBox.Show(messageBoxText, caption, button);
+           // MessageBoxResult result = MessageBox.Show(messageBoxText, caption, button);
 
-            double opac = 0;
+            double opac = 1;
             // Process message box results
-            switch (result)
-            {
-                case MessageBoxResult.Yes:
-                        opac = .5;
-                    break;
-                case MessageBoxResult.No:
-                        opac=1;
-                    break;
-            }
+          //  switch (result)
+        //    {
+         //       case MessageBoxResult.Yes:
+         //               opac = .5;
+         ///           break;
+          //      case MessageBoxResult.No:
+            //            opac=1;
+            //        break;
+           // }
 
 
             // Create a memorystream with the image URI then loads that to the rectangle veiw model using a Bitmap Image Source
@@ -212,6 +212,31 @@ namespace SampleCode
                 return rectangles;
             }
         }
+
+        public void editRectangle(RectangleViewModel sender)
+        {
+            //this will update on a filter
+
+            //Message Box for Opacity
+
+            EditDialogBox dlg = new EditDialogBox();
+            // Open the dialog box modally 
+            dlg.ShowDialog();
+
+            if (dlg.DialogResult == true)
+            {
+                // Opacity Setting after update menu
+                sender.Opacity = Convert.ToDouble(dlg.opacityTextBox.Text);
+                sender.RAngle = Convert.ToDouble(dlg.rotateTextBox.Text);
+                sender.Scale = Convert.ToDouble(dlg.scaleTextBox.Text);
+            }
+            else
+            {
+
+            }
+        }
+
+
 
         #region INotifyPropertyChanged Members
 

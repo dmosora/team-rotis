@@ -697,7 +697,29 @@ namespace SampleCode
             }
             this.ViewModel.saveState();
         }
+        private void editDialogBox_Click(object sender, RoutedEventArgs e)
+        {
 
+            //Were going to make grayscale
+            RectangleViewModel[] selected = new RectangleViewModel[20];
+            int j = 0;
+            int toGrayscale = -1;
+            foreach (RectangleViewModel rectangle in this.listBox.SelectedItems)
+            {
+                selected[j] = rectangle;
+                j++;
+                toGrayscale++;
+            }
+            //this just tosses each to the viewModel
+            for (int i = toGrayscale; i > -1; --i)
+            {
+
+                this.ViewModel.editRectangle(selected[i]);
+
+
+            }
+            //http://msdn.microsoft.com/en-us/library/ms750596.aspx
+        }
         private void topResizeClick(object sender, RoutedEventArgs e)
         {
             sizeSetWindow ss = new sizeSetWindow(ref result);

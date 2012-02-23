@@ -38,6 +38,7 @@
                         <MenuItem Name="rectCopy" Header="Copy" Click="rectCopy_Click" />
                         <MenuItem Name="rectPaste" Header="Paste" Click="rectPaste_Click" />
                         <MenuItem Name="rectMove" Header="Make First" Click="rectMove_Click" />
+                        <MenuItem Name="editSptions" Header="Edit Options" Click="editDialogBox_Click" />
                     </ContextMenu>
                 </Grid.ContextMenu>
                     <Rectangle
@@ -50,7 +51,14 @@
                     <Rectangle.Fill>
                         <ImageBrush ImageSource="{Binding ISource}" />
                     </Rectangle.Fill>
-                    </Rectangle>
+                    <Rectangle.RenderTransform>
+                        <TransformGroup>
+                            <RotateTransform Angle="{Binding RAngle}"/>
+                            <ScaleTransform CenterX="{Binding Height / 2}" CenterY="{Binding Width / 2}" ScaleX="{Binding Scale}" ScaleY="{Binding Scale}" /> 
+                        </TransformGroup>
+                    </Rectangle.RenderTransform>
+                        
+                </Rectangle>
             </Grid>
         </DataTemplate>
 
@@ -140,33 +148,6 @@
                         Property="Canvas.Top"
                         Value="{Binding Y}"
                         />
-                        <!--todo:
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="ListBoxItem">
-                                This border is used for indicating selection.
-                                Normally it is transparent, when the item is selected the border is set to blue.
-                                <Border 
-                                    Name="Border"
-                                    BorderThickness="1"
-                                    Padding="2"
-                                    >
-                                    <ContentPresenter />
-                                </Border>
-                                <ControlTemplate.Triggers>
-                                    When the ListBoxItem is selected draw a simple blue border around it.
-                                    <Trigger Property="IsSelected" Value="true">
-                                        <Setter 
-                                            TargetName="Border" 
-                                            Property="BorderBrush"
-                                            Value="Blue"
-                                            />
-                                    </Trigger>
-                                </ControlTemplate.Triggers>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                    -->
                     </Style>
                 </ListBox.ItemContainerStyle>
             </ListBox>

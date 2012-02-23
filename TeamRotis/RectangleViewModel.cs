@@ -39,8 +39,9 @@ namespace SampleCode
         /// The color of the rectangle.
         /// </summary>
         private ImageSource iSource;
-
-        private double opacity;
+        private double rAngle = 0;
+        private double scale = 1;
+        private double opacity = 1;
 
         /// <summary>
         /// The hotspot of the rectangle's connector.
@@ -50,6 +51,8 @@ namespace SampleCode
         private Point connectorHotspot;
 
         #endregion Data Members
+
+        
 
         public RectangleViewModel()
         {
@@ -198,12 +201,47 @@ namespace SampleCode
                     return;
                 }
 
-                opacity = Opacity;
+                opacity = value;
 
                 OnPropertyChanged("Opacity");
             }
         }
+        public double RAngle
+        {
+            get
+            {
+                return rAngle;
+            }
+            set
+            {
+                if (RAngle == value)
+                {
+                    return;
+                }
 
+                rAngle = value;
+
+                OnPropertyChanged("RAngle");
+            }
+        }
+        public double Scale
+        {
+            get
+            {
+                return scale;
+            }
+            set
+            {
+                if (Scale == value)
+                {
+                    return;
+                }
+
+                scale = value;
+
+                OnPropertyChanged("Scale");
+            }
+        }
         /// <summary>
         /// The hotspot of the rectangle's connector.
         /// This value is pushed through from the UI because it is data-bound to 'Hotspot'
