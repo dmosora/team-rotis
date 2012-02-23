@@ -179,3 +179,14 @@ E:\TeamRotis\obj\Debug\GenerateResource-ResGen.write.1.tlog
 E:\TeamRotis\obj\Debug\ResGen.write.1.tlog
 C:\Users\Heidi\Documents\Capstone\TeamRotis\obj\Debug\sizeSetWindow.baml
 C:\Users\Heidi\Documents\Capstone\TeamRotis\obj\Debug\sizeSetWindow.g.cs
+C:\Users\dmosora\Documents\svnrepos\team-rotis\TeamRotis\obj\Debug\SampleCode.exe
+C:\Users\dmosora\Documents\svnrepos\team-rotis\TeamRotis\obj\Debug\SampleCode.pdb
+C:\Users\dmosora\Documents\svnrepos\team-rotis\TeamRotis\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\dmosora\Documents\svnrepos\team-rotis\TeamRotis\obj\Debug\sizeSetWindow.baml
+C:\Users\dmosora\Documents\svnrepos\team-rotis\TeamRotis\obj\Debug\MainWindow.g.cs
+C:\Users\dmosora\Documents\svnrepos\team-rotis\TeamRotis\obj\Debug\MdiChildForm.g.cs
+C:\Users\dmosora\Documents\svnrepos\team-rotis\TeamRotis\obj\Debug\sizeSetWindow.g.cs
+C:\Users\dmosora\Documents\svnrepos\team-rotis\TeamRotis\obj\Debug\App.g.cs
+C:\Users\dmosora\Documents\svnrepos\team-rotis\TeamRotis\obj\Debug\GeneratedInternalTypeHelper.g.cs
+C:\Users\dmosora\Documents\svnrepos\team-rotis\TeamRotis\obj\Debug\SampleCode_MarkupCompile.cache
+C:\Users\dmosora\Documents\svnrepos\team-rotis\TeamRotis\obj\Debug\SampleCode_MarkupCompile.lref
