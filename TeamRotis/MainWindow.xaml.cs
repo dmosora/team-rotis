@@ -17,6 +17,7 @@ using System.Collections;
 using Microsoft.Win32;
 using System.IO;
 
+
 namespace SampleCode
 {
     public partial class MainWindow : Window
@@ -480,12 +481,19 @@ namespace SampleCode
                 this.ViewModel.deleteRectangle(selected[i]);
             }
 
-            ViewModel.saveState();
+            this.ViewModel.saveState();
         }
 
         private void rectCopy_Click(object sender, RoutedEventArgs e)
         {
-
+            RectangleViewModel[] selected = new RectangleViewModel[20];
+            int j = 0;
+            foreach (RectangleViewModel rectangle in this.listBox.SelectedItems)
+            {
+                selected[j] = rectangle;
+                j++;
+            }
+            //this.CopyPaste.save(selected);
         }
 
         private void rectPaste_Click(object sender, RoutedEventArgs e)
@@ -577,11 +585,12 @@ namespace SampleCode
             //surface.LayoutTransform = null;
 
             // Get the size of canvas
-            Size size = new Size( this.ViewModel.getWidth(100000),  this.ViewModel.getHeight(100000));
+            Size size = new Size( surface.ActualWidth,  surface.ActualHeight);
+
             // Measure and arrange the surface
             surface.Measure(size);
-            Point move = new Point(-this.ViewModel.getLeft(100000), -this.ViewModel.getTop(100000));
-            surface.Arrange(new Rect(move,size));
+            Point move = new Point(-1, -1);
+            surface.Arrange(new Rect(move, size));
 
             // Create a render bitmap
             RenderTargetBitmap renderBitmap =
