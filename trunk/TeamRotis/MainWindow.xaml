@@ -30,7 +30,7 @@
             The margin is set so that the ListBox item selection fits nicely around the Rectangle.
             -->
             <Grid
-                Margin="0,2,2,2"
+                Margin="1"
                 >
                     <Grid.ContextMenu>
                     <ContextMenu>
@@ -71,9 +71,8 @@
         Initialise the view model that supplies the UI with data.
         -->
         <local:ViewModel />
-        
+
     </Window.DataContext>
-    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -124,7 +123,7 @@
             <ListBox Grid.Row="1"
             x:Name="listBox"
             ItemsSource="{Binding Rectangles}"
-            SelectionMode="Extended" VerticalContentAlignment="Center">
+            SelectionMode="Extended" VerticalContentAlignment="Center" BorderThickness="1">
                 <ListBox.ContextMenu>
                     <ContextMenu>
                         <MenuItem Name="gridCut" Header="Cut" Click="gridCut_Click" />
@@ -133,7 +132,7 @@
                 </ListBox.ContextMenu>
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
-                    <Canvas Name="DisplayCanvas"/>
+                    <Canvas Name="DisplayCanvas" />
                     </ItemsPanelTemplate>
                 </ListBox.ItemsPanel>
                 <ListBox.ItemContainerStyle>
@@ -148,7 +147,8 @@
                         Property="Canvas.Top"
                         Value="{Binding Y}"
                         />
-                    </Style>
+                    <Setter Property="Control.Padding" Value="0" />
+                </Style>
                 </ListBox.ItemContainerStyle>
             </ListBox>
         <!--

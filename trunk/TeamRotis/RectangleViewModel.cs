@@ -5,6 +5,7 @@ using System.Text;
 using System.ComponentModel;
 using System.Windows.Media;
 using System.Windows;
+using System.Windows.Media.Imaging;
 
 namespace SampleCode
 {
@@ -38,6 +39,7 @@ namespace SampleCode
         /// <summary>
         /// The color of the rectangle.
         /// </summary>
+        private BitmapImage bImage;
         private ImageSource iSource;
         private double rAngle = 0;
         private double scale = 1;
@@ -58,14 +60,15 @@ namespace SampleCode
         {
         }
 
-        public RectangleViewModel(double x, double y, double width, double height, ImageSource iSource, double opacity)
+        public RectangleViewModel(double x, double y, double width, double height, BitmapImage BSource, double opacity)
         {
             this.x = x;
             this.y = y;
             this.width = width;
             this.height = height;
-            this.iSource = iSource;
+            this.bImage = BSource;
             this.opacity = opacity;
+            this.iSource = BSource;
         }
 
         public RectangleViewModel(RectangleViewModel old)
@@ -175,16 +178,28 @@ namespace SampleCode
             {
                 return iSource;
             }
+           // Don't set isource directly, use BImage
+
+        }
+
+        public BitmapImage BImage
+        {
+            get
+            {
+                return bImage;
+            }
             set
             {
-                if (ISource == iSource)
+                if (bImage == value)
                 {
                     return;
                 }
 
-                iSource = ISource;
+                bImage = value;
+                iSource = bImage;
 
-                OnPropertyChanged("ImageSource");
+                OnPropertyChanged("bImage");
+                OnPropertyChanged("iSource");
             }
         }
 

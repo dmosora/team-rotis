@@ -26,6 +26,7 @@ namespace SampleCode
         // saved date for undo and redo
         private List<ObservableCollection<RectangleViewModel>> savedstates = new List<ObservableCollection<RectangleViewModel>>();
         int current=-1;
+        int top = -1;
 
         #endregion Data Members
 
@@ -82,6 +83,20 @@ namespace SampleCode
 
         public void saveRectangle(string imageuri)
         {
+
+        }
+
+
+
+        public MemoryStream RectToStream(RectangleViewModel sender)
+        {
+            using (MemoryStream outStream = new MemoryStream())
+            {
+                BitmapEncoder enc = new BmpBitmapEncoder();
+                enc.Frames.Add(BitmapFrame.Create(sender.BImage));
+                enc.Save(outStream);
+                return outStream;
+            }
 
         }
 
@@ -175,6 +190,7 @@ namespace SampleCode
             {
                 savedstates.Add(temp);
             }
+            top = current;
         }
 
         public void undo()
@@ -192,7 +208,7 @@ namespace SampleCode
 
         public void redo()
         {
-            if (current < (savedstates.Count()-1))
+            if (current < top)
             {
                 current++;
                 rectangles.Clear();
@@ -236,9 +252,7 @@ namespace SampleCode
             }
         }
 
-
-
-        #region INotifyPropertyChanged Members
+                #region INotifyPropertyChanged Members
 
         /// <summary>
         /// Raises the 'PropertyChanged' event when the value of a property of the view model has changed.
