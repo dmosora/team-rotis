@@ -62,6 +62,16 @@ namespace SampleCode
         /// </summary>
         private bool isDraggingRectangle = false;
 
+        /// <summary>
+        /// Used to stored names of layers for layer pallette
+        /// </summary>
+        private List<String> layers;
+
+        /// <summary>
+        /// Layer Pallette window
+        /// </summary>
+        private layerPallette lp;
+
         #endregion Data Members
 
         public MainWindow()
@@ -93,6 +103,13 @@ namespace SampleCode
             helpTextWindow.Top = this.Top;
             helpTextWindow.Owner = this;
             helpTextWindow.Show();*/
+            layers = new List<String>();
+            layers.Add("Background");
+            lp = new layerPallette(ref layers);
+            lp.Left = System.Windows.SystemParameters.WorkArea.Right - lp.Width; // sets pallette to right edge of the monitor
+            lp.Top = System.Windows.SystemParameters.WorkArea.Bottom - lp.Height; // sets the pallette to be aligned on the bottom of the monitor
+            lp.Owner = this; // Set this to the window the pallette should be tied to
+            lp.Show();
 
             listBox.Focus();
         }
@@ -646,11 +663,12 @@ namespace SampleCode
 
         private void topClose_Click(object sender, RoutedEventArgs e)
         {
-            
+            this.Close();
         }
 
         private void topExit_Click(object sender, RoutedEventArgs e)
         {
+            Application.Current.Shutdown();
         }
 
         private void topUndo_Click(object sender, RoutedEventArgs e)
@@ -703,6 +721,8 @@ namespace SampleCode
                 this.ViewModel.addRectangle(dlg.FileName);
                 this.ViewModel.Rectangles[ViewModel.Rectangles.Count - 1].X = 0;
                 this.ViewModel.Rectangles[ViewModel.Rectangles.Count - 1].Y = 0;
+                this.layers.Add("Layer " + (ViewModel.Rectangles.Count - 1));
+                lp.UpdateLayers(layers);
             }
             this.ViewModel.saveState();
         }

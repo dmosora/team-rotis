@@ -1,12 +1,12 @@
 ﻿<Window x:Class="SampleCode.EditDialogBox"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Document Window" 
-    Height="300" 
+        Title="Layer Adjustment Window" 
+    Height="187" 
     Width="350"
     ResizeMode="CanResizeWithGrip"
     >
-    <Grid>
+    <Grid Height="141">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition />
@@ -20,7 +20,7 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
-                <RowDefinition />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
             <!-- Left Margin -->
@@ -48,7 +48,7 @@
         </TextBox>
 
         <!-- Accept or Cancel -->
-        <StackPanel Grid.ColumnSpan="2" Grid.Row="5" Margin="0,95,0,40">
+        <StackPanel Grid.ColumnSpan="2" Grid.Row="5" Margin="0,0,0,142">
             <Button Name="okButton" Click="okButton_Click" IsDefault="True" Height="29" Width="165">OK</Button>
             <Button Name="cancelButton" IsCancel="True" Height="30" Width="164">Cancel</Button>
         </StackPanel>
