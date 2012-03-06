@@ -242,3 +242,9 @@ E:\TeamRotis\obj\Debug\SampleCode.exe
 E:\TeamRotis\obj\Debug\SampleCode.pdb
 E:\TeamRotis\obj\Debug\ResGen.read.1.tlog
 E:\TeamRotis\obj\Debug\ResGen.write.1.tlog
+C:\Users\Heidi\Documents\Capstone\TeamRotis\obj\Debug\EditDialogBox.baml
+C:\Users\Heidi\Documents\Capstone\TeamRotis\obj\Debug\EditDialogBox.g.cs
+C:\Users\Heidi\Documents\Capstone\TeamRotis\obj\Debug\GenerateResource-ResGen.read.1.tlog
+C:\Users\Heidi\Documents\Capstone\TeamRotis\obj\Debug\GenerateResource-ResGen.write.1.tlog
+C:\Users\Heidi\Documents\Capstone\TeamRotis\obj\Debug\layerPallette.baml
+C:\Users\Heidi\Documents\Capstone\TeamRotis\obj\Debug\layerPallette.g.cs

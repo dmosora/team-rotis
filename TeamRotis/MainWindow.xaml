@@ -85,8 +85,8 @@
                 <MenuItem Header="New Layer" Click="topNewLayer_Click" InputGestureText="Ctrl+Shift+N" />
                 <MenuItem Header="_Open" Click="topOpen_Click" />
                 <MenuItem Header="_Save" Click="topSave_Click"/>
-                <MenuItem Header="_Close" />
-                <MenuItem Header="E_xit" />
+                <MenuItem Header="_Close" Click="topClose_Click" />
+                <MenuItem Header="E_xit" Click="topExit_Click"/>
             </MenuItem>
             <MenuItem Header="_Edit">
                 <MenuItem Header="_Undo" Click="topUndo_Click" InputGestureText="Ctrl+Z" />
