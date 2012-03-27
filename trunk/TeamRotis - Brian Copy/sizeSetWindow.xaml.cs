@@ -23,6 +23,7 @@ namespace SampleCode
         {
             result = parentResult;
             InitializeComponent();
+            widthText.Focus();
         }
 
         private void okayBut_Click(object sender, RoutedEventArgs e)
@@ -46,6 +47,20 @@ namespace SampleCode
         {
             result = "Cancel";
             this.Close();
+        }
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                okayBut_Click(sender, e);
+                e.Handled = true;
+            }
+            else if (e.Key == Key.Escape)
+            {
+                cancelBut_Click(sender, e);
+                e.Handled = true;
+            }
         }
 
 

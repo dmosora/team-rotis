@@ -38,24 +38,24 @@ namespace SampleCode
         public void addRectangle(string imageuri)
         {
             //Message Box for Opacity
-           // string messageBoxText = "Do you want to make this image opaque?";
-           // string caption = "Image Opacity";
-          //  MessageBoxButton button = MessageBoxButton.YesNo;
+            // string messageBoxText = "Do you want to make this image opaque?";
+            // string caption = "Image Opacity";
+            //  MessageBoxButton button = MessageBoxButton.YesNo;
             // Display message box
             // Display message box
-           // MessageBoxResult result = MessageBox.Show(messageBoxText, caption, button);
+            // MessageBoxResult result = MessageBox.Show(messageBoxText, caption, button);
 
             double opac = 1;
             // Process message box results
-          //  switch (result)
-        //    {
-         //       case MessageBoxResult.Yes:
-         //               opac = .5;
-         ///           break;
-          //      case MessageBoxResult.No:
+            //  switch (result)
+            //    {
+            //       case MessageBoxResult.Yes:
+            //               opac = .5;
+            ///           break;
+            //      case MessageBoxResult.No:
             //            opac=1;
             //        break;
-           // }
+            // }
 
 
             // Create a memorystream with the image URI then loads that to the rectangle veiw model using a Bitmap Image Source
@@ -72,13 +72,68 @@ namespace SampleCode
                 bitemp.BeginInit();
                 bitemp.StreamSource = memoryStream;
                 bitemp.EndInit();
-            }          
-            
-            var rtemp = new RectangleViewModel(150, 130,bitemp.PixelWidth, bitemp.PixelHeight, bitemp, opac);
+            }
+
+            var rtemp = new RectangleViewModel(150, 130, bitemp.PixelWidth, bitemp.PixelHeight, bitemp, opac, "Layer " + (rectangles.Count() + 1).ToString());
             rectangles.Add(rtemp);
             bitemp.UriSource = new Uri("", UriKind.Relative);
 
-           
+
+        }
+
+        public void addRectangle(double width, double height)
+        {
+            //Message Box for Opacity
+            // string messageBoxText = "Do you want to make this image opaque?";
+            // string caption = "Image Opacity";
+            //  MessageBoxButton button = MessageBoxButton.YesNo;
+            // Display message box
+            // Display message box
+            // MessageBoxResult result = MessageBox.Show(messageBoxText, caption, button);
+
+            double opac = 1;
+            // Process message box results
+            //  switch (result)
+            //    {
+            //       case MessageBoxResult.Yes:
+            //               opac = .5;
+            ///           break;
+            //      case MessageBoxResult.No:
+            //            opac=1;
+            //        break;
+            // }
+
+
+            // Create a memorystream with the image URI then loads that to the rectangle veiw model using a Bitmap Image Source
+            BitmapImage bitemp = new BitmapImage();
+
+            int myWidth = (Int32)width;
+            int myHeight = (Int32)height;
+            int stride = myWidth * 4;
+            BitmapSource i = BitmapImage.Create(
+            myWidth,
+            myHeight,
+            96,
+            96,
+            PixelFormats.Indexed1,
+            new BitmapPalette(new List<Color> { Colors.Transparent }),
+            new byte[stride * myHeight],
+            stride);
+            JpegBitmapEncoder encoder = new JpegBitmapEncoder();
+            MemoryStream mem = new MemoryStream();
+
+            encoder.Frames.Add(BitmapFrame.Create(i));
+            encoder.Save(mem);
+
+            bitemp.BeginInit();
+            bitemp.StreamSource = new MemoryStream(mem.ToArray());
+            bitemp.EndInit();
+
+            var rtemp = new RectangleViewModel(150, 130, bitemp.PixelWidth, bitemp.PixelHeight, bitemp, opac, "Layer " + (rectangles.Count() + 1).ToString());
+            rectangles.Add(rtemp);
+            bitemp.UriSource = new Uri("", UriKind.Relative);
+
+
         }
 
         public void saveRectangle(string imageuri)

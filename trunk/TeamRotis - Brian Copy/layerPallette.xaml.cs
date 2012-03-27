@@ -19,24 +19,25 @@ namespace SampleCode
     /// </summary>
     public partial class layerPallette : Window
     {
-        public layerPallette(ref List<String> layers)
+        public layerPallette(ObservableCollection<RectangleViewModel> layers)
         {
             InitializeComponent();
             UpdateLayers(layers);
         }
 
-        public void UpdateLayers(List<String> layers)
+        public void UpdateLayers(ObservableCollection<RectangleViewModel> layers)
         {
             layerList.Items.Clear();
-            for (int i = 0; i < layers.Count(); i++)
+            for (int i = layers.Count() - 1; i >= 0; --i)
             {
-                layerList.Items.Add(layers[i]);
+                layerList.Items.Add(layers[i].RectName);
             }
         }
 
-        public void changeSelection(int index)
+        protected override void  OnClosing(System.ComponentModel.CancelEventArgs e)
         {
-            layerList.SelectedIndex = index;
+ 	        e.Cancel = true;
+            this.Visibility = System.Windows.Visibility.Hidden;
         }
     }
 }

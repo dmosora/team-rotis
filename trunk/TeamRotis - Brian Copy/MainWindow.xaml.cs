@@ -65,7 +65,7 @@ namespace SampleCode
         /// <summary>
         /// Used to stored names of layers for layer pallette
         /// </summary>
-        private List<String> layers;
+        /// private List<String> layers;
 
         /// <summary>
         /// Layer Pallette window
@@ -103,9 +103,19 @@ namespace SampleCode
             helpTextWindow.Top = this.Top;
             helpTextWindow.Owner = this;
             helpTextWindow.Show();*/
-            layers = new List<String>();
-            layers.Add("Background");
-            lp = new layerPallette(ref layers);
+            result = "Cancel";
+            while (result == "Cancel")
+            {
+                sizeSetWindow ss = new sizeSetWindow(ref result);
+                ss.ShowDialog();
+                result = ss.result;
+            }
+            String width = result.Substring(0, result.IndexOf("x"));
+            String height = result.Substring(result.IndexOf("x") + 1);
+            this.listBox.Height = Convert.ToInt32(height);
+            this.listBox.Width = Convert.ToInt32(width);
+
+            lp = new layerPallette(ViewModel.Rectangles);
             lp.Left = System.Windows.SystemParameters.WorkArea.Right - lp.Width; // sets pallette to right edge of the monitor
             lp.Top = System.Windows.SystemParameters.WorkArea.Bottom - lp.Height; // sets the pallette to be aligned on the bottom of the monitor
             lp.Owner = this; // Set this to the window the pallette should be tied to
@@ -498,6 +508,8 @@ namespace SampleCode
                 this.ViewModel.deleteRectangle(selected[i]);
             }
 
+            lp.UpdateLayers(ViewModel.Rectangles);
+
             this.ViewModel.saveState();
         }
 
@@ -530,6 +542,7 @@ namespace SampleCode
             if (dlg.ShowDialog() == true)
             {
                 this.ViewModel.addRectangle(dlg.FileName);
+                lp.UpdateLayers(ViewModel.Rectangles);
             }
         }
 
@@ -577,6 +590,7 @@ namespace SampleCode
                 newWin.ViewModel.Rectangles[0].X = 0;
                 newWin.ViewModel.Rectangles[0].Y = 0;
                 newWin.Show();
+                lp.UpdateLayers(ViewModel.Rectangles);
             }
             newWin.ViewModel.saveState();
         }
@@ -703,6 +717,7 @@ namespace SampleCode
             // clear selections and make top layer
             this.listBox.SelectedItems.Clear();
             this.ViewModel.makeTopLayer(selected);
+            lp.UpdateLayers(ViewModel.Rectangles);
             listBox.Focus();
             
             ViewModel.saveState();
@@ -710,7 +725,11 @@ namespace SampleCode
 
         private void topNewLayer_Click(object sender, RoutedEventArgs e)
         {
-            //TODO: Make layer toolbox, implement selection of layers based on that toolbox, create new blank layer in this function
+            this.ViewModel.addRectangle(listBox.Width, listBox.Height);
+            this.ViewModel.Rectangles[ViewModel.Rectangles.Count - 1].X = 0;
+            this.ViewModel.Rectangles[ViewModel.Rectangles.Count - 1].Y = 0;
+            lp.UpdateLayers(ViewModel.Rectangles);
+            this.ViewModel.saveState();
         }
 
         private void topLayerFromFile_Click(object sender, RoutedEventArgs e)
@@ -721,8 +740,7 @@ namespace SampleCode
                 this.ViewModel.addRectangle(dlg.FileName);
                 this.ViewModel.Rectangles[ViewModel.Rectangles.Count - 1].X = 0;
                 this.ViewModel.Rectangles[ViewModel.Rectangles.Count - 1].Y = 0;
-                this.layers.Add("Layer " + (ViewModel.Rectangles.Count - 1));
-                lp.UpdateLayers(layers);
+                lp.UpdateLayers(ViewModel.Rectangles);
             }
             this.ViewModel.saveState();
         }
@@ -754,10 +772,83 @@ namespace SampleCode
             sizeSetWindow ss = new sizeSetWindow(ref result);
             ss.ShowDialog();
             result = ss.result;
-            String width = result.Substring(0, result.IndexOf("x"));
-            String height = result.Substring(result.IndexOf("x") + 1);
-            this.listBox.Height = Convert.ToInt32(height);
-            this.listBox.Width = Convert.ToInt32(width);
+            if (result != "Cancel")
+            {
+                String width = result.Substring(0, result.IndexOf("x"));
+                String height = result.Substring(result.IndexOf("x") + 1);
+                this.listBox.Height = Convert.ToInt32(height);
+                this.listBox.Width = Convert.ToInt32(width);
+            }
+        }
+
+        private void topLayerShowPalette_Click(object sender, RoutedEventArgs e)
+        {
+            lp.Visibility = System.Windows.Visibility.Visible;
+        }
+
+        private void rectName_Click(object sender, RoutedEventArgs e)
+        {
+            int count = 0;
+            RectangleViewModel rectTemp = new RectangleViewModel();
+            foreach (RectangleViewModel rectangle in this.listBox.SelectedItems)
+            {
+                count++;
+                if (count > 1)
+                {
+                    //Message Box for too many selected
+                    string messageBoxText = "Too many layers selected, you can only rename on layer";
+                    string caption = "Rename Error";
+                    MessageBoxButton button = MessageBoxButton.OK;
+                    MessageBoxResult result = MessageBox.Show(messageBoxText, caption, button);
+                    break;
+                }
+                rectTemp = (RectangleViewModel)this.listBox.SelectedItem;
+            }
+            string newName = "";
+
+            nameChanger nameChangeWin = new nameChanger(ref newName);
+            nameChangeWin.ShowDialog();
+            newName = nameChangeWin.result;
+            if (newName != "")
+            {
+                ViewModel.Rectangles[ViewModel.Rectangles.IndexOf(rectTemp)].RectName = newName;
+                lp.UpdateLayers(ViewModel.Rectangles);
+            }
+        }
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            if ((Keyboard.Modifiers & (ModifierKeys.Control | ModifierKeys.Shift)) == (ModifierKeys.Control | ModifierKeys.Shift))
+            {
+                if (e.Key == Key.N)
+                {
+                    topNewLayer_Click(sender, e);
+                    e.Handled = true;
+                }
+            }
+            else if ((Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
+            {
+                if (e.Key == Key.N)
+                {
+                    topNew_Click(sender, e);
+                    e.Handled = true;
+                }
+                else if (e.Key == Key.O)
+                {
+                    topOpen_Click(sender, e);
+                    e.Handled = true;
+                }
+                else if (e.Key == Key.W)
+                {
+                    topClose_Click(sender, e);
+                    e.Handled = true;
+                }
+                else if (e.Key == Key.S)
+                {
+                    topSave_Click(sender, e);
+                    e.Handled = true;
+                }
+            }
         }
 
     }

@@ -22,6 +22,7 @@ namespace SampleCode
         public EditDialogBox()
         {
             InitializeComponent();
+            opacityTextBox.Focus();
           
         }
 
@@ -37,6 +38,15 @@ namespace SampleCode
 
             // Dialog box accepted
             this.DialogResult = true;
+        }
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                okButton_Click(sender, e);
+                e.Handled = true;
+            }
         }
 
 

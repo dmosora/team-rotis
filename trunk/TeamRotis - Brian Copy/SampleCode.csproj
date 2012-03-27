@@ -89,6 +89,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="nameChanger.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="sizeSetWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -96,6 +100,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ColorToBrushConverter.cs" />
+    <Compile Include="nameChanger.xaml.cs">
+      <DependentUpon>nameChanger.xaml</DependentUpon>
+    </Compile>
     <Compile Include="sizeSetWindow.xaml.cs">
       <DependentUpon>sizeSetWindow.xaml</DependentUpon>
     </Compile>

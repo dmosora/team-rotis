@@ -248,3 +248,28 @@ C:\Users\Heidi\Documents\Capstone\TeamRotis\obj\Debug\GenerateResource-ResGen.re
 C:\Users\Heidi\Documents\Capstone\TeamRotis\obj\Debug\GenerateResource-ResGen.write.1.tlog
 C:\Users\Heidi\Documents\Capstone\TeamRotis\obj\Debug\layerPallette.baml
 C:\Users\Heidi\Documents\Capstone\TeamRotis\obj\Debug\layerPallette.g.cs
+C:\Users\Heidi\Documents\Capstone\TeamRotis - Brian Copy\obj\Debug\SampleCode.exe
+C:\Users\Heidi\Documents\Capstone\TeamRotis - Brian Copy\obj\Debug\SampleCode.pdb
+C:\Users\Heidi\Documents\Capstone\TeamRotis - Brian Copy\bin\Debug\SampleCode.exe
+C:\Users\Heidi\Documents\Capstone\TeamRotis - Brian Copy\bin\Debug\SampleCode.pdb
+C:\Users\Heidi\Documents\Capstone\TeamRotis - Brian Copy\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\Heidi\Documents\Capstone\TeamRotis - Brian Copy\obj\Debug\EditDialogBox.baml
+C:\Users\Heidi\Documents\Capstone\TeamRotis - Brian Copy\obj\Debug\layerPallette.baml
+C:\Users\Heidi\Documents\Capstone\TeamRotis - Brian Copy\obj\Debug\sizeSetWindow.baml
+C:\Users\Heidi\Documents\Capstone\TeamRotis - Brian Copy\obj\Debug\EditDialogBox.g.cs
+C:\Users\Heidi\Documents\Capstone\TeamRotis - Brian Copy\obj\Debug\layerPallette.g.cs
+C:\Users\Heidi\Documents\Capstone\TeamRotis - Brian Copy\obj\Debug\MainWindow.g.cs
+C:\Users\Heidi\Documents\Capstone\TeamRotis - Brian Copy\obj\Debug\sizeSetWindow.g.cs
+C:\Users\Heidi\Documents\Capstone\TeamRotis - Brian Copy\obj\Debug\App.g.cs
+C:\Users\Heidi\Documents\Capstone\TeamRotis - Brian Copy\obj\Debug\GeneratedInternalTypeHelper.g.cs
+C:\Users\Heidi\Documents\Capstone\TeamRotis - Brian Copy\obj\Debug\SampleCode_MarkupCompile.cache
+C:\Users\Heidi\Documents\Capstone\TeamRotis - Brian Copy\obj\Debug\SampleCode_MarkupCompile.lref
+C:\Users\Heidi\Documents\Capstone\TeamRotis - Brian Copy\obj\Debug\MainWindow.baml
+C:\Users\Heidi\Documents\Capstone\TeamRotis - Brian Copy\obj\Debug\SampleCode.g.resources
+C:\Users\Heidi\Documents\Capstone\TeamRotis - Brian Copy\obj\Debug\SampleCode.Properties.Resources.resources
+C:\Users\Heidi\Documents\Capstone\TeamRotis - Brian Copy\obj\Debug\GenerateResource-ResGen.read.1.tlog
+C:\Users\Heidi\Documents\Capstone\TeamRotis - Brian Copy\obj\Debug\ResGen.read.1.tlog
+C:\Users\Heidi\Documents\Capstone\TeamRotis - Brian Copy\obj\Debug\GenerateResource-ResGen.write.1.tlog
+C:\Users\Heidi\Documents\Capstone\TeamRotis - Brian Copy\obj\Debug\ResGen.write.1.tlog
+C:\Users\Heidi\Documents\Capstone\TeamRotis - Brian Copy\obj\Debug\nameChanger.baml
+C:\Users\Heidi\Documents\Capstone\TeamRotis - Brian Copy\obj\Debug\nameChanger.g.cs
