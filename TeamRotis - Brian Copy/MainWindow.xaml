@@ -8,7 +8,8 @@
     Loaded="Window_Loaded"
     MouseDown="Window_MouseDown"
     MouseUp="Window_MouseUp"
-    MouseMove="Window_MouseMove">
+    MouseMove="Window_MouseMove"
+    Keyboard.KeyDown="Window_KeyDown">
     <Window.Resources>
 
         <!-- 
@@ -38,6 +39,7 @@
                         <MenuItem Name="rectCopy" Header="Copy" Click="rectCopy_Click" />
                         <MenuItem Name="rectPaste" Header="Paste" Click="rectPaste_Click" />
                         <MenuItem Name="rectMove" Header="Make First" Click="rectMove_Click" />
+                        <MenuItem Name="rectName" Header="Rename Layer" Click="rectName_Click" />
                         <MenuItem Name="editSptions" Header="Edit Options" Click="editDialogBox_Click" />
                     </ContextMenu>
                 </Grid.ContextMenu>
@@ -109,9 +111,11 @@
             </MenuItem>
             <MenuItem Header="_Layer">
                 <MenuItem Header="New Layer from File" Click="topLayerFromFile_Click" />
-                <MenuItem Header="Stuff" />
-                <MenuItem Header="Stuff" />
-                <MenuItem Header="Stuff" />
+                <MenuItem Header="Delete Layer" Click="rectDelete_Click" />
+                <MenuItem Header="Rename Layer" Click="rectName_Click" />
+                <MenuItem Header="Make First" Click="rectMove_Click" />
+                <Separator />
+                <MenuItem Header="Show Layer Palette" Click="topLayerShowPalette_Click" />
             </MenuItem>
        </Menu>
             <!--

@@ -52,6 +52,11 @@ namespace SampleCode
         /// </summary>
         private Point connectorHotspot;
 
+        /// <summary>
+        /// Used to define a name for the given rectangle. Defaults to the position in the view model.
+        /// </summary>
+        private string rectName;
+
         #endregion Data Members
 
         
@@ -60,7 +65,7 @@ namespace SampleCode
         {
         }
 
-        public RectangleViewModel(double x, double y, double width, double height, BitmapImage BSource, double opacity)
+        public RectangleViewModel(double x, double y, double width, double height, BitmapImage BSource, double opacity, string name)
         {
             this.x = x;
             this.y = y;
@@ -69,6 +74,7 @@ namespace SampleCode
             this.bImage = BSource;
             this.opacity = opacity;
             this.iSource = BSource;
+            this.rectName = name;
         }
 
         public RectangleViewModel(RectangleViewModel old)
@@ -79,6 +85,7 @@ namespace SampleCode
             this.height = old.Height;
             this.iSource = old.ISource;
             this.opacity = old.Opacity;
+            this.rectName = old.rectName;
         }
 
         /// <summary>
@@ -278,6 +285,25 @@ namespace SampleCode
                 connectorHotspot = value;
 
                 OnPropertyChanged("ConnectorHotspot");
+            }
+        }
+
+        public string RectName
+        {
+            get
+            {
+                return rectName;
+            }
+            set
+            {
+                if (rectName == value)
+                {
+                    return;
+                }
+
+                rectName = value;
+
+                OnPropertyChanged("RectName");
             }
         }
 
