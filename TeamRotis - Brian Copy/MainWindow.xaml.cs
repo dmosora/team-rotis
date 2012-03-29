@@ -548,31 +548,18 @@ namespace SampleCode
 
         private void gridNewRect_Click(object sender, RoutedEventArgs e)
         {
-
+            this.ViewModel.addRectangle(listBox.Width, listBox.Height);
+            this.ViewModel.Rectangles[ViewModel.Rectangles.Count - 1].X = 0;
+            this.ViewModel.Rectangles[ViewModel.Rectangles.Count - 1].Y = 0;
+            lp.UpdateLayers(ViewModel.Rectangles);
+            this.ViewModel.saveState();
         }
 
         private void topNew_Click(object sender, RoutedEventArgs e)
         {
-            //Open new window with specified dimensions
+            //Open new window
             MainWindow mw = new MainWindow();
-            sizeSetWindow ss = new sizeSetWindow(ref result);
-            ss.ShowDialog();
-            result = ss.result;
-            if (result == "Cancel")
-            {
-                mw.Close();
-            }
-            else
-            {
-                String width = result.Substring(0, result.IndexOf("x"));
-                String height = result.Substring(result.IndexOf("x") + 1);
-                
-                mw.listBox.Height = Convert.ToInt32(height);
-                mw.listBox.Width = Convert.ToInt32(width);
-                mw.Height = Convert.ToInt32(height);
-                mw.Width = Convert.ToInt32(width);
-                mw.Show();
-            }
+            mw.Show();
         }
 
         private void topOpen_Click(object sender, RoutedEventArgs e)
@@ -580,6 +567,8 @@ namespace SampleCode
             //Open a new window with the selected image
             MainWindow newWin = new MainWindow();
             OpenFileDialog dlg = new OpenFileDialog();
+            dlg.Filter = "Image Files(*.BMP;*.JPG;*.PNG;*.GIF)|*.BMP;*.JPG;*.PNG;*.GIF|All files (*.*)|*.*";
+            dlg.FilterIndex = 1;
             if (dlg.ShowDialog() == true)
             {
                 newWin.ViewModel.addRectangle(dlg.FileName);
@@ -591,6 +580,10 @@ namespace SampleCode
                 newWin.ViewModel.Rectangles[0].Y = 0;
                 newWin.Show();
                 lp.UpdateLayers(ViewModel.Rectangles);
+            }
+            else
+            {
+                newWin.Close();
             }
             newWin.ViewModel.saveState();
         }
@@ -848,7 +841,72 @@ namespace SampleCode
                     topSave_Click(sender, e);
                     e.Handled = true;
                 }
+                else if (e.Key == Key.Z)
+                {
+                    topUndo_Click(sender, e);
+                    e.Handled = true;
+                }
+                else if (e.Key == Key.Y)
+                {
+                    topRedo_Click(sender, e);
+                    e.Handled = true;
+                }
+                else if (e.Key == Key.C)
+                {
+                    rectCopy_Click(sender, e);
+                    e.Handled = true;
+                }
+                else if (e.Key == Key.V)
+                {
+                    rectPaste_Click(sender, e);
+                    e.Handled = true;
+                }
+                else if (e.Key == Key.X)
+                {
+                    gridCut_Click(sender, e);
+                    e.Handled = true;
+                }
             }
+        }
+
+        private void topEmboss_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void topBlur_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void topSmooth_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void topEdge_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void topGrey_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void rectResize_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void rectRotate_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void rectOpacity_Click(object sender, RoutedEventArgs e)
+        {
+
         }
 
     }

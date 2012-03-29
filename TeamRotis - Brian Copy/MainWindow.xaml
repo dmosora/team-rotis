@@ -33,6 +33,7 @@
             <Grid
                 Margin="1"
                 >
+                    <!-- Right Click Menu -->
                     <Grid.ContextMenu>
                     <ContextMenu>
                         <MenuItem Name="rectDelete" Header="Delete Layer" Click="rectDelete_Click" />
@@ -95,7 +96,7 @@
                 <MenuItem Header="_Redo" Click="topRedo_Click" InputGestureText="Ctrl+Y" />
                 <MenuItem Header="Cut" InputGestureText="Ctrl+X" />
                 <MenuItem Header="_Copy" InputGestureText="Ctrl+C" />
-                <MenuItem Header="Paste" InputGestureText="Ctrl+V" />
+                <MenuItem Header="_Paste" InputGestureText="Ctrl+V" />
             </MenuItem>
             <MenuItem Header="_Image">
                 <MenuItem Header="_Adjustments">
@@ -104,21 +105,31 @@
                     <MenuItem Header="_Levels" />
                     <MenuItem Header="_Color Balance" />
                 </MenuItem>
-                <MenuItem Header="Image Size" />
-                <MenuItem Header="Canvas Size" Click="topResizeClick" />
-                <MenuItem Header="Rotation" />
-                <MenuItem Header="Crop" />
+                <MenuItem Header="_Image Size" />
+                <MenuItem Header="Canvas _Size" Click="topResizeClick" />
+                <MenuItem Header="_Rotation" />
+                <MenuItem Header="_Crop" />
             </MenuItem>
             <MenuItem Header="_Layer">
-                <MenuItem Header="New Layer from File" Click="topLayerFromFile_Click" />
-                <MenuItem Header="Delete Layer" Click="rectDelete_Click" />
-                <MenuItem Header="Rename Layer" Click="rectName_Click" />
-                <MenuItem Header="Make First" Click="rectMove_Click" />
+                <MenuItem Header="_New Layer from File" Click="topLayerFromFile_Click" />
+                <MenuItem Header="_Delete Layer" Click="rectDelete_Click" />
+                <MenuItem Header="_Rename Layer" Click="rectName_Click" />
+                <MenuItem Header="_Make First" Click="rectMove_Click" />
+                <MenuItem Header="Re_size Layer" Click="rectResize_Click" />
+                <MenuItem Header="Ro_tate Layer" Click="rectRotate_Click" />
+                <MenuItem Header="Change _Opacity" Click="rectOpacity_Click" />
                 <Separator />
-                <MenuItem Header="Show Layer Palette" Click="topLayerShowPalette_Click" />
+                <MenuItem Header="_Show Layer Palette" Click="topLayerShowPalette_Click" />
             </MenuItem>
-       </Menu>
-            <!--
+            <MenuItem Header="_Effects">
+                <MenuItem Header="_Emboss" Click="topEmboss_Click" />
+                <MenuItem Header="_Blur" Click="topBlur_Click" />
+                <MenuItem Header="_Smooth" Click="topSmooth_Click" />
+                <MenuItem Header="Edge _Detection" Click="topEdge_Click" />
+                <MenuItem Header="_Greyscale" Click="topGrey_Click" />
+            </MenuItem>
+        </Menu>
+        <!--
 	    This ListBox presents the colored rectangles.
         
         The data-template that defines the visuals for each rectangle is in the 
