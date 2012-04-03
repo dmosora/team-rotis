@@ -10,40 +10,40 @@
     MouseUp="Window_MouseUp"
     MouseMove="Window_MouseMove"
     Keyboard.KeyDown="Window_KeyDown">
-    <Window.Resources>
+        <Window.Resources>
 
-        <!-- 
+            <!-- 
         Converts a color value to a brush.
         -->
-        <local:ColorToBrushConverter 
+            <local:ColorToBrushConverter 
             x:Key="colorToBrushConverter"
             />
 
 
-        <!--
+            <!--
         A data-template that defines the visuals for a rectangle.
         -->
-        <DataTemplate 
+            <DataTemplate 
             DataType="{x:Type local:RectangleViewModel}"
             >
-            <!-- 
+                <!-- 
             The Rectangle is embedded in the Grid so that we can set the Margin
             The margin is set so that the ListBox item selection fits nicely around the Rectangle.
             -->
-            <Grid
+                <Grid
                 Margin="1"
                 >
                     <!-- Right Click Menu -->
                     <Grid.ContextMenu>
-                    <ContextMenu>
-                        <MenuItem Name="rectDelete" Header="Delete Layer" Click="rectDelete_Click" />
-                        <MenuItem Name="rectCopy" Header="Copy" Click="rectCopy_Click" />
-                        <MenuItem Name="rectPaste" Header="Paste" Click="rectPaste_Click" />
-                        <MenuItem Name="rectMove" Header="Make First" Click="rectMove_Click" />
-                        <MenuItem Name="rectName" Header="Rename Layer" Click="rectName_Click" />
-                        <MenuItem Name="editSptions" Header="Edit Options" Click="editDialogBox_Click" />
-                    </ContextMenu>
-                </Grid.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Name="rectDelete" Header="Delete Layer" Click="rectDelete_Click" />
+                            <MenuItem Name="rectCopy" Header="Copy" Click="rectCopy_Click" />
+                            <MenuItem Name="rectPaste" Header="Paste" Click="rectPaste_Click" />
+                            <MenuItem Name="rectMove" Header="Make First" Click="rectMove_Click" />
+                            <MenuItem Name="rectName" Header="Rename Layer" Click="rectName_Click" />
+                            <MenuItem Name="editSptions" Header="Edit Options" Click="editDialogBox_Click" />
+                        </ContextMenu>
+                    </Grid.ContextMenu>
                     <Rectangle
                     Width="{Binding Width}"
                     Height="{Binding Height}" Cursor="Hand"
@@ -51,91 +51,117 @@
                     MouseDown="Rectangle_MouseDown"
                     MouseUp="Rectangle_MouseUp"
                     MouseMove="Rectangle_MouseMove">
-                    <Rectangle.Fill>
-                        <ImageBrush ImageSource="{Binding ISource}" />
-                    </Rectangle.Fill>
-                    <Rectangle.RenderTransform>
-                        <TransformGroup>
-                            <RotateTransform Angle="{Binding RAngle}"/>
-                            <ScaleTransform CenterX="{Binding Height / 2}" CenterY="{Binding Width / 2}" ScaleX="{Binding Scale}" ScaleY="{Binding Scale}" /> 
-                        </TransformGroup>
-                    </Rectangle.RenderTransform>
-                        
-                </Rectangle>
-            </Grid>
-        </DataTemplate>
+                        <Rectangle.Fill>
+                            <ImageBrush ImageSource="{Binding ISource}" />
+                        </Rectangle.Fill>
+                        <Rectangle.RenderTransform>
+                            <TransformGroup>
+                                <RotateTransform Angle="{Binding RAngle}"/>
+                                <ScaleTransform CenterX="{Binding Height / 2}" CenterY="{Binding Width / 2}" ScaleX="{Binding Scale}" ScaleY="{Binding Scale}" />
+                            </TransformGroup>
+                        </Rectangle.RenderTransform>
 
-    </Window.Resources>
+                    </Rectangle>
+                </Grid>
+            </DataTemplate>
 
-    
-    <Window.DataContext>
-        
-        <!-- 
+        </Window.Resources>
+
+
+        <Window.DataContext>
+
+            <!-- 
         Initialise the view model that supplies the UI with data.
         -->
-        <local:ViewModel />
+            <local:ViewModel />
 
     </Window.DataContext>
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition />
-        </Grid.RowDefinitions>
-        <!-- Top Menu -->
-        <Menu DockPanel.Dock="Top" VerticalAlignment="Top" Grid.Row="0">
-            <MenuItem Header="_File">
-                <MenuItem Header="_New" Click="topNew_Click" InputGestureText="Ctrl+N"/>
-                <MenuItem Header="New Layer" Click="topNewLayer_Click" InputGestureText="Ctrl+Shift+N" />
-                <MenuItem Header="_Open" Click="topOpen_Click" />
-                <MenuItem Header="_Save" Click="topSave_Click"/>
-                <MenuItem Header="_Close" Click="topClose_Click" />
-                <MenuItem Header="E_xit" Click="topExit_Click"/>
-            </MenuItem>
-            <MenuItem Header="_Edit">
-                <MenuItem Header="_Undo" Click="topUndo_Click" InputGestureText="Ctrl+Z" />
-                <MenuItem Header="_Redo" Click="topRedo_Click" InputGestureText="Ctrl+Y" />
-                <MenuItem Header="Cut" InputGestureText="Ctrl+X" />
-                <MenuItem Header="_Copy" InputGestureText="Ctrl+C" />
-                <MenuItem Header="_Paste" InputGestureText="Ctrl+V" />
-            </MenuItem>
-            <MenuItem Header="_Image">
-                <MenuItem Header="_Adjustments">
-                    <MenuItem Header="_Hue/Saturation" />
-                    <MenuItem Header="_Brightness/Contrast" />
-                    <MenuItem Header="_Levels" />
-                    <MenuItem Header="_Color Balance" />
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="50" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <!-- Top Menu -->
+            <Menu Grid.ColumnSpan="2" Width="Auto" DockPanel.Dock="Top" VerticalAlignment="Top" Grid.Row="0" Grid.Column="0">
+                <MenuItem Header="_File">
+                    <MenuItem Header="_New" Click="topNew_Click" InputGestureText="Ctrl+N"/>
+                    <MenuItem Header="New Layer" Click="topNewLayer_Click" InputGestureText="Ctrl+Shift+N" />
+                    <MenuItem Header="_Open" Click="topOpen_Click" />
+                    <MenuItem Header="_Save" Click="topSave_Click"/>
+                    <MenuItem Header="_Close" Click="topClose_Click" />
+                    <MenuItem Header="E_xit" Click="topExit_Click"/>
                 </MenuItem>
-                <MenuItem Header="_Image Size" />
-                <MenuItem Header="Canvas _Size" Click="topResizeClick" />
-                <MenuItem Header="_Rotation" />
-                <MenuItem Header="_Crop" />
-            </MenuItem>
-            <MenuItem Header="_Layer">
-                <MenuItem Header="_New Layer from File" Click="topLayerFromFile_Click" />
-                <MenuItem Header="_Delete Layer" Click="rectDelete_Click" />
-                <MenuItem Header="_Rename Layer" Click="rectName_Click" />
-                <MenuItem Header="_Make First" Click="rectMove_Click" />
-                <MenuItem Header="Re_size Layer" Click="rectResize_Click" />
-                <MenuItem Header="Ro_tate Layer" Click="rectRotate_Click" />
-                <MenuItem Header="Change _Opacity" Click="rectOpacity_Click" />
-                <Separator />
-                <MenuItem Header="_Show Layer Palette" Click="topLayerShowPalette_Click" />
-            </MenuItem>
-            <MenuItem Header="_Effects">
-                <MenuItem Header="_Emboss" Click="topEmboss_Click" />
-                <MenuItem Header="_Blur" Click="topBlur_Click" />
-                <MenuItem Header="_Smooth" Click="topSmooth_Click" />
-                <MenuItem Header="Edge _Detection" Click="topEdge_Click" />
-                <MenuItem Header="_Greyscale" Click="topGrey_Click" />
-            </MenuItem>
-        </Menu>
-        <!--
+                <MenuItem Header="_Edit">
+                    <MenuItem Header="_Undo" Click="topUndo_Click" InputGestureText="Ctrl+Z" />
+                    <MenuItem Header="_Redo" Click="topRedo_Click" InputGestureText="Ctrl+Y" />
+                    <MenuItem Header="Cut" InputGestureText="Ctrl+X" />
+                    <MenuItem Header="_Copy" InputGestureText="Ctrl+C" />
+                    <MenuItem Header="_Paste" InputGestureText="Ctrl+V" />
+                </MenuItem>
+                <MenuItem Header="_Image">
+                    <MenuItem Header="_Adjustments">
+                        <MenuItem Header="_Hue/Saturation" />
+                        <MenuItem Header="_Brightness/Contrast" />
+                        <MenuItem Header="_Levels" />
+                        <MenuItem Header="_Color Balance" />
+                    </MenuItem>
+                    <MenuItem Header="_Image Size" />
+                    <MenuItem Header="Canvas _Size" Click="topResizeClick" />
+                    <MenuItem Header="_Rotation" />
+                    <MenuItem Header="_Crop" />
+                </MenuItem>
+                <MenuItem Header="_Layer">
+                    <MenuItem Header="_New Layer from File" Click="topLayerFromFile_Click" />
+                    <MenuItem Header="_Delete Layer" Click="rectDelete_Click" />
+                    <MenuItem Header="_Rename Layer" Click="rectName_Click" />
+                    <MenuItem Header="_Make First" Click="rectMove_Click" />
+                    <MenuItem Header="Re_size Layer" Click="rectResize_Click" />
+                    <MenuItem Header="Ro_tate Layer" Click="rectRotate_Click" />
+                    <MenuItem Header="Change _Opacity" Click="rectOpacity_Click" />
+                    <Separator />
+                    <MenuItem Header="_Show Layer Palette" Click="topLayerShowPalette_Click" />
+                </MenuItem>
+                <MenuItem Header="_Effects">
+                    <MenuItem Header="_Emboss" Click="topEmboss_Click" />
+                    <MenuItem Header="_Blur" Click="topBlur_Click" />
+                    <MenuItem Header="_Smooth" Click="topSmooth_Click" />
+                    <MenuItem Header="Edge _Detection" Click="topEdge_Click" />
+                    <MenuItem Header="_Greyscale" Click="topGrey_Click" />
+                </MenuItem>
+            </Menu>
+            <!-- Tool selection menu -->
+            <Menu Width="50" Grid.Column="0" VerticalContentAlignment="Stretch" VerticalAlignment="Top" HorizontalAlignment="Left" Grid.Row="1">
+                <Button Name="selectToolButton" Height="32" Width="32">
+                    <Button.Background>
+                        <ImageBrush ImageSource="/SampleCode;component/resources/base_cursor.png" />
+                    </Button.Background>
+                </Button>
+                <Button Name="pencilToolButton" Height="32" Width="32">
+                    <Button.Background>
+                        <ImageBrush ImageSource="/SampleCode;component/resources/pencil_32.png" />
+                    </Button.Background>
+                </Button>
+                <Button Name="rectSelectionToolButton" Height="32" Width="32">
+                </Button>
+                <Button Name="drawRectangleToolButton" Height="32" Width="32">
+                </Button>
+                <Button Name="drawOvalToolButton" Height="32" Width="32">
+                </Button>
+                <Button Name="textToolButton" Height="32" Width="32">
+                </Button>
+            </Menu>
+            <!--
 	    This ListBox presents the colored rectangles.
         
         The data-template that defines the visuals for each rectangle is in the 
         resources section at the start of this file.
         -->
-            <ListBox Grid.Row="1"
+        <ScrollViewer Grid.Column="1" Grid.Row="1" HorizontalScrollBarVisibility="Auto">
+            <ListBox Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="1"
             x:Name="listBox"
             ItemsSource="{Binding Rectangles}"
             SelectionMode="Extended" VerticalContentAlignment="Center" BorderThickness="1">
@@ -147,7 +173,7 @@
                 </ListBox.ContextMenu>
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
-                    <Canvas Name="DisplayCanvas" />
+                        <Canvas Name="DisplayCanvas" />
                     </ItemsPanelTemplate>
                 </ListBox.ItemsPanel>
                 <ListBox.ItemContainerStyle>
@@ -162,24 +188,25 @@
                         Property="Canvas.Top"
                         Value="{Binding Y}"
                         />
-                    <Setter Property="Control.Padding" Value="0" />
-                </Style>
+                        <Setter Property="Control.Padding" Value="0" />
+                    </Style>
                 </ListBox.ItemContainerStyle>
             </ListBox>
+        </ScrollViewer>
         <!--
         This Canvas and Border are used as a very simple way to render a drag selection rectangle.
         -->
-        <Canvas
+            <Canvas
             Grid.Row="1"
             x:Name="dragSelectionCanvas"
             Visibility="Collapsed" Margin="0,21,0,0" VerticalAlignment="Top">
-            <Border 
+                <Border 
                 x:Name="dragSelectionBorder"
                 BorderBrush="Blue"
                 BorderThickness="1"
                 CornerRadius="1"
                 Opacity=".5"
                 />
-        </Canvas>
-    </Grid>
+            </Canvas>
+        </Grid>
 </Window>
