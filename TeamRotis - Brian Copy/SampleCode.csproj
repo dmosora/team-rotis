@@ -93,6 +93,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="resizeWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="sizeSetWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -102,6 +106,9 @@
     <Compile Include="ColorToBrushConverter.cs" />
     <Compile Include="nameChanger.xaml.cs">
       <DependentUpon>nameChanger.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="resizeWindow.xaml.cs">
+      <DependentUpon>resizeWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="sizeSetWindow.xaml.cs">
       <DependentUpon>sizeSetWindow.xaml</DependentUpon>
