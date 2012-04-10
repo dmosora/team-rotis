@@ -37,11 +37,9 @@
                     <Grid.ContextMenu>
                         <ContextMenu>
                             <MenuItem Name="rectDelete" Header="Delete Layer" Click="rectDelete_Click" />
+                            <MenuItem Name="rectCut" Header="Cut" Click="rectCut_Click" />
                             <MenuItem Name="rectCopy" Header="Copy" Click="rectCopy_Click" />
-                            <MenuItem Name="rectPaste" Header="Paste" Click="rectPaste_Click" />
                             <MenuItem Name="rectMove" Header="Make First" Click="rectMove_Click" />
-                            <MenuItem Name="rectName" Header="Rename Layer" Click="rectName_Click" />
-                            <MenuItem Name="editSptions" Header="Edit Options" Click="editDialogBox_Click" />
                         </ContextMenu>
                     </Grid.ContextMenu>
                     <Rectangle
@@ -91,9 +89,9 @@
                 <MenuItem Header="_File">
                     <MenuItem Header="_New" Click="topNew_Click" InputGestureText="Ctrl+N"/>
                     <MenuItem Header="New Layer" Click="topNewLayer_Click" InputGestureText="Ctrl+Shift+N" />
-                    <MenuItem Header="_Open" Click="topOpen_Click" />
-                    <MenuItem Header="_Save" Click="topSave_Click"/>
-                    <MenuItem Header="_Close" Click="topClose_Click" />
+                    <MenuItem Header="_Open" Click="topOpen_Click" InputGestureText="Ctrl+O" />
+                    <MenuItem Header="_Save" Click="topSave_Click" InputGestureText="Ctrl+S"/>
+                    <MenuItem Header="_Close" Click="topClose_Click" InputGestureText="Ctrl+W" />
                     <MenuItem Header="E_xit" Click="topExit_Click"/>
                 </MenuItem>
                 <MenuItem Header="_Edit">
@@ -141,6 +139,9 @@
                         <ImageBrush ImageSource="/SampleCode;component/resources/base_cursor.png" />
                     </Button.Background>
                 </Button>
+                <Button Name="handToolButton" Height="32" Width="32">
+                    
+                </Button>
                 <Button Name="pencilToolButton" Height="32" Width="32">
                     <Button.Background>
                         <ImageBrush ImageSource="/SampleCode;component/resources/pencil_32.png" />
@@ -187,7 +188,7 @@
             SelectionMode="Extended" VerticalContentAlignment="Center" BorderThickness="1">
                 <ListBox.ContextMenu>
                     <ContextMenu>
-                        <MenuItem Name="gridCut" Header="Cut" Click="gridCut_Click" />
+                        <MenuItem Name="rectPaste" Header="Paste" Click="rectPaste_Click" />
                         <MenuItem Name="gridNewRect" Header="New Layer" Click="gridNewRect_Click" />
                     </ContextMenu>
                 </ListBox.ContextMenu>

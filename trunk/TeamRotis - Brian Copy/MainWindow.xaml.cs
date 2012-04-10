@@ -103,18 +103,20 @@ namespace SampleCode
             helpTextWindow.Top = this.Top;
             helpTextWindow.Owner = this;
             helpTextWindow.Show();*/
-            result = "Cancel";
-            while (result == "Cancel")
+            if (double.IsNaN(this.listBox.Height))
             {
-                sizeSetWindow ss = new sizeSetWindow(ref result);
-                ss.ShowDialog();
-                result = ss.result;
+                result = "Cancel";
+                while (result == "Cancel")
+                {
+                    sizeSetWindow ss = new sizeSetWindow(ref result);
+                    ss.ShowDialog();
+                    result = ss.result;
+                }
+                String width = result.Substring(0, result.IndexOf("x"));
+                String height = result.Substring(result.IndexOf("x") + 1);
+                this.listBox.Height = Convert.ToInt32(height);
+                this.listBox.Width = Convert.ToInt32(width);
             }
-            String width = result.Substring(0, result.IndexOf("x"));
-            String height = result.Substring(result.IndexOf("x") + 1);
-            this.listBox.Height = Convert.ToInt32(height);
-            this.listBox.Width = Convert.ToInt32(width);
-
             lp = new layerPallette(ViewModel.Rectangles);
             lp.Left = System.Windows.SystemParameters.WorkArea.Right - lp.Width; // sets pallette to right edge of the monitor
             lp.Top = System.Windows.SystemParameters.WorkArea.Bottom - lp.Height; // sets the pallette to be aligned on the bottom of the monitor
@@ -530,11 +532,6 @@ namespace SampleCode
 
         }
 
-        private void gridCut_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         private void button1_Click_1(object sender, RoutedEventArgs e)
         {
             Microsoft.Win32.OpenFileDialog dlg =
@@ -863,7 +860,7 @@ namespace SampleCode
                 }
                 else if (e.Key == Key.X)
                 {
-                    gridCut_Click(sender, e);
+                    rectCut_Click(sender, e);
                     e.Handled = true;
                 }
             }
@@ -896,17 +893,56 @@ namespace SampleCode
 
         private void rectResize_Click(object sender, RoutedEventArgs e)
         {
-
+            if ((this.listBox.SelectedItems.Count > 1) || (this.listBox.SelectedItems.Count == 0))
+            {
+                MessageBox.Show("Please select only one layer to scale.", "Scale Error", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+            }
+            else
+            {
+                resizeWindow rsw = new resizeWindow(ref result, "Scale");
+                rsw.ShowDialog();
+                result = rsw.result;
+                if (result != "Cancel")
+                {
+                    this.ViewModel.Rectangles[ViewModel.Rectangles.IndexOf((RectangleViewModel)this.listBox.SelectedItem)].Scale = Convert.ToDouble(result);
+                }
+            }
         }
 
         private void rectRotate_Click(object sender, RoutedEventArgs e)
         {
-
+            if (this.listBox.SelectedItems.Count > 1)
+            {
+                MessageBox.Show("Please select only one layer to rotate.", "Scale Error", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+            }
+            else
+            {
+                resizeWindow rsw = new resizeWindow(ref result, "Rotation");
+                rsw.ShowDialog();
+                result = rsw.result;
+                if (result != "Cancel")
+                {
+                    this.ViewModel.Rectangles[ViewModel.Rectangles.IndexOf((RectangleViewModel)this.listBox.SelectedItem)].RAngle = Convert.ToDouble(result);
+                }
+            }
         }
 
         private void rectOpacity_Click(object sender, RoutedEventArgs e)
         {
-
+            if (this.listBox.SelectedItems.Count > 1)
+            {
+                MessageBox.Show("Please select only one layer to modify.", "Scale Error", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+            }
+            else
+            {
+                resizeWindow rsw = new resizeWindow(ref result, "Opacity");
+                rsw.ShowDialog();
+                result = rsw.result;
+                if (result != "Cancel")
+                {
+                    this.ViewModel.Rectangles[ViewModel.Rectangles.IndexOf((RectangleViewModel)this.listBox.SelectedItem)].Opacity = Convert.ToDouble(result);
+                }
+            }
         }
 
         private void zoomText_KeyUp(object sender, KeyEventArgs e)
@@ -922,6 +958,11 @@ namespace SampleCode
                     zoomSlider.Value = Convert.ToDouble(zoomText.Text) / 100;
                 }
             }
+        }
+
+        private void rectCut_Click(object sender, RoutedEventArgs e)
+        {
+
         }
 
     }

@@ -298,3 +298,5 @@ E:\Documents\Capstone\TeamRotis - Brian Copy\obj\Debug\GenerateResource-ResGen.r
 E:\Documents\Capstone\TeamRotis - Brian Copy\obj\Debug\ResGen.read.1.tlog
 E:\Documents\Capstone\TeamRotis - Brian Copy\obj\Debug\GenerateResource-ResGen.write.1.tlog
 E:\Documents\Capstone\TeamRotis - Brian Copy\obj\Debug\ResGen.write.1.tlog
+C:\Users\Heidi\Documents\Capstone\TeamRotis - Brian Copy\obj\Debug\resizeWindow.baml
+C:\Users\Heidi\Documents\Capstone\TeamRotis - Brian Copy\obj\Debug\resizeWindow.g.cs
