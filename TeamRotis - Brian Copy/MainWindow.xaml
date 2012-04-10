@@ -80,7 +80,8 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition />
-            </Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="50" />
                 <ColumnDefinition />
@@ -160,6 +161,25 @@
         The data-template that defines the visuals for each rectangle is in the 
         resources section at the start of this file.
         -->
+        <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="1">
+            <Slider
+                Grid.Row="2"
+                Grid.Column="1"
+                Width="100"
+                HorizontalAlignment="Left"
+                x:Name="zoomSlider"
+                Minimum=".1"
+                Maximum="10"
+                Value="1"
+                TickFrequency=".1"/>
+            <TextBox
+                Margin="4,0,0,0"
+                HorizontalAlignment="Left"
+                x:Name="zoomText"
+                Text="{Binding Path=Value, ElementName=zoomSlider, StringFormat=p0}"
+                KeyUp="zoomText_KeyUp"
+            />
+        </StackPanel>
         <ScrollViewer Grid.Column="1" Grid.Row="1" HorizontalScrollBarVisibility="Auto">
             <ListBox Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="1"
             x:Name="listBox"
@@ -191,6 +211,10 @@
                         <Setter Property="Control.Padding" Value="0" />
                     </Style>
                 </ListBox.ItemContainerStyle>
+                <ListBox.LayoutTransform>
+                    <ScaleTransform ScaleX="{Binding Path=Value, ElementName=zoomSlider}"
+                                    ScaleY="{Binding Path=Value, ElementName=zoomSlider}"/>
+                </ListBox.LayoutTransform>
             </ListBox>
         </ScrollViewer>
         <!--
@@ -208,5 +232,5 @@
                 Opacity=".5"
                 />
             </Canvas>
-        </Grid>
+    </Grid>
 </Window>

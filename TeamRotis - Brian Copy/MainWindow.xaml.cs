@@ -909,5 +909,20 @@ namespace SampleCode
 
         }
 
+        private void zoomText_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                if (zoomText.Text.Substring(zoomText.Text.Length - 1, 1) == "%")
+                {
+                    zoomSlider.Value = Convert.ToDouble(zoomText.Text.Substring(0, zoomText.Text.Length - 1)) / 100;
+                }
+                else
+                {
+                    zoomSlider.Value = Convert.ToDouble(zoomText.Text) / 100;
+                }
+            }
+        }
+
     }
 }
