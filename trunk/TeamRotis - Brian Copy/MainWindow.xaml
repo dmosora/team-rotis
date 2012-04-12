@@ -60,7 +60,24 @@
                         </Rectangle.RenderTransform>
 
                     </Rectangle>
-                </Grid>
+                <Rectangle
+                    Width="{Binding Width}"
+                    Height="{Binding Height}" Cursor="Hand"
+                    Opacity="{Binding Opacity}"
+                    MouseDown="Rectangle_MouseDown"
+                    MouseUp="Rectangle_MouseUp"
+                    MouseMove="Rectangle_MouseMove">
+                    <Rectangle.Fill>
+                        <DrawingBrush Drawing="{Binding Draw}" />
+                    </Rectangle.Fill>
+                    <Rectangle.RenderTransform>
+                        <TransformGroup>
+                            <RotateTransform Angle="{Binding RAngle}"/>
+                            <ScaleTransform CenterX="{Binding X + Binding Width / 2}" CenterY="{Binding Y + Binding Height/2}" ScaleX="{Binding Scale}" ScaleY="{Binding Scale}" />
+                        </TransformGroup>
+                    </Rectangle.RenderTransform>
+                </Rectangle>
+            </Grid>
             </DataTemplate>
 
         </Window.Resources>
@@ -134,27 +151,26 @@
             </Menu>
             <!-- Tool selection menu -->
             <Menu Width="50" Grid.Column="0" VerticalContentAlignment="Stretch" VerticalAlignment="Top" HorizontalAlignment="Left" Grid.Row="1">
-                <Button Name="selectToolButton" Height="32" Width="32">
+                <Button Name="selectToolButton" Height="32" Width="32" Click="selectToolButton_Click">
                     <Button.Background>
                         <ImageBrush ImageSource="/SampleCode;component/resources/base_cursor.png" />
                     </Button.Background>
                 </Button>
-                <Button Name="handToolButton" Height="32" Width="32">
-                    
-                </Button>
-                <Button Name="pencilToolButton" Height="32" Width="32">
+                <Button Name="handToolButton" Height="32" Width="32" Click="handToolButton_Click">
+            </Button>
+                <Button Name="pencilToolButton" Height="32" Width="32" Click="pencilToolButton_Click">
                     <Button.Background>
-                        <ImageBrush ImageSource="/SampleCode;component/resources/pencil_32.png" />
+                        <ImageBrush ImageSource="/SampleCode;component/resources/Pencil_32.png" />
                     </Button.Background>
                 </Button>
-                <Button Name="rectSelectionToolButton" Height="32" Width="32">
-                </Button>
-                <Button Name="drawRectangleToolButton" Height="32" Width="32">
-                </Button>
-                <Button Name="drawOvalToolButton" Height="32" Width="32">
-                </Button>
-                <Button Name="textToolButton" Height="32" Width="32">
-                </Button>
+                <Button Name="rectSelectionToolButton" Height="32" Width="32" Click="rectSelectionToolButton_Click">
+            </Button>
+                <Button Name="drawRectangleToolButton" Height="32" Width="32" Click="drawRectangleToolButton_Click">
+            </Button>
+                <Button Name="drawOvalToolButton" Height="32" Width="32" Click="drawOvalToolButton_Click">
+            </Button>
+                <Button Name="textToolButton" Height="32" Width="32" Click="textToolButton_Click">
+            </Button>
             </Menu>
             <!--
 	    This ListBox presents the colored rectangles.
@@ -182,7 +198,7 @@
             />
         </StackPanel>
         <ScrollViewer Grid.Column="1" Grid.Row="1" HorizontalScrollBarVisibility="Auto">
-            <ListBox Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="1"
+            <ListBox Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Left" Grid.Row="1"
             x:Name="listBox"
             ItemsSource="{Binding Rectangles}"
             SelectionMode="Extended" VerticalContentAlignment="Center" BorderThickness="1">
@@ -210,12 +226,18 @@
                         Value="{Binding Y}"
                         />
                         <Setter Property="Control.Padding" Value="0" />
+                        <Style.Resources>
+                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Transparent"/>
+                        <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="Transparent"/>
+
+                    </Style.Resources>
                     </Style>
                 </ListBox.ItemContainerStyle>
                 <ListBox.LayoutTransform>
                     <ScaleTransform ScaleX="{Binding Path=Value, ElementName=zoomSlider}"
                                     ScaleY="{Binding Path=Value, ElementName=zoomSlider}"/>
                 </ListBox.LayoutTransform>
+                
             </ListBox>
         </ScrollViewer>
         <!--

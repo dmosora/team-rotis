@@ -17,7 +17,6 @@ using System.Collections;
 using Microsoft.Win32;
 using System.IO;
 
-
 namespace SampleCode
 {
     public partial class MainWindow : Window
@@ -25,47 +24,39 @@ namespace SampleCode
         #region Data Members
 
         /// <summary>
-        /// Set to 'true' when the left mouse-button is down.
+        /// Set to 'true' when the left mouse-button is down, for mode ==0 && mode ==1
         /// </summary>
         private bool isLeftMouseButtonDownOnWindow = false;
-        public String result = null;
-
-        /// <summary>
-        /// Set to 'true' when dragging the 'selection rectangle'.
-        /// Dragging of the selection rectangle only starts when the left mouse-button is held down and the mouse-cursor
-        /// is moved more than a threshold distance.
-        /// </summary>
-        private bool isDraggingSelectionRect = false;
-
-        /// <summary>
-        /// Records the location of the mouse (relative to the window) when the left-mouse button has pressed down.
-        /// </summary>
-        private Point origMouseDownPoint;
-
-        /// <summary>
-        /// The threshold distance the mouse-cursor must move before drag-selection begins.
-        /// </summary>
-        private static readonly double DragThreshold = 5;
-
-        /// <summary>
-        /// Set to 'true' when the left mouse-button is held down on a rectangle.
-        /// </summary>
         private bool isLeftMouseDownOnRectangle = false;
-
-        /// <summary>
-        /// Set to 'true' when the left mouse-button and control are held down on a rectangle.
-        /// </summary>
         private bool isLeftMouseAndControlDownOnRectangle = false;
 
         /// <summary>
-        /// Set to 'true' when dragging a rectangle.
+        /// Dragging of the selection rectangle only starts when the left mouse-button is held down and the mouse-cursor
+        /// is moved more than a threshold distance.
+        /// Records the location of the mouse (relative to the window) when the left-mouse button has pressed down.
+        /// The threshold distance the mouse-cursor must move before drag-selection begins. for mode == 2
         /// </summary>
-        private bool isDraggingRectangle = false;
+        private bool isDraggingSelectionRect = false;
+        private Point origMouseDownPoint;
+        private static readonly double DragThreshold = 5;
 
         /// <summary>
-        /// Used to stored names of layers for layer pallette
+        /// The current operation mode, 0:slection, 1:hand/drag, 2:select/replace, 3:draw pen, 4:cirlce draw, 5:rectangle draw, 6:add text
         /// </summary>
-        /// private List<String> layers;
+        private int mode = 0;
+
+        /// <summary>
+        /// Saved last point when drawing pen (mode == 3)
+        /// </summary>
+        private Point LastPainted = new Point(-1, -1);
+
+        /// <summary>
+        /// restult string for new window
+        /// </summary>
+        public String result = null;
+
+        // Set to 'true' when dragging a rectangle. replace with "mode == 2"
+        private bool isDraggingRectangle = false;
 
         /// <summary>
         /// Layer Pallette window
@@ -86,7 +77,7 @@ namespace SampleCode
         {
             get
             {
-                return (ViewModel) this.DataContext;
+                return (ViewModel)this.DataContext;
             }
         }
 
@@ -103,6 +94,7 @@ namespace SampleCode
             helpTextWindow.Top = this.Top;
             helpTextWindow.Owner = this;
             helpTextWindow.Show();*/
+
             if (double.IsNaN(this.listBox.Height))
             {
                 result = "Cancel";
@@ -131,6 +123,7 @@ namespace SampleCode
         /// </summary>
         private void Rectangle_MouseDown(object sender, MouseButtonEventArgs e)
         {
+
             if (e.ChangedButton != MouseButton.Left)
             {
                 return;
@@ -141,46 +134,76 @@ namespace SampleCode
 
             isLeftMouseDownOnRectangle = true;
 
-            if ((Keyboard.Modifiers & ModifierKeys.Control) != 0)
+            switch (mode)
             {
-                //
-                // Control key was held down.
-                // This means that the rectangle is being added to or removed from the existing selection.
-                // Don't do anything yet, we will act on this later in the MouseUp event handler.
-                //
-                isLeftMouseAndControlDownOnRectangle = true;
-            }
-            else
-            {
-                //
-                // Control key is not held down.
-                //
-                isLeftMouseAndControlDownOnRectangle = false;
+                // slection mode
+                case 0:
+                // hand/drag
+                case 1: //for mousedown on rectangle perform selection logic              
+                    if ((Keyboard.Modifiers & ModifierKeys.Control) != 0)
+                    {
+                        //
+                        // Control key was held down.
+                        // This means that the rectangle is being added to or removed from the existing selection.
+                        // Don't do anything yet, we will act on this later in the MouseUp event handler.
+                        //
+                        isLeftMouseAndControlDownOnRectangle = true;
+                    }
+                    else
+                    {
+                        //
+                        // Control key is not held down.
+                        //
+                        isLeftMouseAndControlDownOnRectangle = false;
 
-                if (this.listBox.SelectedItems.Count == 0)
-                {
-                    //
-                    // Nothing already selected, select the item.
-                    //
-                    this.listBox.SelectedItems.Add(rectangleViewModel);
-                }
-                else if (this.listBox.SelectedItems.Contains(rectangleViewModel))
-                {
-                    // 
-                    // Item is already selected, do nothing.
-                    // We will act on this in the MouseUp if there was no drag operation.
-                    //
-                }
-                else
-                {
-                    //
-                    // Item is not selected.
-                    // Deselect all, and select the item.
-                    //
-                    this.listBox.SelectedItems.Clear();
-                    this.listBox.SelectedItems.Add(rectangleViewModel);
-                }
+                        if (this.listBox.SelectedItems.Count == 0)
+                        {
+                            //
+                            // Nothing already selected, select the item.
+                            //
+                            this.listBox.SelectedItems.Add(rectangleViewModel);
+                        }
+                        else if (this.listBox.SelectedItems.Contains(rectangleViewModel))
+                        {
+                            // 
+                            // Item is already selected, do nothing.
+                            // We will act on this in the MouseUp if there was no drag operation.
+                            //
+                        }
+                        else
+                        {
+                            //
+                            // Item is not selected.
+                            // Deselect all, and select the item.
+                            //
+                            this.listBox.SelectedItems.Clear();
+                            this.listBox.SelectedItems.Add(rectangleViewModel);
+                        }
+                    }
+
+                    rectangle.CaptureMouse();
+                    origMouseDownPoint = e.GetPosition(this);
+                    break;
+                // draw pen
+                case 3:
+                    DrawCircle(sender, e);
+                        rectangleViewModel.X = rectangleViewModel.X + 1;
+                        rectangleViewModel.X = rectangleViewModel.X - 1;
+                    break;
+                // select/replace
+                case 2:
+                // circle
+                case 4:
+                // rectangle
+                case 5:
+                // text
+                case 6:
+                        isLeftMouseDownOnRectangle = true;
+                    break;
+                default:
+                    break;
             }
+            //listBox.Focus();
 
             rectangle.CaptureMouse();
             origMouseDownPoint = e.GetPosition(this);
@@ -193,74 +216,108 @@ namespace SampleCode
         /// </summary>
         private void Rectangle_MouseUp(object sender, MouseButtonEventArgs e)
         {
+            var rectangle = (FrameworkElement)sender;
+            var rectangleViewModel = (RectangleViewModel)rectangle.DataContext;
+
             if (isLeftMouseDownOnRectangle)
             {
-                var rectangle = (FrameworkElement)sender;
-                var rectangleViewModel = (RectangleViewModel)rectangle.DataContext;
 
-                if (!isDraggingRectangle)
+                switch (mode)
                 {
-                    //
-                    // Execute mouse up selection logic only if there was no drag operation.
-                    //
-                    if (isLeftMouseAndControlDownOnRectangle)
-                    {
-                        //
-                        // Control key was held down.
-                        // Toggle the selection.
-                        //
-                        if (this.listBox.SelectedItems.Contains(rectangleViewModel))
+                    // slection mode
+                    case 0:
+                        if (isLeftMouseAndControlDownOnRectangle)
                         {
                             //
-                            // Item was already selected, control-click removes it from the selection.
+                            // Control key was held down.
+                            // Toggle the selection.
                             //
-                            this.listBox.SelectedItems.Remove(rectangleViewModel);
-                        }
-                        else
-                        {
-                            // 
-                            // Item was not already selected, control-click adds it to the selection.
-                            //
-                            this.listBox.SelectedItems.Add(rectangleViewModel);
-                        }
-                    }
-                    else
-                    {
-                        //
-                        // Control key was not held down.
-                        //
-                        if (this.listBox.SelectedItems.Count == 1 &&
-                            this.listBox.SelectedItem == rectangleViewModel)
-                        {
-                            //
-                            // The item that was clicked is already the only selected item.
-                            // Don't need to do anything.
-                            //
+                            if (this.listBox.SelectedItems.Contains(rectangleViewModel))
+                            {
+                                //
+                                // Item was already selected, control-click removes it from the selection.
+                                //
+                                this.listBox.SelectedItems.Remove(rectangleViewModel);
+                            }
+                            else
+                            {
+                                // 
+                                // Item was not already selected, control-click adds it to the selection.
+                                //
+                                this.listBox.SelectedItems.Add(rectangleViewModel);
+                            }
                         }
                         else
                         {
                             //
-                            // Clear the selection and select the clicked item as the only selected item.
+                            // Control key was not held down.
                             //
-                            this.listBox.SelectedItems.Clear();
-                            this.listBox.SelectedItems.Add(rectangleViewModel);
+                            if (this.listBox.SelectedItems.Count == 1 &&
+                                this.listBox.SelectedItem == rectangleViewModel)
+                            {
+                                //
+                                // The item that was clicked is already the only selected item.
+                                // Don't need to do anything.
+                                //
+                            }
+                            else
+                            {
+                                //
+                                // Clear the selection and select the clicked item as the only selected item.
+                                //
+                                this.listBox.SelectedItems.Clear();
+                                this.listBox.SelectedItems.Add(rectangleViewModel);
+                            }
                         }
-                    }
-                }
-                else
-                {
-                    //if was dragging rectangle, save state of new position
-                    ViewModel.saveState();
-                }
+                        rectangle.ReleaseMouseCapture();
+                        isLeftMouseDownOnRectangle = false;
+                        isLeftMouseAndControlDownOnRectangle = false;
 
-                rectangle.ReleaseMouseCapture();
-                isLeftMouseDownOnRectangle = false;
-                isLeftMouseAndControlDownOnRectangle = false;
+                        e.Handled = true;
+                        isDraggingRectangle = false;
+                        break;
 
-                e.Handled = true;
+                    // hand/drag
+                    case 1:
+                        isDraggingRectangle = false;
+                        isLeftMouseDownOnRectangle = false;
+                        isLeftMouseAndControlDownOnRectangle = false;
+
+                        e.Handled = true;
+                        break;
+
+                    // select/replace
+                    case 2:
+                    // circle
+                    case 4:
+                    // rectangle
+                    case 5:
+                    // text
+                    case 6:
+                        if (isDraggingSelectionRect)
+                        {
+                            //
+                            // Drag selection has ended, apply the 'selection rectangle'.
+                            //
+
+                            isDraggingSelectionRect = false;
+                            ApplyDragSelectionRect();
+
+                            e.Handled = true;
+                        }
+                        break;
+                    default:
+                        break;
+                }
             }
 
+            rectangle.ReleaseMouseCapture();
+            isLeftMouseDownOnRectangle = false;
+            isLeftMouseAndControlDownOnRectangle = false;
+
+            e.Handled = true;
             isDraggingRectangle = false;
+            listBox.Focus();
         }
 
         /// <summary>
@@ -268,42 +325,121 @@ namespace SampleCode
         /// </summary>
         private void Rectangle_MouseMove(object sender, MouseEventArgs e)
         {
-            if (isDraggingRectangle)
+            var rectangle1 = (FrameworkElement)sender;
+            var rectangleViewModel = (RectangleViewModel)rectangle1.DataContext;
+
+            switch (mode)
             {
-                //
-                // Drag-move selected rectangles.
-                //
-                Point curMouseDownPoint = e.GetPosition(this);
-                var dragDelta = curMouseDownPoint - origMouseDownPoint;
+                // slection mode
+                case 0:
+                    // don't do anything for selection
+                    break;
 
-                origMouseDownPoint = curMouseDownPoint;
+                // hand/drag
+                case 1:
+                    if (isDraggingRectangle)
+                    {
+                        //
+                        // Drag-move selected rectangles.
+                        //
+                        Point curMouseDownPoint = e.GetPosition(this);
+                        var dragDelta = curMouseDownPoint - origMouseDownPoint;
 
-                foreach (RectangleViewModel rectangle in this.listBox.SelectedItems)
-                {
-                    rectangle.X += dragDelta.X;
-                    rectangle.Y += dragDelta.Y;
-                }
+                        origMouseDownPoint = curMouseDownPoint;
+
+                        foreach (RectangleViewModel rectangle in this.listBox.SelectedItems)
+                        {
+                            rectangle.X += dragDelta.X;
+                            rectangle.Y += dragDelta.Y;
+                        }
+                    }
+                    else if (isLeftMouseDownOnRectangle)
+                    {
+                        {
+                            //
+                            // The user is left-dragging the rectangle,
+                            // but don't initiate the drag operation until
+                            // the mouse cursor has moved more than the threshold value.
+                            //
+                            Point curMouseDownPoint = e.GetPosition(this);
+                            var dragDelta = curMouseDownPoint - origMouseDownPoint;
+                            double dragDistance = Math.Abs(dragDelta.Length);
+                            if (dragDistance > DragThreshold)
+                            {
+                                //
+                                // When the mouse has been dragged more than the threshold value commence dragging the rectangle.
+                                //
+                                isDraggingRectangle = true;
+                            }
+                        }
+                    }
+                    break;
+
+                // draw pen
+                case 3:
+                    if (isLeftMouseDownOnRectangle)
+                    {
+                        DrawLine(sender, e);
+                        rectangleViewModel.X = rectangleViewModel.X + 1;
+                        rectangleViewModel.X = rectangleViewModel.X - 1;
+                    }
+                    break;
+
+
+                // select/replace
+                case 2:
+                // circle
+                case 4:
+                // rectangle
+                case 5:
+                    // for each manage dragging rectangle
+
+
+
+                    if (isDraggingSelectionRect)
+                    {
+                        //
+                        // Drag selection is in progress.
+                        //
+                        Point curMouseDownPoint = e.GetPosition(dragSelectionCanvas);
+                        UpdateDragSelectionRect(origMouseDownPoint, curMouseDownPoint);
+
+                        e.Handled = true;
+                    }
+                    else if (isLeftMouseDownOnRectangle)
+                    {
+                        //
+                        // The user is left-dragging the mouse,
+                        // but don't initiate drag selection until
+                        // they have dragged past the threshold value.
+                        //
+                        Point curMouseDownPoint = e.GetPosition(dragSelectionCanvas);
+                        var dragDelta = curMouseDownPoint - origMouseDownPoint;
+                        double dragDistance = Math.Abs(dragDelta.Length);
+                        if (dragDistance > DragThreshold)
+                        {
+                            //
+                            // When the mouse has been dragged more than the threshold value commence drag selection.
+                            //
+                            isDraggingSelectionRect = true;
+                            InitDragSelectionRect(origMouseDownPoint, curMouseDownPoint);
+                        }
+
+                        e.Handled = true;
+
+
+                    }
+                    break;
+
+                // text
+                case 6:
+                    //?
+                    break;
+                default:
+                    break;
             }
-            else if (isLeftMouseDownOnRectangle)
-            {
-                //
-                // The user is left-dragging the rectangle,
-                // but don't initiate the drag operation until
-                // the mouse cursor has moved more than the threshold value.
-                //
-                Point curMouseDownPoint = e.GetPosition(this);
-                var dragDelta = curMouseDownPoint - origMouseDownPoint;
-                double dragDistance = Math.Abs(dragDelta.Length);
-                if (dragDistance > DragThreshold)
-                {
-                    //
-                    // When the mouse has been dragged more than the threshold value commence dragging the rectangle.
-                    //
-                    isDraggingRectangle = true;
-                }
+            e.Handled = true;
 
-                e.Handled = true;
-            }
         }
 
         /// <summary>
@@ -313,10 +449,16 @@ namespace SampleCode
         {
             if (e.ChangedButton == MouseButton.Left)
             {
-                //
-                //  Clear selection immediately when starting drag selection.
-                //
-                listBox.SelectedItems.Clear();
+                switch (mode)
+                {
+                    // slection mode
+                    case 0:
+                        // only selection cares about mouse down not on canvas
+                        listBox.SelectedItems.Clear();
+                        break;
+                    default:
+                        break;
+                }
 
                 isLeftMouseButtonDownOnWindow = true;
                 origMouseDownPoint = e.GetPosition(dragSelectionCanvas);
@@ -325,6 +467,8 @@ namespace SampleCode
 
                 e.Handled = true;
             }
+
+            listBox.Focus();
         }
 
         /// <summary>
@@ -334,37 +478,58 @@ namespace SampleCode
         {
             if (e.ChangedButton == MouseButton.Left)
             {
-                bool wasDragSelectionApplied = false;
-
-                if (isDraggingSelectionRect)
+                switch (mode)
                 {
-                    //
-                    // Drag selection has ended, apply the 'selection rectangle'.
-                    //
+                    // slection mode
+                    case 0:
+                        if (isLeftMouseButtonDownOnWindow)
+                        {
+                            isLeftMouseButtonDownOnWindow = false;
+                            this.ReleaseMouseCapture();
 
-                    isDraggingSelectionRect = false;
-                    ApplyDragSelectionRect();
+                            e.Handled = true;
+                        }
+                        //
+                        // A click and release in empty space clears the selection.
+                        //
+                        listBox.SelectedItems.Clear();
+                        break;
+                    // hand/drag
+                    case 1:
+                        break;
+                    // draw pen
+                    case 3:
+                        break;
 
-                    e.Handled = true;
-                    wasDragSelectionApplied = true;
+                    // select/replace
+                    case 2:
+                    // circle
+                    case 4:
+                    // rectangle
+                    case 5:
+                    // text
+                    case 6:
+                        if (isDraggingSelectionRect)
+                        {
+                            //
+                            // Drag selection has ended, apply the 'selection rectangle'.
+                            //
+
+                            isDraggingSelectionRect = false;
+                            ApplyDragSelectionRect();
+
+                            e.Handled = true;
+                        }
+                        break;
+                    default:
+                        break;
                 }
+                isLeftMouseButtonDownOnWindow = false;
+                this.ReleaseMouseCapture();
 
-                if (isLeftMouseButtonDownOnWindow)
-                {
-                    isLeftMouseButtonDownOnWindow = false;
-                    this.ReleaseMouseCapture();
-
-                    e.Handled = true;
-                }
-
-                if (!wasDragSelectionApplied)
-                {
-                    //
-                    // A click and release in empty space clears the selection.
-                    //
-                    listBox.SelectedItems.Clear();
-                }
+                e.Handled = true;
             }
+            listBox.Focus();
         }
 
         /// <summary>
@@ -372,36 +537,54 @@ namespace SampleCode
         /// </summary>
         private void Window_MouseMove(object sender, MouseEventArgs e)
         {
-            if (isDraggingSelectionRect)
+            switch (mode)
             {
-                //
-                // Drag selection is in progress.
-                //
-                Point curMouseDownPoint = e.GetPosition(dragSelectionCanvas);
-                UpdateDragSelectionRect(origMouseDownPoint, curMouseDownPoint);
+                // select/replace
+                case 2:
+                // circle
+                case 4:
+                // rectangle
+                case 5:
+                    // for each manage dragging rectangle
 
-                e.Handled = true;
-            }
-            else if (isLeftMouseButtonDownOnWindow)
-            {
-                //
-                // The user is left-dragging the mouse,
-                // but don't initiate drag selection until
-                // they have dragged past the threshold value.
-                //
-                Point curMouseDownPoint = e.GetPosition(dragSelectionCanvas);
-                var dragDelta = curMouseDownPoint - origMouseDownPoint;
-                double dragDistance = Math.Abs(dragDelta.Length);
-                if (dragDistance > DragThreshold)
-                {
-                    //
-                    // When the mouse has been dragged more than the threshold value commence drag selection.
-                    //
-                    isDraggingSelectionRect = true;
-                    InitDragSelectionRect(origMouseDownPoint, curMouseDownPoint);
-                }
 
-                e.Handled = true;
+
+                    if (isDraggingSelectionRect)
+                    {
+                        //
+                        // Drag selection is in progress.
+                        //
+                        Point curMouseDownPoint = e.GetPosition(dragSelectionCanvas);
+                        UpdateDragSelectionRect(origMouseDownPoint, curMouseDownPoint);
+
+                        e.Handled = true;
+                    }
+                    else if (isLeftMouseButtonDownOnWindow)
+                    {
+                        //
+                        // The user is left-dragging the mouse,
+                        // but don't initiate drag selection until
+                        // they have dragged past the threshold value.
+                        //
+                        Point curMouseDownPoint = e.GetPosition(dragSelectionCanvas);
+                        var dragDelta = curMouseDownPoint - origMouseDownPoint;
+                        double dragDistance = Math.Abs(dragDelta.Length);
+                        if (dragDistance > DragThreshold)
+                        {
+                            //
+                            // When the mouse has been dragged more than the threshold value commence drag selection.
+                            //
+                            isDraggingSelectionRect = true;
+                            InitDragSelectionRect(origMouseDownPoint, curMouseDownPoint);
+                        }
+
+                        e.Handled = true;
+
+
+                    }
+                    break;
+                default:
+                    break;
             }
         }
 
@@ -470,27 +653,117 @@ namespace SampleCode
             double height = dragSelectionBorder.Height;
             Rect dragRect = new Rect(x, y, width, height);
 
-            //
-            // Inflate the drag selection-rectangle by 1/10 of its size to 
-            // make sure the intended item is selected.
-            //
-            dragRect.Inflate(width / 10, height / 10);
+            RectangleViewModel current;
 
-            //
-            // Clear the current selection.
-            //
-            listBox.SelectedItems.Clear();
-
-            //
-            // Find and select all the list box items.
-            //
-            foreach (RectangleViewModel rectangleViewModel in this.ViewModel.Rectangles)
+            switch (mode)
             {
-                Rect itemRect = new Rect(rectangleViewModel.X, rectangleViewModel.Y, rectangleViewModel.Width, rectangleViewModel.Height);
-                if (dragRect.Contains(itemRect))
-                {
-                    listBox.SelectedItems.Add(rectangleViewModel);
-                }
+                // slection mode
+                case 0:
+                    //
+                    // Inflate the drag selection-rectangle by 1/10 of its size to 
+                    // make sure the intended item is selected.
+                    //
+                    dragRect.Inflate(width / 10, height / 10);
+
+                    //
+                    // Clear the current selection.
+                    //
+                    listBox.SelectedItems.Clear();
+
+                    //
+                    // Find and select all the list box items.
+                    //
+                    foreach (RectangleViewModel rectangleViewModel in this.ViewModel.Rectangles)
+                    {
+                        Rect itemRect = new Rect(rectangleViewModel.X, rectangleViewModel.Y, rectangleViewModel.Width, rectangleViewModel.Height);
+                        if (dragRect.Contains(itemRect))
+                        {
+                            listBox.SelectedItems.Add(rectangleViewModel);
+                        }
+                    }
+                    break;
+                // hand/drag
+                case 1:
+                    MessageBox.Show("Hand Drag tool shouldn't call this method.", "Logic error", MessageBoxButton.OK);
+                    break;
+                // select/replace
+                case 2:
+                    foreach (RectangleViewModel rectangle in this.listBox.SelectedItems)
+                    {
+                        int angle = ((int)Math.Ceiling(rectangle.RAngle))%360;
+                        if (angle == 0)
+                        {
+                            // call cut function with x,y,height,width
+                        }
+                        else
+                        {
+                            //setting points for selection call
+
+                            Point top = new Point(0, 0); Point right = new Point(0, 0); Point left = new Point(0, 0); Point bottum = new Point(0, 0);
+                            if (angle > 0 && angle <= 90)
+                            {
+                                top = new Point(x + width, y);
+                                right = new Point(x + width, y + height);
+                                bottum = new Point(x, y + height);
+                                left = new Point(x, y);
+                            }
+                            if (angle > 90 && angle <= 180)
+                            {
+                                top = new Point(x + width, y + height);
+                                right = new Point(x, y + height);
+                                bottum = new Point(x, y);
+                                left = new Point(x + width, y);
+                            }
+                            if (angle > 180 && angle <= 270)
+                            {
+                                top = new Point(x, y + height);
+                                right = new Point(x, y);
+                                bottum = new Point(x+width, y);
+                                left = new Point(x+width, y+height);
+                            }
+                            if (angle > 270)
+                            {
+                                top = new Point(x, y);
+                                right = new Point(x + width, y);
+                                bottum = new Point(x+width, y + height);
+                                left = new Point(x, y+height);
+                            }
+                            top.X = Math.Cos(-(rectangle.RAngle * Math.PI / 180)) * (top.X - (rectangle.X) - 50) / (rectangle.Scale) - Math.Sin(-(rectangle.RAngle * Math.PI / 180)) * (top.Y - (rectangle.Y) - 25) / (rectangle.Scale);
+                            top.Y = Math.Sin(-(rectangle.RAngle * Math.PI / 180)) * (top.X - (rectangle.X) - 50) / (rectangle.Scale) + Math.Cos(-(rectangle.RAngle * Math.PI / 180)) * (top.Y - (rectangle.Y) - 25) / (rectangle.Scale);
+
+                            right.X = Math.Cos(-(rectangle.RAngle * Math.PI / 180)) * (right.X - (rectangle.X) - 50) / (rectangle.Scale) - Math.Sin(-(rectangle.RAngle * Math.PI / 180)) * (right.Y - (rectangle.Y) - 25) / (rectangle.Scale);
+                            right.Y = Math.Sin(-(rectangle.RAngle * Math.PI / 180)) * (right.X - (rectangle.X) - 50) / (rectangle.Scale) + Math.Cos(-(rectangle.RAngle * Math.PI / 180)) * (right.Y - (rectangle.Y) - 25) / (rectangle.Scale);
+
+                            bottum.X = Math.Cos(-(rectangle.RAngle * Math.PI / 180)) * (bottum.X - (rectangle.X) - 50) / (rectangle.Scale) - Math.Sin(-(rectangle.RAngle * Math.PI / 180)) * (bottum.Y - (rectangle.Y) - 25) / (rectangle.Scale);
+                            bottum.Y = Math.Sin(-(rectangle.RAngle * Math.PI / 180)) * (bottum.X - (rectangle.X) - 50) / (rectangle.Scale) + Math.Cos(-(rectangle.RAngle * Math.PI / 180)) * (bottum.Y - (rectangle.Y) - 25) / (rectangle.Scale);
+
+                            left.X = Math.Cos(-(rectangle.RAngle * Math.PI / 180)) * (left.X - (rectangle.X) - 50) / (rectangle.Scale) - Math.Sin(-(rectangle.RAngle * Math.PI / 180)) * (left.Y - (rectangle.Y) - 25) / (rectangle.Scale);
+                            left.Y = Math.Sin(-(rectangle.RAngle * Math.PI / 180)) * (left.X - (rectangle.X) - 50) / (rectangle.Scale) + Math.Cos(-(rectangle.RAngle * Math.PI / 180)) * (left.Y - (rectangle.Y) - 25) / (rectangle.Scale);
+
+                            // call select function
+                        }
+                    }
+                    break;
+                // draw pen
+                case 3:
+                    MessageBox.Show("Hand Drag tool shouldn't call this method.", "Logic error", MessageBoxButton.OK);
+                    break;
+                // circle
+                case 4:
+                    current = ViewModel.addRectangle(x-50, y+20, width, height);
+                    ViewModel.addOval(current, new Point((width/2), (height/2)), width, height);
+                    break;
+                // rectangle
+                case 5:
+                    current = ViewModel.addRectangle(x-50, y+20, width, height);
+                    ViewModel.addRect(current, new Point(0, 0), width, height);
+                    break;
+                // text
+                case 6:
+                    current = ViewModel.addRectangle(x-50, y+20, width, height);
+                    string entry="test"; // = textentry
+                    ViewModel.addString(current, new Point(x + (width / 2) - 50, y + (height / 2) - 50), entry);
+                    break;
             }
         }
 
@@ -505,31 +778,12 @@ namespace SampleCode
                 j++;
                 todelete++;
             }
-            for (int i = todelete; i>-1; --i)
+            for (int i = todelete; i > -1; --i)
             {
                 this.ViewModel.deleteRectangle(selected[i]);
             }
 
-            lp.UpdateLayers(ViewModel.Rectangles);
-
-            this.ViewModel.saveState();
-        }
-
-        private void rectCopy_Click(object sender, RoutedEventArgs e)
-        {
-            RectangleViewModel[] selected = new RectangleViewModel[20];
-            int j = 0;
-            foreach (RectangleViewModel rectangle in this.listBox.SelectedItems)
-            {
-                selected[j] = rectangle;
-                j++;
-            }
-            //this.CopyPaste.save(selected);
-        }
-
-        private void rectPaste_Click(object sender, RoutedEventArgs e)
-        {
-
+            ViewModel.saveState();
         }
 
         private void button1_Click_1(object sender, RoutedEventArgs e)
@@ -588,9 +842,9 @@ namespace SampleCode
         private void topSave_Click(object sender, RoutedEventArgs e)
         {
             listBox.SelectedItems.Clear();
-            
+
             SaveFileDialog sfd = new SaveFileDialog();
-            string path=null;
+            string path = null;
             if (sfd.ShowDialog() == true)
             {
                 path = sfd.FileName;
@@ -606,7 +860,7 @@ namespace SampleCode
             //surface.LayoutTransform = null;
 
             // Get the size of canvas
-            Size size = new Size( surface.ActualWidth,  surface.ActualHeight);
+            Size size = new Size(surface.ActualWidth, surface.ActualHeight);
 
             // Measure and arrange the surface
             surface.Measure(size);
@@ -633,12 +887,12 @@ namespace SampleCode
                 encoder.Save(outStream);
                 outStream.Close();
             }
-           
+
 
             // Restore previously saved layout
             //surface.LayoutTransform = transform;
             surface.Arrange(new Rect(size));
-            
+
             ViewModel.saveState();
         }
 
@@ -709,7 +963,7 @@ namespace SampleCode
             this.ViewModel.makeTopLayer(selected);
             lp.UpdateLayers(ViewModel.Rectangles);
             listBox.Focus();
-            
+
             ViewModel.saveState();
         }
 
@@ -762,13 +1016,10 @@ namespace SampleCode
             sizeSetWindow ss = new sizeSetWindow(ref result);
             ss.ShowDialog();
             result = ss.result;
-            if (result != "Cancel")
-            {
-                String width = result.Substring(0, result.IndexOf("x"));
-                String height = result.Substring(result.IndexOf("x") + 1);
-                this.listBox.Height = Convert.ToInt32(height);
-                this.listBox.Width = Convert.ToInt32(width);
-            }
+            String width = result.Substring(0, result.IndexOf("x"));
+            String height = result.Substring(result.IndexOf("x") + 1);
+            this.listBox.Height = Convert.ToInt32(height);
+            this.listBox.Width = Convert.ToInt32(width);
         }
 
         private void topLayerShowPalette_Click(object sender, RoutedEventArgs e)
@@ -960,10 +1211,270 @@ namespace SampleCode
             }
         }
 
+        private void rectCopy_Click(object sender, RoutedEventArgs e)
+        {
+            RectangleViewModel[] selected = new RectangleViewModel[20];
+            int j = 0;
+            foreach (RectangleViewModel rectangle in this.listBox.SelectedItems)
+            {
+                if (j >= selected.Length)
+                {
+                    Array.Resize<RectangleViewModel>(ref selected, (selected.Length * 2));
+                }
+                selected[j] = rectangle;
+                j++;
+            }
+            ViewModel.copy(selected);
+        }
+
+        private void rectPaste_Click(object sender, RoutedEventArgs e)
+        {
+            Point origMouseDownPoint = Mouse.GetPosition(this);
+            ViewModel.paste(origMouseDownPoint);
+        }
+
         private void rectCut_Click(object sender, RoutedEventArgs e)
         {
-
+            rectCopy_Click(sender, e);
+            rectDelete_Click(sender, e);
         }
+        private void effectEmboss_Click(object sender, RoutedEventArgs e)
+        {
+
+            //Were going to make grayscale
+            RectangleViewModel[] selected = new RectangleViewModel[20];
+            int j = 0;
+            int toGrayscale = -1;
+            foreach (RectangleViewModel rectangle in this.listBox.SelectedItems)
+            {
+                selected[j] = rectangle;
+                j++;
+                toGrayscale++;
+            }
+            //this just tosses each to the viewModel
+            for (int i = toGrayscale; i > -1; --i)
+            {
+
+                this.ViewModel.effectEmboss(selected[i]);
+
+
+            }
+            //http://msdn.microsoft.com/en-us/library/ms750596.aspx
+        }
+        private void effectGaussianBlur_Click(object sender, RoutedEventArgs e)
+        {
+
+            //Were going to make grayscale
+            RectangleViewModel[] selected = new RectangleViewModel[20];
+            int j = 0;
+            int toGrayscale = -1;
+            foreach (RectangleViewModel rectangle in this.listBox.SelectedItems)
+            {
+                selected[j] = rectangle;
+                j++;
+                toGrayscale++;
+            }
+            //this just tosses each to the viewModel
+            for (int i = toGrayscale; i > -1; --i)
+            {
+
+                this.ViewModel.effectGaussianBlur(selected[i]);
+
+
+            }
+            //http://msdn.microsoft.com/en-us/library/ms750596.aspx
+        }
+        private void effectSmoothing_Click(object sender, RoutedEventArgs e)
+        {
+
+            //Were going to make grayscale
+            RectangleViewModel[] selected = new RectangleViewModel[20];
+            int j = 0;
+            int toGrayscale = -1;
+            foreach (RectangleViewModel rectangle in this.listBox.SelectedItems)
+            {
+                selected[j] = rectangle;
+                j++;
+                toGrayscale++;
+            }
+            //this just tosses each to the viewModel
+            for (int i = toGrayscale; i > -1; --i)
+            {
+
+                this.ViewModel.effectSmoothing(selected[i]);
+
+
+            }
+            //http://msdn.microsoft.com/en-us/library/ms750596.aspx
+        }
+        private void effectEdgeDetection_Click(object sender, RoutedEventArgs e)
+        {
+
+            //Were going to make grayscale
+            RectangleViewModel[] selected = new RectangleViewModel[20];
+            int j = 0;
+            int toGrayscale = -1;
+            foreach (RectangleViewModel rectangle in this.listBox.SelectedItems)
+            {
+                selected[j] = rectangle;
+                j++;
+                toGrayscale++;
+            }
+            //this just tosses each to the viewModel
+            for (int i = toGrayscale; i > -1; --i)
+            {
+
+                this.ViewModel.effectEdgeDetection(selected[i]);
+
+
+            }
+        }
+        //http://msdn.microsoft.com/en-us/library/ms750596.aspx
+
+        public void DrawCircle(object sender, RoutedEventArgs e)
+        {
+            RectangleViewModel[] selected = new RectangleViewModel[20];
+            int j = 0;
+            int toaddto = -1;
+            foreach (RectangleViewModel rectangle in this.listBox.SelectedItems)
+            {
+                selected[j] = rectangle;
+                j++;
+                toaddto++;
+            }
+
+            Point clicked = new Point();
+            //this just tosses each to the viewModel
+            for (int i = toaddto; i > -1; --i)
+            {
+                clicked.X = Math.Cos(-(selected[i].RAngle * Math.PI / 180)) * (Mouse.GetPosition(this).X - (selected[i].X) - 50) / (selected[i].Scale) - Math.Sin(-(selected[i].RAngle * Math.PI / 180)) * (Mouse.GetPosition(this).Y - (selected[i].Y) - 25) / (selected[i].Scale);
+                clicked.Y = Math.Sin(-(selected[i].RAngle * Math.PI / 180)) * (Mouse.GetPosition(this).X - (selected[i].X) - 50) / (selected[i].Scale) + Math.Cos(-(selected[i].RAngle * Math.PI / 180)) * (Mouse.GetPosition(this).Y - (selected[i].Y) - 25) / (selected[i].Scale);
+
+                // if mouse is in rectangle, draw text
+                if ((clicked.X > 3) && (clicked.X < selected[i].Width - 3) && (clicked.Y > 3) && (clicked.Y < selected[i].Height - 3))
+                {
+                    this.ViewModel.addCircle(selected[i], clicked);
+                    LastPainted = Mouse.GetPosition(this);
+                }
+            }
+        }
+        public void DrawLine(object sender, RoutedEventArgs e)
+        {
+            if ((LastPainted.X == -1) || (LastPainted.Y == -1))
+            {
+                DrawCircle(sender, e);
+                return;
+            }
+            RectangleViewModel[] selected = new RectangleViewModel[20];
+            int j = 0;
+            int toaddto = -1;
+            foreach (RectangleViewModel rectangle in this.listBox.SelectedItems)
+            {
+                selected[j] = rectangle;
+                j++;
+                toaddto++;
+            }
+
+            Point clicked = Mouse.GetPosition(this);
+            Point relativeLast = LastPainted;
+
+            //this just tosses each to the viewModel
+            for (int i = toaddto; i > -1; --i)
+            {
+
+                clicked.X = Math.Cos(-(selected[i].RAngle * Math.PI / 180)) * (Mouse.GetPosition(this).X - (selected[i].X)-50) / (selected[i].Scale) - Math.Sin(-(selected[i].RAngle * Math.PI / 180)) * (Mouse.GetPosition(this).Y - (selected[i].Y) - 25) / (selected[i].Scale);
+                clicked.Y = Math.Sin(-(selected[i].RAngle * Math.PI / 180)) * (Mouse.GetPosition(this).X - (selected[i].X)-50) / (selected[i].Scale) + Math.Cos(-(selected[i].RAngle * Math.PI / 180)) * (Mouse.GetPosition(this).Y - (selected[i].Y) - 25) / (selected[i].Scale);
+
+                relativeLast.X = Math.Cos(-(selected[i].RAngle * Math.PI / 180)) * (LastPainted.X - (selected[i].X)-50) / (selected[i].Scale) - Math.Sin(-(selected[i].RAngle * Math.PI / 180)) * ((LastPainted.Y - (selected[i].Y) - 25) / (selected[i].Scale));
+                relativeLast.Y = Math.Sin(-(selected[i].RAngle * Math.PI / 180)) * (LastPainted.X - (selected[i].X)-50) / (selected[i].Scale) + Math.Cos(-(selected[i].RAngle * Math.PI / 180)) * ((LastPainted.Y - (selected[i].Y) - 25) / (selected[i].Scale));
+
+
+                // if mouse is in rectangle, draw text
+                if ((clicked.X > 3) && (clicked.X < selected[i].Width - 3) && (clicked.Y > 3) && (clicked.Y < selected[i].Height - 3))
+                {
+                    this.ViewModel.addLine(selected[i], relativeLast, clicked);
+                    this.ViewModel.addCircle(selected[i], clicked);
+                    LastPainted = Mouse.GetPosition(this);
+                }
+            }
+        }
+
+        public void DrawText_click(object sender, RoutedEventArgs e)
+        {
+            RectangleViewModel[] selected = new RectangleViewModel[20];
+            int j = 0;
+            int toaddto = -1;
+            foreach (RectangleViewModel rectangle in this.listBox.SelectedItems)
+            {
+                selected[j] = rectangle;
+                j++;
+                toaddto++;
+            }
+
+            Point clicked = Mouse.GetPosition(this);
+
+            for (int i = toaddto; i > -1; --i)
+            {
+                clicked.X = Math.Cos(-(selected[i].RAngle * Math.PI / 180)) * (Mouse.GetPosition(this).X - (selected[i].X) - 50) / (selected[i].Scale) - Math.Sin(-(selected[i].RAngle * Math.PI / 180)) * (Mouse.GetPosition(this).Y - (selected[i].Y) - 25) / (selected[i].Scale);
+                clicked.Y = Math.Sin(-(selected[i].RAngle * Math.PI / 180)) * (Mouse.GetPosition(this).X - (selected[i].X) - 50) / (selected[i].Scale) + Math.Cos(-(selected[i].RAngle * Math.PI / 180)) * (Mouse.GetPosition(this).Y - (selected[i].Y) - 25) / (selected[i].Scale);
+
+                // if mouse is in rectangle, draw text
+                if ((clicked.X > 3) && (clicked.X < selected[i].Width - 3) && (clicked.Y > 3) && (clicked.Y < selected[i].Height - 3))
+                {
+                    this.ViewModel.addString(selected[i], clicked, "HI!");
+                }
+            }
+        }
+
+        private void selectToolButton_Click(object sender, RoutedEventArgs e)
+        {
+            mode = 0;
+            e.Handled = true;
+            listBox.Focus();
+        }
+
+        private void handToolButton_Click(object sender, RoutedEventArgs e)
+        {
+            mode = 1;
+            e.Handled = true;
+            listBox.Focus();
+        }
+
+        private void pencilToolButton_Click(object sender, RoutedEventArgs e)
+        {
+            mode = 3;
+            e.Handled = true;
+            listBox.Focus();
+        }
+
+        private void rectSelectionToolButton_Click(object sender, RoutedEventArgs e)
+        {
+            mode = 2;
+            e.Handled = true;
+            listBox.Focus();
+        }
+
+        private void drawRectangleToolButton_Click(object sender, RoutedEventArgs e)
+        {
+            mode = 4;
+            e.Handled = true;
+            listBox.Focus();
+        }
+
+        private void drawOvalToolButton_Click(object sender, RoutedEventArgs e)
+        {
+            mode = 5;
+            e.Handled = true;
+            listBox.Focus();
+        }
+
+        private void textToolButton_Click(object sender, RoutedEventArgs e)
+        {
+            mode = 6;
+            e.Handled = true;
+            listBox.Focus();
+        }
+
 
     }
 }
