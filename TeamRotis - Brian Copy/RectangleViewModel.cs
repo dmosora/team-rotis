@@ -6,9 +6,136 @@ using System.ComponentModel;
 using System.Windows.Media;
 using System.Windows;
 using System.Windows.Media.Imaging;
+using System.IO;
+
+
+
+
 
 namespace SampleCode
 {
+
+    public class pixelHolder : INotifyPropertyChanged
+    {
+        #region Data Members
+        byte blue;
+        byte red;
+        byte green;
+        byte alpha;
+        #endregion Data Members
+        public pixelHolder()
+        {
+        }
+        public pixelHolder(byte _blue, byte _green, byte _red, byte _alpha)
+        {
+            this.blue = _blue;
+            this.red = _red;
+            this.green = _green;
+            this.alpha = _alpha;
+        }
+        #region INotifyPropertyChanged Members
+
+        public byte Blue
+        {
+            get
+            {
+                return blue;
+            }
+            set
+            {
+                if (blue == value)
+                {
+                    return;
+                }
+
+                blue = value;
+
+                OnPropertyChanged("Blue");
+            }
+        }
+
+        public byte Red
+        {
+            get
+            {
+                return red;
+            }
+            set
+            {
+                if (red == value)
+                {
+                    return;
+                }
+
+                red = value;
+
+                OnPropertyChanged("Red");
+            }
+        }
+
+        public byte Green
+        {
+            get
+            {
+                return green;
+            }
+            set
+            {
+                if (green == value)
+                {
+                    return;
+                }
+
+                green = value;
+
+                OnPropertyChanged("Green");
+            }
+        }
+
+        public byte Alpha
+        {
+            get
+            {
+                return alpha;
+            }
+            set
+            {
+                if (alpha == value)
+                {
+                    return;
+                }
+
+                alpha = value;
+
+                OnPropertyChanged("Alpha");
+            }
+        }
+        /// <summary>
+        /// Raises the 'PropertyChanged' event when the value of a property of the view model has changed.
+        /// </summary>
+        protected void OnPropertyChanged(string name)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(name));
+            }
+        }
+
+        /// <summary>
+        /// 'PropertyChanged' event that is raised when the value of a property of the view model has changed.
+        /// </summary>
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        #endregion
+    }
+    
+
+
+
+
+
+
+    
     /// <summary>
     /// Defines the view-model for a simple displayable rectangle.
     /// </summary>
@@ -45,6 +172,9 @@ namespace SampleCode
         private double scale = 1;
         private double opacity = 1;
 
+        // The drawing canvas for the rectangle.
+        private DrawingGroup draw;
+
         /// <summary>
         /// The hotspot of the rectangle's connector.
         /// This value is pushed through from the UI because it is data-bound to 'Hotspot'
@@ -75,6 +205,19 @@ namespace SampleCode
             this.opacity = opacity;
             this.iSource = BSource;
             this.rectName = name;
+            this.draw = new DrawingGroup();
+            
+            // set bounds for drawing group
+            GeometryDrawing lineHolder =
+                new GeometryDrawing(
+                    new SolidColorBrush(Color.FromArgb(0,0,0,0)),
+                    new Pen(Brushes.Green, 0),
+                    new LineGeometry(new Point(0,0), new Point(width, height))
+                );
+
+           this.draw.Children.Add(lineHolder);
+
+
         }
 
         public RectangleViewModel(RectangleViewModel old)
@@ -85,9 +228,141 @@ namespace SampleCode
             this.height = old.Height;
             this.iSource = old.ISource;
             this.opacity = old.Opacity;
+            this.bImage = old.BImage;
+            this.draw = old.draw;
             this.rectName = old.rectName;
         }
 
+        public void imageConvolution(double[, ,] MC, double factor, double offset)
+        {
+
+            int stride = BImage.PixelWidth * 4;
+            int size = BImage.PixelHeight * stride;
+            byte[] pixels = new byte[size];
+            byte[] pixelDepth = new byte[4];
+            pixelHolder[,] array = new pixelHolder[BImage.PixelWidth, BImage.PixelHeight];
+            pixelHolder[,] finishedArray = new pixelHolder[BImage.PixelWidth, BImage.PixelHeight];
+
+
+            BImage.CopyPixels(pixels, stride, 0);
+            for (int y = 0; y < BImage.PixelHeight; y++)
+            {
+                for (int x = 0; x < BImage.PixelWidth; x++)
+                {
+                    int index = y * stride + 4 * x;
+
+                    pixelHolder tempPixel = new pixelHolder(pixels[index], pixels[index + 1], pixels[index + 2], pixels[index + 3]);
+
+                    array[x, y] = tempPixel;
+
+
+                }
+            }
+            for (int y = 1; y < BImage.PixelHeight - 1; y++)
+            {
+                for (int x = 1; x < BImage.PixelWidth - 1; x++)
+                {
+
+                    double[, ,] MD = new double[3, 3, 3] { 
+                                                    { { array[x-1, y-1].Blue, array[x-1, y-1].Green, array[x-1,y-1].Red }, { array[x, y-1].Blue, array[x, y-1].Green, array[x,y-1].Red }, { array[x+1, y-1].Blue, array[x+1, y-1].Green, array[x+1,y-1].Red } }, 
+                                                    { { array[x-1, y].Blue, array[x-1, y].Green, array[x-1,y].Red }, { array[x, y].Blue, array[x, y].Green, array[x,y].Red }, { array[x+1, y].Blue, array[x, y].Green, array[x+1,y].Red } },
+                                                    { { array[x-1, y+1].Blue, array[x-1, y+1].Green, array[x-1,y+1].Red }, { array[x, y+1].Blue, array[x, y+1].Green, array[x,y+1].Red }, { array[x+1, y+1].Blue, array[x+1, y+1].Green, array[x+1,y+1].Red } }
+                    };
+
+
+                    pixelHolder tempNewPixel = new pixelHolder();
+                    // need to be set each new matrix
+
+                    double tempBlue = ((((MD[0, 0, 0] * MC[0, 0, 0]) + (MD[0, 1, 0] * MC[0, 1, 0]) + (MD[0, 2, 0] * MC[0, 2, 0]) +
+                                               (MD[1, 0, 0] * MC[1, 0, 0]) + (MD[1, 1, 0] * MC[1, 1, 0]) + (MD[1, 2, 0] * MC[1, 2, 0]) +
+                                               (MD[2, 0, 0] * MC[2, 0, 0]) + (MD[2, 1, 0] * MC[2, 1, 0]) + (MD[2, 2, 0] * MC[2, 2, 0])) / factor) + offset);
+                    double tempRed = ((((MD[0, 0, 1] * MC[0, 0, 0]) + (MD[0, 1, 1] * MC[0, 1, 0]) + (MD[0, 2, 1] * MC[0, 2, 0]) +
+                                               (MD[1, 0, 1] * MC[1, 0, 0]) + (MD[1, 1, 1] * MC[1, 1, 0]) + (MD[1, 2, 1] * MC[1, 2, 0]) +
+                                               (MD[2, 0, 1] * MC[2, 0, 0]) + (MD[2, 1, 1] * MC[2, 1, 0]) + (MD[2, 2, 1] * MC[2, 2, 0])) / factor) + offset);
+                    double tempGreen = ((((MD[0, 0, 2] * MC[0, 0, 0]) + (MD[0, 1, 2] * MC[0, 1, 0]) + (MD[0, 2, 2] * MC[0, 2, 0]) +
+                                               (MD[1, 0, 2] * MC[1, 0, 0]) + (MD[1, 1, 2] * MC[1, 1, 0]) + (MD[1, 2, 2] * MC[1, 2, 0]) +
+                                               (MD[2, 0, 2] * MC[2, 0, 0]) + (MD[2, 1, 2] * MC[2, 1, 0]) + (MD[2, 2, 2] * MC[2, 2, 0])) / factor) + offset);
+                    tempNewPixel.Blue = (byte)((((MD[0, 0, 0] * MC[0, 0, 0]) + (MD[0, 1, 0] * MC[0, 1, 0]) + (MD[0, 2, 0] * MC[0, 2, 0]) +
+                                               (MD[1, 0, 0] * MC[1, 0, 0]) + (MD[1, 1, 0] * MC[1, 1, 0]) + (MD[1, 2, 0] * MC[1, 2, 0]) +
+                                               (MD[2, 0, 0] * MC[2, 0, 0]) + (MD[2, 1, 0] * MC[2, 1, 0]) + (MD[2, 2, 0] * MC[2, 2, 0])) / factor) + offset);
+
+
+                    tempNewPixel.Green = (byte)((((MD[0, 0, 1] * MC[0, 0, 0]) + (MD[0, 1, 1] * MC[0, 1, 0]) + (MD[0, 2, 1] * MC[0, 2, 0]) +
+                                               (MD[1, 0, 1] * MC[1, 0, 0]) + (MD[1, 1, 1] * MC[1, 1, 0]) + (MD[1, 2, 1] * MC[1, 2, 0]) +
+                                               (MD[2, 0, 1] * MC[2, 0, 0]) + (MD[2, 1, 1] * MC[2, 1, 0]) + (MD[2, 2, 1] * MC[2, 2, 0])) / factor) + offset);
+
+                    tempNewPixel.Red = (byte)((((MD[0, 0, 2] * MC[0, 0, 0]) + (MD[0, 1, 2] * MC[0, 1, 0]) + (MD[0, 2, 2] * MC[0, 2, 0]) +
+                                               (MD[1, 0, 2] * MC[1, 0, 0]) + (MD[1, 1, 2] * MC[1, 1, 0]) + (MD[1, 2, 2] * MC[1, 2, 0]) +
+                                               (MD[2, 0, 2] * MC[2, 0, 0]) + (MD[2, 1, 2] * MC[2, 1, 0]) + (MD[2, 2, 2] * MC[2, 2, 0])) / factor) + offset);
+                    if (tempBlue < (byte)0) tempNewPixel.Blue = (byte)0;
+                    if (tempBlue > (byte)255) tempNewPixel.Blue = (byte)255;
+
+                    if (tempRed < (byte)0) tempNewPixel.Red = (byte)0;
+                    if (tempRed > (byte)255) tempNewPixel.Red = (byte)255;
+
+                    if (tempGreen < (byte)0) tempNewPixel.Green = (byte)0;
+                    if (tempGreen > (byte)255) tempNewPixel.Green = (byte)255;
+                    finishedArray[x, y] = tempNewPixel;
+
+                }
+            }
+            for (int y = 1; y < BImage.PixelHeight - 1; y++)
+            {
+                for (int x = 1; x < BImage.PixelWidth - 1; x++)
+                {
+                    int index = y * stride + 4 * x;
+
+                    pixels[index] = finishedArray[x, y].Blue;
+                    pixels[index + 1] = finishedArray[x, y].Green;
+                    pixels[index + 2] = finishedArray[x, y].Red;
+                    pixels[index + 3] = 255;
+                }
+            }
+
+            ////////////helo
+            BitmapPalette myPalette3 = new BitmapPalette(BImage, 128);
+            BitmapSource image = BitmapSource.Create(
+                BImage.PixelWidth,
+                BImage.PixelHeight,
+                96,
+                96,
+                PixelFormats.Pbgra32,
+                 myPalette3,
+                pixels,
+                stride);
+
+            //////
+            string tempSavePath = Path.GetTempPath();
+            string tempSavename = Path.GetRandomFileName();
+            // char[] charsToTrim = {''};
+            //tempSavename.TrimStart(charsToTrim).StartsWith(".");
+            tempSavePath = tempSavePath + tempSavename;
+
+            BitmapImage bi2 = new BitmapImage();
+
+
+            using (FileStream outStream = new FileStream(tempSavePath, FileMode.Create))
+            {
+                // png encoder
+                PngBitmapEncoder encoder = new PngBitmapEncoder();
+                encoder.Frames.Add(BitmapFrame.Create(image));
+                // save the data to the stream
+                encoder.Save(outStream);
+
+                outStream.Close();
+            }
+
+
+
+
+            // http://social.msdn.microsoft.com/Forums/en-US/wpf/thread/82a5731e-e201-4aaf-8d4b-062b138338fe
+            // BitmapImage.UriSource must be in a BeginInit/EndInit block.
+            bi2.BeginInit();
+            bi2.UriSource = new Uri(tempSavePath, UriKind.RelativeOrAbsolute);
+            bi2.EndInit();
+            BImage = bi2;
+
+        }
         /// <summary>
         /// The X coordinate of the location of the rectangle (in content coordinates).
         /// </summary>
@@ -264,6 +539,25 @@ namespace SampleCode
                 OnPropertyChanged("Scale");
             }
         }
+
+        public DrawingGroup Draw
+        {
+            get
+            {
+                return draw;
+            }
+            set
+            {
+                if (draw == value)
+                {
+                    return;
+                }
+                draw = value;
+
+                OnPropertyChanged("Draw");
+            }
+        }
+
         /// <summary>
         /// The hotspot of the rectangle's connector.
         /// This value is pushed through from the UI because it is data-bound to 'Hotspot'
