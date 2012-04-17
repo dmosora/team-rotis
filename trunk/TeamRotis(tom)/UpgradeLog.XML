@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="SampleCode">
+</Property><Property Name="Solution File" Value="C:\Users\student\Documents\DragMultipleSampleCode\DragMultipleSampleCode\SampleCode.sln">
+</Property><Property Name="Date" Value="Thursday, January 26, 2012">
+</Property><Property Name="Time" Value="11:18 AM">
+</Property></Properties><Event ErrorLevel="0" Project="" Source="SampleCode.sln" Description="File successfully backed up as C:\Users\student\Documents\DragMultipleSampleCode\DragMultipleSampleCode\Backup\SampleCode.sln">
+</Event><Event ErrorLevel="0" Project="SampleCode" Source="SampleCode.csproj" Description="Project file successfully backed up as C:\Users\student\Documents\DragMultipleSampleCode\DragMultipleSampleCode\Backup\SampleCode.csproj">
+</Event><Event ErrorLevel="0" Project="SampleCode" Source="App.xaml.cs" Description="File successfully backed up as C:\Users\student\Documents\DragMultipleSampleCode\DragMultipleSampleCode\Backup\App.xaml.cs">
+</Event><Event ErrorLevel="0" Project="SampleCode" Source="MainWindow.xaml.cs" Description="File successfully backed up as C:\Users\student\Documents\DragMultipleSampleCode\DragMultipleSampleCode\Backup\MainWindow.xaml.cs">
+</Event><Event ErrorLevel="0" Project="SampleCode" Source="ColorToBrushConverter.cs" Description="File successfully backed up as C:\Users\student\Documents\DragMultipleSampleCode\DragMultipleSampleCode\Backup\ColorToBrushConverter.cs">
+</Event><Event ErrorLevel="0" Project="SampleCode" Source="HelpTextWindow.xaml.cs" Description="File successfully backed up as C:\Users\student\Documents\DragMultipleSampleCode\DragMultipleSampleCode\Backup\HelpTextWindow.xaml.cs">
+</Event><Event ErrorLevel="0" Project="SampleCode" Source="ViewModel.cs" Description="File successfully backed up as C:\Users\student\Documents\DragMultipleSampleCode\DragMultipleSampleCode\Backup\ViewModel.cs">
+</Event><Event ErrorLevel="0" Project="SampleCode" Source="Properties\AssemblyInfo.cs" Description="File successfully backed up as C:\Users\student\Documents\DragMultipleSampleCode\DragMultipleSampleCode\Backup\Properties\AssemblyInfo.cs">
+</Event><Event ErrorLevel="0" Project="SampleCode" Source="Properties\Resources.Designer.cs" Description="File successfully backed up as C:\Users\student\Documents\DragMultipleSampleCode\DragMultipleSampleCode\Backup\Properties\Resources.Designer.cs">
+</Event><Event ErrorLevel="0" Project="SampleCode" Source="Properties\Settings.Designer.cs" Description="File successfully backed up as C:\Users\student\Documents\DragMultipleSampleCode\DragMultipleSampleCode\Backup\Properties\Settings.Designer.cs">
+</Event><Event ErrorLevel="0" Project="SampleCode" Source="RectangleViewModel.cs" Description="File successfully backed up as C:\Users\student\Documents\DragMultipleSampleCode\DragMultipleSampleCode\Backup\RectangleViewModel.cs">
+</Event><Event ErrorLevel="0" Project="SampleCode" Source="Properties\Settings.settings" Description="File successfully backed up as C:\Users\student\Documents\DragMultipleSampleCode\DragMultipleSampleCode\Backup\Properties\Settings.settings">
+</Event><Event ErrorLevel="0" Project="SampleCode" Source="Properties\Resources.resx" Description="File successfully backed up as C:\Users\student\Documents\DragMultipleSampleCode\DragMultipleSampleCode\Backup\Properties\Resources.resx">
+</Event><Event ErrorLevel="0" Project="SampleCode" Source="App.xaml" Description="File successfully backed up as C:\Users\student\Documents\DragMultipleSampleCode\DragMultipleSampleCode\Backup\App.xaml">
+</Event><Event ErrorLevel="0" Project="SampleCode" Source="HelpText.xaml" Description="File successfully backed up as C:\Users\student\Documents\DragMultipleSampleCode\DragMultipleSampleCode\Backup\HelpText.xaml">
+</Event><Event ErrorLevel="0" Project="SampleCode" Source="HelpTextWindow.xaml" Description="File successfully backed up as C:\Users\student\Documents\DragMultipleSampleCode\DragMultipleSampleCode\Backup\HelpTextWindow.xaml">
+</Event><Event ErrorLevel="0" Project="SampleCode" Source="MainWindow.xaml" Description="File successfully backed up as C:\Users\student\Documents\DragMultipleSampleCode\DragMultipleSampleCode\Backup\MainWindow.xaml">
+</Event><Event ErrorLevel="0" Project="SampleCode" Source="SampleCode.csproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="SampleCode" Source="SampleCode.csproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="" Source="SampleCode.sln" Description="Solution converted successfully">
+</Event><Event ErrorLevel="3" Project="" Source="SampleCode.sln" Description="Converted">
+</Event><Event ErrorLevel="0" Project="SampleCode" Source="SampleCode.csproj" Description="Scan complete: Upgrade not required for project files.">
+</Event></UpgradeLog>
