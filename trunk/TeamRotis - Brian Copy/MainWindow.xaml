@@ -153,23 +153,43 @@
             <Menu Width="50" Grid.Column="0" VerticalContentAlignment="Stretch" VerticalAlignment="Top" HorizontalAlignment="Left" Grid.Row="1">
                 <Button Name="selectToolButton" Height="32" Width="32" Click="selectToolButton_Click">
                     <Button.Background>
-                        <ImageBrush ImageSource="/SampleCode;component/resources/base_cursor.png" />
+                        <ImageBrush ImageSource="/SampleCode;component/resources/Cursor.png" />
                     </Button.Background>
                 </Button>
                 <Button Name="handToolButton" Height="32" Width="32" Click="handToolButton_Click">
+                <Button.Background>
+                    <ImageBrush ImageSource="/SampleCode;component/resources/Hand.png"/>
+                </Button.Background>
             </Button>
                 <Button Name="pencilToolButton" Height="32" Width="32" Click="pencilToolButton_Click">
                     <Button.Background>
-                        <ImageBrush ImageSource="/SampleCode;component/resources/Pencil_32.png" />
+                        <ImageBrush ImageSource="/SampleCode;component/resources/Pencil.png" />
                     </Button.Background>
                 </Button>
                 <Button Name="rectSelectionToolButton" Height="32" Width="32" Click="rectSelectionToolButton_Click">
+                <Button.Background>
+                    <ImageBrush ImageSource="/SampleCode;component/resources/RectSelect.png" />
+                </Button.Background>
             </Button>
-                <Button Name="drawRectangleToolButton" Height="32" Width="32" Click="drawRectangleToolButton_Click">
+            <Button Name="drawRectangleToolButton" Height="32" Width="32" Click="drawRectangleToolButton_Click">
+                <Button.Background>
+                    <ImageBrush ImageSource="/SampleCode;component/resources/RectDraw.png" />
+                </Button.Background>
             </Button>
-                <Button Name="drawOvalToolButton" Height="32" Width="32" Click="drawOvalToolButton_Click">
+            <Button Name="drawOvalToolButton" Height="32" Width="32" Click="drawOvalToolButton_Click">
+                <Button.Background>
+                    <ImageBrush ImageSource="/SampleCode;component/resources/OvalDraw.png" />
+                </Button.Background>
             </Button>
-                <Button Name="textToolButton" Height="32" Width="32" Click="textToolButton_Click">
+            <Button Name="textToolButton" Height="32" Width="32" Click="textToolButton_Click">
+                <Button.Background>
+                    <ImageBrush ImageSource="/SampleCode;component/resources/Text.png" />
+                </Button.Background>
+            </Button>
+            <Button Name="paletteToolButton" Height="32" Width="32" Click="paletteToolButton_Click">
+                <Button.Background>
+                    <ImageBrush ImageSource="/SampleCode;component/resources/Palette.png" />
+                </Button.Background>
             </Button>
             </Menu>
             <!--

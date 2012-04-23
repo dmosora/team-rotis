@@ -162,6 +162,7 @@ namespace SampleCode
                             // Nothing already selected, select the item.
                             //
                             this.listBox.SelectedItems.Add(rectangleViewModel);
+                            lp.layerList.SelectedItems.Add(lp.layerList.Items[(lp.layerList.Items.Count - ViewModel.Rectangles.IndexOf(rectangleViewModel) - 1)]);
                         }
                         else if (this.listBox.SelectedItems.Contains(rectangleViewModel))
                         {
@@ -177,7 +178,9 @@ namespace SampleCode
                             // Deselect all, and select the item.
                             //
                             this.listBox.SelectedItems.Clear();
+                            lp.layerList.SelectedItems.Clear();
                             this.listBox.SelectedItems.Add(rectangleViewModel);
+                            lp.layerList.SelectedItems.Add(lp.layerList.Items[(lp.layerList.Items.Count - ViewModel.Rectangles.IndexOf(rectangleViewModel) - 1)]);
                         }
                     }
 
@@ -238,6 +241,7 @@ namespace SampleCode
                                 // Item was already selected, control-click removes it from the selection.
                                 //
                                 this.listBox.SelectedItems.Remove(rectangleViewModel);
+                                lp.layerList.SelectedItems.Remove(lp.layerList.Items[(lp.layerList.Items.Count - ViewModel.Rectangles.IndexOf(rectangleViewModel) - 1)]);
                             }
                             else
                             {
@@ -245,6 +249,7 @@ namespace SampleCode
                                 // Item was not already selected, control-click adds it to the selection.
                                 //
                                 this.listBox.SelectedItems.Add(rectangleViewModel);
+                                lp.layerList.SelectedItems.Add(lp.layerList.Items[(lp.layerList.Items.Count - ViewModel.Rectangles.IndexOf(rectangleViewModel) - 1)]);
                             }
                         }
                         else
@@ -266,7 +271,9 @@ namespace SampleCode
                                 // Clear the selection and select the clicked item as the only selected item.
                                 //
                                 this.listBox.SelectedItems.Clear();
+                                lp.layerList.SelectedItems.Clear();
                                 this.listBox.SelectedItems.Add(rectangleViewModel);
+                                lp.layerList.SelectedItems.Add(lp.layerList.Items[(lp.layerList.Items.Count - ViewModel.Rectangles.IndexOf(rectangleViewModel) - 1)]);
                             }
                         }
                         rectangle.ReleaseMouseCapture();
@@ -455,6 +462,7 @@ namespace SampleCode
                     case 0:
                         // only selection cares about mouse down not on canvas
                         listBox.SelectedItems.Clear();
+                        lp.layerList.SelectedItems.Clear();
                         break;
                     default:
                         break;
@@ -493,6 +501,7 @@ namespace SampleCode
                         // A click and release in empty space clears the selection.
                         //
                         listBox.SelectedItems.Clear();
+                        lp.layerList.SelectedItems.Clear();
                         break;
                     // hand/drag
                     case 1:
@@ -669,6 +678,7 @@ namespace SampleCode
                     // Clear the current selection.
                     //
                     listBox.SelectedItems.Clear();
+                    lp.layerList.SelectedItems.Clear();
 
                     //
                     // Find and select all the list box items.
@@ -679,6 +689,7 @@ namespace SampleCode
                         if (dragRect.Contains(itemRect))
                         {
                             listBox.SelectedItems.Add(rectangleViewModel);
+                            lp.layerList.SelectedItems.Add(ViewModel.Rectangles.IndexOf(rectangleViewModel));
                         }
                     }
                     break;
@@ -783,6 +794,7 @@ namespace SampleCode
                 this.ViewModel.deleteRectangle(selected[i]);
             }
 
+            lp.UpdateLayers(ViewModel.Rectangles);
             ViewModel.saveState();
         }
 
@@ -1473,6 +1485,11 @@ namespace SampleCode
             mode = 6;
             e.Handled = true;
             listBox.Focus();
+        }
+
+        private void paletteToolButton_Click(object sender, RoutedEventArgs e)
+        {
+
         }
 
 
