@@ -63,6 +63,9 @@ namespace SampleCode
         /// </summary>
         private layerPallette lp;
 
+        public static readonly DependencyProperty theColorProperty =
+            DependencyProperty.Register("theColor", typeof(Color), typeof(MainWindow), new PropertyMetadata(Colors.Black));
+
         #endregion Data Members
 
         public MainWindow()
@@ -78,6 +81,18 @@ namespace SampleCode
             get
             {
                 return (ViewModel)this.DataContext;
+            }
+        }
+
+        public Color theColor
+        {
+            get
+            {
+                return (Color)GetValue(theColorProperty);
+            }
+            set
+            {
+                SetValue(theColorProperty, value);
             }
         }
 
@@ -762,18 +777,18 @@ namespace SampleCode
                 // circle
                 case 4:
                     current = ViewModel.addRectangle(x-50, y+20, width, height);
-                    ViewModel.addOval(current, new Point((width/2), (height/2)), width, height);
+                    ViewModel.addOval(current, new Point((width/2), (height/2)), width, height, theColor);
                     break;
                 // rectangle
                 case 5:
                     current = ViewModel.addRectangle(x-50, y+20, width, height);
-                    ViewModel.addRect(current, new Point(0, 0), width, height);
+                    ViewModel.addRect(current, new Point(0, 0), width, height, theColor);
                     break;
                 // text
                 case 6:
                     current = ViewModel.addRectangle(x-50, y+20, width, height);
                     string entry="test"; // = textentry
-                    ViewModel.addString(current, new Point(x + (width / 2) - 50, y + (height / 2) - 50), entry);
+                    ViewModel.addString(current, new Point(x + (width / 2) - 50, y + (height / 2) - 50), entry, theColor);
                     break;
             }
         }
@@ -1365,7 +1380,7 @@ namespace SampleCode
                 // if mouse is in rectangle, draw text
                 if ((clicked.X > 3) && (clicked.X < selected[i].Width - 3) && (clicked.Y > 3) && (clicked.Y < selected[i].Height - 3))
                 {
-                    this.ViewModel.addCircle(selected[i], clicked);
+                    this.ViewModel.addCircle(selected[i], clicked, theColor);
                     LastPainted = Mouse.GetPosition(this);
                 }
             }
@@ -1404,8 +1419,8 @@ namespace SampleCode
                 // if mouse is in rectangle, draw text
                 if ((clicked.X > 3) && (clicked.X < selected[i].Width - 3) && (clicked.Y > 3) && (clicked.Y < selected[i].Height - 3))
                 {
-                    this.ViewModel.addLine(selected[i], relativeLast, clicked);
-                    this.ViewModel.addCircle(selected[i], clicked);
+                    this.ViewModel.addLine(selected[i], relativeLast, clicked, theColor);
+                    this.ViewModel.addCircle(selected[i], clicked, theColor);
                     LastPainted = Mouse.GetPosition(this);
                 }
             }
@@ -1433,7 +1448,7 @@ namespace SampleCode
                 // if mouse is in rectangle, draw text
                 if ((clicked.X > 3) && (clicked.X < selected[i].Width - 3) && (clicked.Y > 3) && (clicked.Y < selected[i].Height - 3))
                 {
-                    this.ViewModel.addString(selected[i], clicked, "HI!");
+                    this.ViewModel.addString(selected[i], clicked, "HI!", theColor);
                 }
             }
         }
@@ -1468,14 +1483,14 @@ namespace SampleCode
 
         private void drawRectangleToolButton_Click(object sender, RoutedEventArgs e)
         {
-            mode = 4;
+            mode = 5;
             e.Handled = true;
             listBox.Focus();
         }
 
         private void drawOvalToolButton_Click(object sender, RoutedEventArgs e)
         {
-            mode = 5;
+            mode = 4;
             e.Handled = true;
             listBox.Focus();
         }
@@ -1489,7 +1504,16 @@ namespace SampleCode
 
         private void paletteToolButton_Click(object sender, RoutedEventArgs e)
         {
+            Microsoft.Samples.CustomControls.ColorPickerDialog cPicker = new Microsoft.Samples.CustomControls.ColorPickerDialog();
+            cPicker.StartingColor = Colors.Black;
+            cPicker.Owner = this;
 
+            bool? dialogResult = cPicker.ShowDialog();
+            if (dialogResult != null && (bool)dialogResult == true)
+            {
+                //set color here
+                theColor = cPicker.SelectedColor;
+            }
         }
 
 

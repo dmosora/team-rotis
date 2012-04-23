@@ -354,3 +354,6 @@ C:\Users\student\Desktop\TeamRotis(Nate)\obj\Debug\GenerateResource-ResGen.read.
 C:\Users\student\Desktop\TeamRotis(Nate)\obj\Debug\ResGen.read.1.tlog
 C:\Users\student\Desktop\TeamRotis(Nate)\obj\Debug\GenerateResource-ResGen.write.1.tlog
 C:\Users\student\Desktop\TeamRotis(Nate)\obj\Debug\ResGen.write.1.tlog
+E:\Documents\Capstone\TeamRotis - Brian Copy\bin\Debug\ColorPicker.dll
+E:\Documents\Capstone\TeamRotis - Brian Copy\obj\Debug\resizeWindow.baml
+E:\Documents\Capstone\TeamRotis - Brian Copy\obj\Debug\resizeWindow.g.cs

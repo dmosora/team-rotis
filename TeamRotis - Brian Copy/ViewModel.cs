@@ -444,12 +444,12 @@ namespace SampleCode
 
         }
 
-        public void addCircle(RectangleViewModel sender, Point center)
+        public void addCircle(RectangleViewModel sender, Point center, Color fillColor)
         {
             // Create the ellipse geometry to add to the Path
             GeometryDrawing circleHolder =
                 new GeometryDrawing(
-                    new SolidColorBrush(Color.FromArgb(255, 255, 215, 00)),
+                    new SolidColorBrush(fillColor),
                     new Pen(Brushes.Green, 0),
                     new EllipseGeometry(center, 3, 3)
                 );
@@ -458,20 +458,20 @@ namespace SampleCode
 
          }
 
-        public void addLine(RectangleViewModel sender, Point start, Point end)
+        public void addLine(RectangleViewModel sender, Point start, Point end, Color fillColor)
         {
             // Create the line geometry to add to the Path
             GeometryDrawing lineHolder =
                 new GeometryDrawing(
-                    new SolidColorBrush(Color.FromArgb(00,255,215,00)),
-                    new Pen(Brushes.Gold, 6),
+                    new SolidColorBrush(fillColor),
+                    new Pen(new SolidColorBrush(fillColor), 6),
                     new LineGeometry(start, end)
                 );
 
             sender.Draw.Children.Add(lineHolder);
         }
 
-        public void addString(RectangleViewModel sender, Point start, string stuff)
+        public void addString(RectangleViewModel sender, Point start, string stuff, Color fillColor)
         {
             FormattedText text = new FormattedText(stuff,
             CultureInfo.GetCultureInfo("en-us"),
@@ -481,19 +481,19 @@ namespace SampleCode
             Brushes.Black);
             Geometry tgeometry = text.BuildGeometry(start);
              GeometryDrawing textHolder =
-                new GeometryDrawing(new SolidColorBrush(Color.FromArgb(255, 00, 00, 00)),
+                new GeometryDrawing(new SolidColorBrush(fillColor),
                     new Pen(Brushes.Black, 1),
                     tgeometry
                 );
             sender.Draw.Children.Add(textHolder);
         }
 
-        public void addOval(RectangleViewModel sender, Point center, double height, double width)
+        public void addOval(RectangleViewModel sender, Point center, double height, double width, Color fillColor)
         {
             // Create the ellipse geometry to add to the Path
             GeometryDrawing circleHolder =
                 new GeometryDrawing(
-                    new SolidColorBrush(Color.FromArgb(255, 255, 215, 00)),
+                    new SolidColorBrush(fillColor),
                     new Pen(Brushes.Green, 0),
                     new EllipseGeometry(center, height, width)
                 );
@@ -501,13 +501,13 @@ namespace SampleCode
             sender.Draw.Children.Add(circleHolder);
         }
 
-        public void addRect(RectangleViewModel sender, Point center, double height, double width)
+        public void addRect(RectangleViewModel sender, Point center, double height, double width, Color fillColor)
         {
             // Create the ellipse geometry to add to the Path
             Rect toDraw = new Rect(0,0, height, width);
             GeometryDrawing rectangleHolder =
                 new GeometryDrawing(
-                    new SolidColorBrush(Color.FromArgb(255, 255, 215, 00)),
+                    new SolidColorBrush(fillColor),
                     new Pen(Brushes.Green, 0),
                     new RectangleGeometry(toDraw)
                 );
