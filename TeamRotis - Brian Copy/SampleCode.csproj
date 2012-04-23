@@ -145,6 +145,19 @@
     <Resource Include="resources\base_cursor.png" />
     <Resource Include="resources\pencil_32.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\Cursor.png" />
+    <Resource Include="resources\Hand.png" />
+    <Resource Include="resources\OvalDraw.png" />
+    <Resource Include="resources\Palette.png" />
+    <Resource Include="resources\Pencil.png" />
+    <Resource Include="resources\RectDraw.png" />
+    <Resource Include="resources\RectSelect.png" />
+    <Resource Include="resources\Text.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\transparent.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

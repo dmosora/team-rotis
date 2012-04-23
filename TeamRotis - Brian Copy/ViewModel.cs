@@ -73,7 +73,6 @@ namespace SampleCode
             double opac = 1;
             // Create a memorystream with the image URI then loads that to the rectangle veiw model using a Bitmap Image Source
             BitmapImage bitemp = new BitmapImage();
-            /*
             int myWidth = (Int32)width;
             int myHeight = (Int32)height;
             int stride = myWidth * 4;
@@ -91,25 +90,22 @@ namespace SampleCode
 
             encoder.Frames.Add(BitmapFrame.Create(i));
             encoder.Save(mem);
-             * */
 
 
 
-                MemoryStream memoryStream = new MemoryStream();
+                /*MemoryStream memoryStream = new MemoryStream();
 
-                byte[] fileBytes = File.ReadAllBytes("/SampleCode;component/resources/transparent.png");
+                byte[] fileBytes = File.ReadAllBytes("/" + this.GetType().Assembly.GetName().Name + ";component/resources/transparent.png");
                 memoryStream.Write(fileBytes, 0, fileBytes.Length);
                 memoryStream.Position = 0;
 
                 bitemp.BeginInit();
                 bitemp.StreamSource = memoryStream;
-                bitemp.EndInit();
+                bitemp.EndInit();*/
 
-            /*
             bitemp.BeginInit();
             bitemp.StreamSource = new MemoryStream(mem.ToArray());
             bitemp.EndInit();
-             */
 
             var rtemp = new RectangleViewModel(150, 130, bitemp.PixelWidth, bitemp.PixelHeight, bitemp, opac, "Layer " + (rectangles.Count() + 1).ToString());
             rectangles.Add(rtemp);

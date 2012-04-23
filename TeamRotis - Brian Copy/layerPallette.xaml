@@ -5,8 +5,8 @@
     <Grid>
         <ListBox Height="361" HorizontalAlignment="Left" Name="layerList" VerticalAlignment="Top" Width="278" SelectionMode="Multiple">
             <ListBox.Resources>
-                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Blue"/>
-                <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="Blue"/>
+                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="LightGray"/>
+                <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="LightGray"/>
             </ListBox.Resources>
         </ListBox>
     </Grid>

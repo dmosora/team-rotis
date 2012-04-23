@@ -267,9 +267,7 @@ C:\Users\Heidi\Documents\Capstone\TeamRotis - Brian Copy\obj\Debug\SampleCode_Ma
 C:\Users\Heidi\Documents\Capstone\TeamRotis - Brian Copy\obj\Debug\MainWindow.baml
 C:\Users\Heidi\Documents\Capstone\TeamRotis - Brian Copy\obj\Debug\SampleCode.g.resources
 C:\Users\Heidi\Documents\Capstone\TeamRotis - Brian Copy\obj\Debug\SampleCode.Properties.Resources.resources
-C:\Users\Heidi\Documents\Capstone\TeamRotis - Brian Copy\obj\Debug\GenerateResource-ResGen.read.1.tlog
 C:\Users\Heidi\Documents\Capstone\TeamRotis - Brian Copy\obj\Debug\ResGen.read.1.tlog
-C:\Users\Heidi\Documents\Capstone\TeamRotis - Brian Copy\obj\Debug\GenerateResource-ResGen.write.1.tlog
 C:\Users\Heidi\Documents\Capstone\TeamRotis - Brian Copy\obj\Debug\ResGen.write.1.tlog
 C:\Users\Heidi\Documents\Capstone\TeamRotis - Brian Copy\obj\Debug\nameChanger.baml
 C:\Users\Heidi\Documents\Capstone\TeamRotis - Brian Copy\obj\Debug\nameChanger.g.cs
