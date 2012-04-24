@@ -444,6 +444,49 @@ namespace SampleCode
 
         }
 
+        public void effectGrayscale(RectangleViewModel sender)
+        {
+            //this will update on a filter
+            //Message Box for Opacity
+            double[, ,] MCP = new double[3, 3, 1] {{ {0} , {0}, {0} }, 
+                                                    { {0} , {1}, {0} }, 
+                                                    { {0} , {0}, {0} } };
+            // Create source.
+
+            double red = .3;
+            double blue = .11;
+            double green = .59;
+            sender.colorConvolution(MCP, red, blue, green);
+
+
+        }
+
+        public void imageSelection(int __topLeftX, int __topLeftY, int __width, int __height, RectangleViewModel sender)
+        {
+            //  (_topLeftX, __topLeftY, _width, _height, selected[i]);
+
+            sender.imageSelectionDeletion(__topLeftX, __topLeftY, __width, __height);
+
+
+        }
+        public String imageSelectionCopy(int __topLeftX, int __topLeftY, int __width, int __height, RectangleViewModel sender)
+        {
+            //  (_topLeftX, __topLeftY, _width, _height, selected[i]);
+            string newSelection = sender.imageSelectionRetrivial(__topLeftX, __topLeftY, __width, __height);
+
+            return newSelection;
+        }
+        public String imageSelectionRotated(Point __top, Point __right, Point __bottum, Point __left, RectangleViewModel sender)
+        {
+
+            //imageSelectionRotated(top, right, bottum, left, selected[i]);
+            sender.imageSelectionDeletionRotated(__top, __right, __bottum, __left);
+            //string newSelection = sender.imageSelectionDeletionRotated(__top, __right, __bottum, __left);
+
+            //return newSelection;
+            return "";
+        }
+
         public void addCircle(RectangleViewModel sender, Point center, Color fillColor)
         {
             // Create the ellipse geometry to add to the Path

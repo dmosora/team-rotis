@@ -223,7 +223,7 @@
                 KeyUp="zoomText_KeyUp"
             />
         </StackPanel>
-        <ScrollViewer Grid.Column="1" Grid.Row="1" HorizontalScrollBarVisibility="Auto">
+        <ScrollViewer Name="scrolling" Grid.Column="1" Grid.Row="1" HorizontalScrollBarVisibility="Auto">
             <ListBox Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Left" Grid.Row="1"
             x:Name="listBox"
             ItemsSource="{Binding Rectangles}"
@@ -236,7 +236,7 @@
                 </ListBox.ContextMenu>
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <Canvas Name="DisplayCanvas" />
+                        <Canvas Name="DisplayCanvas" Background="Transparent" />
                     </ItemsPanelTemplate>
                 </ListBox.ItemsPanel>
                 <ListBox.ItemContainerStyle>
