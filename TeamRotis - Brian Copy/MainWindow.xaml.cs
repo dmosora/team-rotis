@@ -714,18 +714,55 @@ namespace SampleCode
                     break;
                 // select/replace
                 case 2:
+                    RectangleViewModel[] selected = new RectangleViewModel[1];
+                    String rectangleToCreate = "";
+                    int j = 0;
+                    int toGrayscale = -1;
+
                     foreach (RectangleViewModel rectangle in this.listBox.SelectedItems)
                     {
-                        int angle = ((int)Math.Ceiling(rectangle.RAngle))%360;
+                        int angle = ((int)Math.Ceiling(rectangle.RAngle)) % 360;
                         if (angle == 0)
                         {
                             // call cut function with x,y,height,width
+
+                            selected[j] = rectangle;
+                            j++;
+                            toGrayscale++;
+
+
+                            x = Math.Cos(-(rectangle.RAngle * Math.PI / 180)) * (x - (rectangle.X) - 50) / (rectangle.Scale) - Math.Sin(-(rectangle.RAngle * Math.PI / 180)) * (y - (rectangle.Y) - 25) / (rectangle.Scale);
+                            y = Math.Sin(-(rectangle.RAngle * Math.PI / 180)) * (x - (rectangle.X) - 50) / (rectangle.Scale) + Math.Cos(-(rectangle.RAngle * Math.PI / 180)) * (y - (rectangle.Y) - 25) / (rectangle.Scale);
+                            for (int i = toGrayscale; i > -1; --i)
+                            {
+                                int _topLeftX = (int)x;
+                                int _topLeftY = (int)y;
+                                int _width = (int)width;
+                                int _height = (int)height;
+
+                                //  Top Left  = x
+                                //  Top Right = x + width
+                                //  Bottomm Left = y + height
+                                //  bottom right = 0
+
+                                // Somehow get my 4 points
+                                rectangleToCreate = this.ViewModel.imageSelectionCopy(_topLeftX, _topLeftY, _width, _height, rectangle);
+                                this.ViewModel.imageSelection(_topLeftX, _topLeftY, _width, _height, rectangle);
+
+
+                                // this.ViewModel.addRectangle(rectangleToCreate);
+                                //double TopLeft, double TopRight, double BottomLeft, double BottomRight
+
+                            }
+
                         }
                         else
                         {
                             //setting points for selection call
+                            // ony if tilted
 
                             Point top = new Point(0, 0); Point right = new Point(0, 0); Point left = new Point(0, 0); Point bottum = new Point(0, 0);
+                            Point top_final = new Point(0, 0); Point right_final = new Point(0, 0); Point left_final = new Point(0, 0); Point bottum_final = new Point(0, 0);
                             if (angle > 0 && angle <= 90)
                             {
                                 top = new Point(x + width, y);
@@ -744,30 +781,40 @@ namespace SampleCode
                             {
                                 top = new Point(x, y + height);
                                 right = new Point(x, y);
-                                bottum = new Point(x+width, y);
-                                left = new Point(x+width, y+height);
+                                bottum = new Point(x + width, y);
+                                left = new Point(x + width, y + height);
                             }
                             if (angle > 270)
                             {
                                 top = new Point(x, y);
                                 right = new Point(x + width, y);
-                                bottum = new Point(x+width, y + height);
-                                left = new Point(x, y+height);
+                                bottum = new Point(x + width, y + height);
+                                left = new Point(x, y + height);
                             }
-                            top.X = Math.Cos(-(rectangle.RAngle * Math.PI / 180)) * (top.X - (rectangle.X) - 50) / (rectangle.Scale) - Math.Sin(-(rectangle.RAngle * Math.PI / 180)) * (top.Y - (rectangle.Y) - 25) / (rectangle.Scale);
-                            top.Y = Math.Sin(-(rectangle.RAngle * Math.PI / 180)) * (top.X - (rectangle.X) - 50) / (rectangle.Scale) + Math.Cos(-(rectangle.RAngle * Math.PI / 180)) * (top.Y - (rectangle.Y) - 25) / (rectangle.Scale);
 
-                            right.X = Math.Cos(-(rectangle.RAngle * Math.PI / 180)) * (right.X - (rectangle.X) - 50) / (rectangle.Scale) - Math.Sin(-(rectangle.RAngle * Math.PI / 180)) * (right.Y - (rectangle.Y) - 25) / (rectangle.Scale);
-                            right.Y = Math.Sin(-(rectangle.RAngle * Math.PI / 180)) * (right.X - (rectangle.X) - 50) / (rectangle.Scale) + Math.Cos(-(rectangle.RAngle * Math.PI / 180)) * (right.Y - (rectangle.Y) - 25) / (rectangle.Scale);
+                            top_final.X = Math.Cos(-(rectangle.RAngle * Math.PI / 180)) * ((top.X + scrolling.HorizontalOffset - 50) / zoomSlider.Value - (rectangle.X)) / (rectangle.Scale) - Math.Sin(-(rectangle.RAngle * Math.PI / 180)) * ((top.Y + scrolling.VerticalOffset + 20) / zoomSlider.Value - (rectangle.Y)) / (rectangle.Scale);
+                            top_final.Y = Math.Sin(-(rectangle.RAngle * Math.PI / 180)) * ((top.X + scrolling.HorizontalOffset - 50) / zoomSlider.Value - (rectangle.X)) / (rectangle.Scale) + Math.Cos(-(rectangle.RAngle * Math.PI / 180)) * ((top.Y + scrolling.VerticalOffset + 20) / zoomSlider.Value - (rectangle.Y)) / (rectangle.Scale);
 
-                            bottum.X = Math.Cos(-(rectangle.RAngle * Math.PI / 180)) * (bottum.X - (rectangle.X) - 50) / (rectangle.Scale) - Math.Sin(-(rectangle.RAngle * Math.PI / 180)) * (bottum.Y - (rectangle.Y) - 25) / (rectangle.Scale);
-                            bottum.Y = Math.Sin(-(rectangle.RAngle * Math.PI / 180)) * (bottum.X - (rectangle.X) - 50) / (rectangle.Scale) + Math.Cos(-(rectangle.RAngle * Math.PI / 180)) * (bottum.Y - (rectangle.Y) - 25) / (rectangle.Scale);
+                            right_final.X = Math.Cos(-(rectangle.RAngle * Math.PI / 180)) * ((right.X + scrolling.HorizontalOffset - 50) / zoomSlider.Value - (rectangle.X)) / (rectangle.Scale) - Math.Sin(-(rectangle.RAngle * Math.PI / 180)) * ((right.Y + scrolling.VerticalOffset + 20) / zoomSlider.Value - (rectangle.Y)) / (rectangle.Scale);
+                            right_final.Y = Math.Sin(-(rectangle.RAngle * Math.PI / 180)) * ((right.X + scrolling.HorizontalOffset - 50) / zoomSlider.Value - (rectangle.X)) / (rectangle.Scale) + Math.Cos(-(rectangle.RAngle * Math.PI / 180)) * ((right.Y + scrolling.VerticalOffset + 20) / zoomSlider.Value - (rectangle.Y)) / (rectangle.Scale);
 
-                            left.X = Math.Cos(-(rectangle.RAngle * Math.PI / 180)) * (left.X - (rectangle.X) - 50) / (rectangle.Scale) - Math.Sin(-(rectangle.RAngle * Math.PI / 180)) * (left.Y - (rectangle.Y) - 25) / (rectangle.Scale);
-                            left.Y = Math.Sin(-(rectangle.RAngle * Math.PI / 180)) * (left.X - (rectangle.X) - 50) / (rectangle.Scale) + Math.Cos(-(rectangle.RAngle * Math.PI / 180)) * (left.Y - (rectangle.Y) - 25) / (rectangle.Scale);
+                            bottum_final.X = Math.Cos(-(rectangle.RAngle * Math.PI / 180)) * ((bottum.X + scrolling.HorizontalOffset - 50) / zoomSlider.Value - (rectangle.X)) / (rectangle.Scale) - Math.Sin(-(rectangle.RAngle * Math.PI / 180)) * ((bottum.Y + scrolling.VerticalOffset + 20) / zoomSlider.Value - (rectangle.Y)) / (rectangle.Scale);
+                            bottum_final.Y = Math.Sin(-(rectangle.RAngle * Math.PI / 180)) * ((bottum.X + scrolling.HorizontalOffset - 50) / zoomSlider.Value - (rectangle.X)) / (rectangle.Scale) + Math.Cos(-(rectangle.RAngle * Math.PI / 180)) * ((bottum.Y + scrolling.VerticalOffset + 20) / zoomSlider.Value - (rectangle.Y)) / (rectangle.Scale);
+
+                            left_final.X = Math.Cos(-(rectangle.RAngle * Math.PI / 180)) * ((left.X + scrolling.HorizontalOffset - 50) / zoomSlider.Value - (rectangle.X)) / (rectangle.Scale) - Math.Sin(-(rectangle.RAngle * Math.PI / 180)) * ((left.Y + scrolling.VerticalOffset + 20) / zoomSlider.Value - (rectangle.Y)) / (rectangle.Scale);
+                            left_final.Y = Math.Sin(-(rectangle.RAngle * Math.PI / 180)) * ((left.X + scrolling.HorizontalOffset - 50) / zoomSlider.Value - (rectangle.X)) / (rectangle.Scale) + Math.Cos(-(rectangle.RAngle * Math.PI / 180)) * ((left.Y + scrolling.VerticalOffset + 20) / zoomSlider.Value - (rectangle.Y)) / (rectangle.Scale);
 
                             // call select function
+                            this.ViewModel.imageSelectionRotated(top_final, right_final, bottum_final, left_final, rectangle);
+                            //rectangleToCreate = this.ViewModel.imageSelectionRotated(top, right, bottum, left, rectangle);
                         }
+
+                       // this.ViewModel.addRectangle(rectangleToCreate);
+                        this.ViewModel.Rectangles[ViewModel.Rectangles.Count - 1].X = 0;
+                        this.ViewModel.Rectangles[ViewModel.Rectangles.Count - 1].Y = 0;
+                        lp.UpdateLayers(ViewModel.Rectangles);
+                        this.ViewModel.saveState();
+
                     }
                     break;
                 // draw pen
@@ -791,6 +838,7 @@ namespace SampleCode
                     ViewModel.addString(current, new Point(x + (width / 2) - 50, y + (height / 2) - 50), entry, theColor);
                     break;
             }
+            lp.UpdateLayers(ViewModel.Rectangles);
         }
 
         private void rectDelete_Click(object sender, RoutedEventArgs e)
@@ -811,17 +859,6 @@ namespace SampleCode
 
             lp.UpdateLayers(ViewModel.Rectangles);
             ViewModel.saveState();
-        }
-
-        private void button1_Click_1(object sender, RoutedEventArgs e)
-        {
-            Microsoft.Win32.OpenFileDialog dlg =
-            new Microsoft.Win32.OpenFileDialog();
-            if (dlg.ShowDialog() == true)
-            {
-                this.ViewModel.addRectangle(dlg.FileName);
-                lp.UpdateLayers(ViewModel.Rectangles);
-            }
         }
 
         private void gridNewRect_Click(object sender, RoutedEventArgs e)
@@ -872,10 +909,16 @@ namespace SampleCode
 
             SaveFileDialog sfd = new SaveFileDialog();
             string path = null;
+
+            sfd.Filter = "Bitmap Image (.bmp)|*.bmp|JPEG Image (.jpeg)|*.jpeg|Png Image (.png)|*.png";
+            sfd.FilterIndex = 2;
+            sfd.RestoreDirectory = true;
+
             if (sfd.ShowDialog() == true)
             {
                 path = sfd.FileName;
             }
+
             Canvas surface = FindCanvas(listBox);
 
             if (path == null) return;
@@ -887,31 +930,89 @@ namespace SampleCode
             //surface.LayoutTransform = null;
 
             // Get the size of canvas
-            Size size = new Size(surface.ActualWidth, surface.ActualHeight);
+            Size size = new Size(surface.ActualWidth - 3, surface.ActualHeight - 3);
 
             // Measure and arrange the surface
             surface.Measure(size);
             Point move = new Point(-1, -1);
-            surface.Arrange(new Rect(move, size));
-
-            // Create a render bitmap
-            RenderTargetBitmap renderBitmap =
-              new RenderTargetBitmap(
-                (int)size.Width,
-                (int)size.Height,
-                96d,
-                96d,
-                PixelFormats.Pbgra32);
-            renderBitmap.Render(surface);
 
             // Create a file stream for saving image
             using (FileStream outStream = new FileStream(path, FileMode.Create))
             {
-                // png encoder
-                PngBitmapEncoder encoder = new PngBitmapEncoder();
-                encoder.Frames.Add(BitmapFrame.Create(renderBitmap));
-                // save the data to the stream
-                encoder.Save(outStream);
+                string type = System.IO.Path.GetExtension(path);
+
+                if (type == ".png")
+                {
+                    surface.Background = Brushes.Transparent;
+
+                    surface.Arrange(new Rect(move, size));
+
+                    // Create a render bitmap
+                    RenderTargetBitmap renderBitmap =
+                        new RenderTargetBitmap(
+                            (int)size.Width,
+                            (int)size.Height,
+                            96d,
+                            96d,
+                            PixelFormats.Pbgra32);
+                    renderBitmap.Render(surface);
+
+                    // png encoder
+                    PngBitmapEncoder encoder = new PngBitmapEncoder();
+                    encoder.Frames.Add(BitmapFrame.Create(renderBitmap));
+
+                    encoder.Save(outStream);
+                }
+                else if (type == ".jpeg")
+                {
+                    surface.Background = Brushes.White;
+
+                    surface.Arrange(new Rect(move, size));
+
+                    // Create a render bitmap
+                    RenderTargetBitmap renderBitmap =
+                        new RenderTargetBitmap(
+                        (int)size.Width,
+                        (int)size.Height,
+                        96d,
+                        96d,
+                        PixelFormats.Default);
+                    renderBitmap.Render(surface);
+
+                    // Create a render bitmap
+
+                    JpegBitmapEncoder encoder = new JpegBitmapEncoder();
+                    encoder.Frames.Add(BitmapFrame.Create(renderBitmap));
+
+                    surface.Background = Brushes.Transparent;
+
+                    encoder.Save(outStream);
+                }
+                else //type == .bmp or other
+                {
+                    surface.Background = Brushes.White;
+
+                    surface.Arrange(new Rect(move, size));
+
+                    // Create a render bitmap
+                    RenderTargetBitmap renderBitmap =
+                        new RenderTargetBitmap(
+                        (int)size.Width,
+                        (int)size.Height,
+                        96d,
+                        96d,
+                        PixelFormats.Default);
+                    renderBitmap.Render(surface);
+
+                    // Create a render bitmap
+
+                    BmpBitmapEncoder encoder = new BmpBitmapEncoder();
+                    encoder.Frames.Add(BitmapFrame.Create(renderBitmap));
+
+                    surface.Background = Brushes.Transparent;
+
+                    encoder.Save(outStream);
+                }
                 outStream.Close();
             }
 
@@ -922,6 +1023,7 @@ namespace SampleCode
 
             ViewModel.saveState();
         }
+
 
         public Canvas FindCanvas(DependencyObject obj)
         {
@@ -1147,26 +1249,118 @@ namespace SampleCode
         private void topEmboss_Click(object sender, RoutedEventArgs e)
         {
 
+            //Were going to make grayscale
+            RectangleViewModel[] selected = new RectangleViewModel[20];
+            int j = 0;
+            int toGrayscale = -1;
+            foreach (RectangleViewModel rectangle in this.listBox.SelectedItems)
+            {
+                selected[j] = rectangle;
+                j++;
+                toGrayscale++;
+            }
+            //this just tosses each to the viewModel
+            for (int i = toGrayscale; i > -1; --i)
+            {
+
+                this.ViewModel.effectEmboss(selected[i]);
+
+
+            }
+            //http://msdn.microsoft.com/en-us/library/ms750596.aspx
         }
 
         private void topBlur_Click(object sender, RoutedEventArgs e)
         {
 
+            //Were going to make grayscale
+            RectangleViewModel[] selected = new RectangleViewModel[20];
+            int j = 0;
+            int toGrayscale = -1;
+            foreach (RectangleViewModel rectangle in this.listBox.SelectedItems)
+            {
+                selected[j] = rectangle;
+                j++;
+                toGrayscale++;
+            }
+            //this just tosses each to the viewModel
+            for (int i = toGrayscale; i > -1; --i)
+            {
+
+                this.ViewModel.effectGaussianBlur(selected[i]);
+
+
+            }
         }
 
         private void topSmooth_Click(object sender, RoutedEventArgs e)
         {
 
+            //Were going to make grayscale
+            RectangleViewModel[] selected = new RectangleViewModel[20];
+            int j = 0;
+            int toGrayscale = -1;
+            foreach (RectangleViewModel rectangle in this.listBox.SelectedItems)
+            {
+                selected[j] = rectangle;
+                j++;
+                toGrayscale++;
+            }
+            //this just tosses each to the viewModel
+            for (int i = toGrayscale; i > -1; --i)
+            {
+
+                this.ViewModel.effectSmoothing(selected[i]);
+
+
+            }
+            //http://msdn.microsoft.com/en-us/library/ms750596.aspx
         }
 
         private void topEdge_Click(object sender, RoutedEventArgs e)
         {
 
+            //Were going to make grayscale
+            RectangleViewModel[] selected = new RectangleViewModel[20];
+            int j = 0;
+            int toGrayscale = -1;
+            foreach (RectangleViewModel rectangle in this.listBox.SelectedItems)
+            {
+                selected[j] = rectangle;
+                j++;
+                toGrayscale++;
+            }
+            //this just tosses each to the viewModel
+            for (int i = toGrayscale; i > -1; --i)
+            {
+
+                this.ViewModel.effectEdgeDetection(selected[i]);
+
+
+            }
         }
 
         private void topGrey_Click(object sender, RoutedEventArgs e)
         {
 
+            //Were going to make grayscale
+            RectangleViewModel[] selected = new RectangleViewModel[20];
+            int j = 0;
+            int toGrayscale = -1;
+            foreach (RectangleViewModel rectangle in this.listBox.SelectedItems)
+            {
+                selected[j] = rectangle;
+                j++;
+                toGrayscale++;
+            }
+            //this just tosses each to the viewModel
+            for (int i = toGrayscale; i > -1; --i)
+            {
+
+                this.ViewModel.effectGrayscale(selected[i]);
+
+
+            }
         }
 
         private void rectResize_Click(object sender, RoutedEventArgs e)
@@ -1409,11 +1603,11 @@ namespace SampleCode
             for (int i = toaddto; i > -1; --i)
             {
 
-                clicked.X = Math.Cos(-(selected[i].RAngle * Math.PI / 180)) * (Mouse.GetPosition(this).X - (selected[i].X)-50) / (selected[i].Scale) - Math.Sin(-(selected[i].RAngle * Math.PI / 180)) * (Mouse.GetPosition(this).Y - (selected[i].Y) - 25) / (selected[i].Scale);
-                clicked.Y = Math.Sin(-(selected[i].RAngle * Math.PI / 180)) * (Mouse.GetPosition(this).X - (selected[i].X)-50) / (selected[i].Scale) + Math.Cos(-(selected[i].RAngle * Math.PI / 180)) * (Mouse.GetPosition(this).Y - (selected[i].Y) - 25) / (selected[i].Scale);
+                clicked.X = Math.Cos(-(selected[i].RAngle * Math.PI / 180)) * ((Mouse.GetPosition(this).X + scrolling.HorizontalOffset - 50) / zoomSlider.Value - (selected[i].X)) / (selected[i].Scale) - Math.Sin(-(selected[i].RAngle * Math.PI / 180)) * ((Mouse.GetPosition(this).Y + scrolling.VerticalOffset - 25) / zoomSlider.Value - (selected[i].Y)) / (selected[i].Scale);
+                clicked.Y = Math.Sin(-(selected[i].RAngle * Math.PI / 180)) * ((Mouse.GetPosition(this).X + scrolling.HorizontalOffset - 50) / zoomSlider.Value - (selected[i].X)) / (selected[i].Scale) + Math.Cos(-(selected[i].RAngle * Math.PI / 180)) * ((Mouse.GetPosition(this).Y + scrolling.VerticalOffset - 25) / zoomSlider.Value - (selected[i].Y)) / (selected[i].Scale);
 
-                relativeLast.X = Math.Cos(-(selected[i].RAngle * Math.PI / 180)) * (LastPainted.X - (selected[i].X)-50) / (selected[i].Scale) - Math.Sin(-(selected[i].RAngle * Math.PI / 180)) * ((LastPainted.Y - (selected[i].Y) - 25) / (selected[i].Scale));
-                relativeLast.Y = Math.Sin(-(selected[i].RAngle * Math.PI / 180)) * (LastPainted.X - (selected[i].X)-50) / (selected[i].Scale) + Math.Cos(-(selected[i].RAngle * Math.PI / 180)) * ((LastPainted.Y - (selected[i].Y) - 25) / (selected[i].Scale));
+                relativeLast.X = Math.Cos(-(selected[i].RAngle * Math.PI / 180)) * ((LastPainted.X + scrolling.HorizontalOffset - 50) / zoomSlider.Value - (selected[i].X)) / (selected[i].Scale) - Math.Sin(-(selected[i].RAngle * Math.PI / 180)) * ((LastPainted.Y + scrolling.VerticalOffset - 25) / zoomSlider.Value - (selected[i].Y)) / (selected[i].Scale);
+                relativeLast.Y = Math.Sin(-(selected[i].RAngle * Math.PI / 180)) * ((LastPainted.X + scrolling.HorizontalOffset - 50) / zoomSlider.Value - (selected[i].X)) / (selected[i].Scale) + Math.Cos(-(selected[i].RAngle * Math.PI / 180)) * ((LastPainted.Y + scrolling.VerticalOffset - 25) / zoomSlider.Value - (selected[i].Y)) / (selected[i].Scale);
 
 
                 // if mouse is in rectangle, draw text
