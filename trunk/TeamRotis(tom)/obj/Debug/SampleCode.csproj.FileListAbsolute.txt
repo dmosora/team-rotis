@@ -497,3 +497,31 @@ G:\TeamRotis - Finished\obj\Debug\GenerateResource-ResGen.read.1.tlog
 G:\TeamRotis - Finished\obj\Debug\ResGen.read.1.tlog
 G:\TeamRotis - Finished\obj\Debug\GenerateResource-ResGen.write.1.tlog
 G:\TeamRotis - Finished\obj\Debug\ResGen.write.1.tlog
+C:\Users\Heidi\Documents\Capstone\TeamRotis(tom)\obj\Debug\SampleCode.exe
+C:\Users\Heidi\Documents\Capstone\TeamRotis(tom)\obj\Debug\SampleCode.pdb
+C:\Users\Heidi\Documents\Capstone\TeamRotis(tom)\bin\Debug\SampleCode.exe
+C:\Users\Heidi\Documents\Capstone\TeamRotis(tom)\bin\Debug\SampleCode.pdb
+C:\Users\Heidi\Documents\Capstone\TeamRotis(tom)\bin\Debug\ColorPicker.dll
+C:\Users\Heidi\Documents\Capstone\TeamRotis(tom)\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\Heidi\Documents\Capstone\TeamRotis(tom)\obj\Debug\EditDialogBox.baml
+C:\Users\Heidi\Documents\Capstone\TeamRotis(tom)\obj\Debug\layerPallette.baml
+C:\Users\Heidi\Documents\Capstone\TeamRotis(tom)\obj\Debug\nameChanger.baml
+C:\Users\Heidi\Documents\Capstone\TeamRotis(tom)\obj\Debug\resizeWindow.baml
+C:\Users\Heidi\Documents\Capstone\TeamRotis(tom)\obj\Debug\sizeSetWindow.baml
+C:\Users\Heidi\Documents\Capstone\TeamRotis(tom)\obj\Debug\EditDialogBox.g.cs
+C:\Users\Heidi\Documents\Capstone\TeamRotis(tom)\obj\Debug\layerPallette.g.cs
+C:\Users\Heidi\Documents\Capstone\TeamRotis(tom)\obj\Debug\MainWindow.g.cs
+C:\Users\Heidi\Documents\Capstone\TeamRotis(tom)\obj\Debug\nameChanger.g.cs
+C:\Users\Heidi\Documents\Capstone\TeamRotis(tom)\obj\Debug\resizeWindow.g.cs
+C:\Users\Heidi\Documents\Capstone\TeamRotis(tom)\obj\Debug\sizeSetWindow.g.cs
+C:\Users\Heidi\Documents\Capstone\TeamRotis(tom)\obj\Debug\App.g.cs
+C:\Users\Heidi\Documents\Capstone\TeamRotis(tom)\obj\Debug\GeneratedInternalTypeHelper.g.cs
+C:\Users\Heidi\Documents\Capstone\TeamRotis(tom)\obj\Debug\SampleCode_MarkupCompile.cache
+C:\Users\Heidi\Documents\Capstone\TeamRotis(tom)\obj\Debug\SampleCode_MarkupCompile.lref
+C:\Users\Heidi\Documents\Capstone\TeamRotis(tom)\obj\Debug\MainWindow.baml
+C:\Users\Heidi\Documents\Capstone\TeamRotis(tom)\obj\Debug\SampleCode.g.resources
+C:\Users\Heidi\Documents\Capstone\TeamRotis(tom)\obj\Debug\SampleCode.Properties.Resources.resources
+C:\Users\Heidi\Documents\Capstone\TeamRotis(tom)\obj\Debug\GenerateResource-ResGen.read.1.tlog
+C:\Users\Heidi\Documents\Capstone\TeamRotis(tom)\obj\Debug\ResGen.read.1.tlog
+C:\Users\Heidi\Documents\Capstone\TeamRotis(tom)\obj\Debug\GenerateResource-ResGen.write.1.tlog
+C:\Users\Heidi\Documents\Capstone\TeamRotis(tom)\obj\Debug\ResGen.write.1.tlog

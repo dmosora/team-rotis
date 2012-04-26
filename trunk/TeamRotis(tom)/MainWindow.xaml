@@ -3,6 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="clr-namespace:SampleCode"
     Title="Team Rotis Image Editor" 
+    Icon="/SampleCode;component/resources/Rotis_icon.ico"
     Width="640"
     Height="480"
     Loaded="Window_Loaded"
